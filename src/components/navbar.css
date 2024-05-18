@@ -1,6 +1,6 @@
 .navMenu{
-    background-color: rgb(3, 87, 184);
-    color: rgb(231, 231, 231);
+    background-color: rgb(255, 255, 255);
+    color: rgb(46, 46, 46);
     display: flex;
     justify-content: space-between;
     align-items:center;
