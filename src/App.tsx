@@ -1,21 +1,22 @@
 import './App.css'
 import React from 'react';
-import Login from './Login';
-function App() {
+import Login from './pages/Login';
 
+function App() {
+  
+  
+    
+  
+  
   return (
     <>
-      Cool
+      
+      <h2>Please Login To Continue</h2>
+      <Login/>
     </>
+
   )
 }
-const App: React.FC = () => {
-  return (
-    <div className="App">
-      <Login />
-    </div>
-  );
-};
 
 
 export default App
