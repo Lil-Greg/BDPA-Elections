@@ -6,6 +6,7 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import App from './App.tsx'
 import Navbar from './components/Navabar.tsx'
 import ElectionPage from './pages/ElectionPage.tsx'
+import UserContextProvider from './context/UserContextProvider.tsx';
 
 const router = createBrowserRouter([
   {
@@ -24,6 +25,8 @@ const router = createBrowserRouter([
 ]);
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <RouterProvider router={router}></RouterProvider>
+    <UserContextProvider>
+      <RouterProvider router={router}></RouterProvider>
+    </UserContextProvider>
   </React.StrictMode>,
 )
