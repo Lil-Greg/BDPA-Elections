@@ -1,13 +1,15 @@
 import "./navbar.css"
-import useInfoApi from "../hooks/useInfoApi"
-//import "../public/dc.png"
-
+import useInfoApi from "../hooks/useInfoApi.ts"
 import { Outlet } from "react-router-dom";
+import { useState } from "react";
 
 export default function Navbar() {
     const openElectionNum = useInfoApi();
+    const [totalElections, setTotalElections] = useState<number>();
     console.log(openElectionNum);
-    const totalElections = openElectionNum?.openElections + openElectionNum?.closedElections + openElectionNum?.upcomingElections;
+    if (openElectionNum) {
+        setTotalElections(openElectionNum?.openElection + openElectionNum?.closedElections + openElectionNum?.upcomingElections);
+    }
     return (
         <>
             <nav className="navMenu">
@@ -20,7 +22,7 @@ export default function Navbar() {
                         <a href="/History">History</a>
                     </li>
                     <li>
-                        <a href="/Elections">Elections: Open: {openElectionNum?.openElections} Closed:{openElectionNum?.closedElections} Total:{totalElections}</a>
+                        <a href="/Elections">Elections: Open: {openElectionNum?.openElection} Closed:{openElectionNum?.closedElections} Total:{totalElections}</a>
                     </li>
                 </ul>
             </nav>

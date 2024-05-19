@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
+import { ElectionInfo } from "../type";
 
 export default function useInfoApi(){
-    const [info, setInfo] = useState();
-
+    const [info, setInfo] = useState<ElectionInfo>();
 
     useEffect(()=>{
         async function fetchData(){
@@ -16,7 +16,7 @@ export default function useInfoApi(){
                 setInfo({
                     "success": true,
                     "upcomingElections": 12,
-                    "openElections": 20,
+                    "openElection": 20,
                     "closedElections": 423
                 })
             }
@@ -27,6 +27,6 @@ export default function useInfoApi(){
             //   setLoading(true);
             //   setError(null);
         };
-    },[])
-    return info
+    },[info]);
+    return info;
 }
