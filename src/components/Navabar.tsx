@@ -6,7 +6,6 @@ import { useState } from "react";
 export default function Navbar() {
     const openElectionNum = useInfoApi();
     const [totalElections, setTotalElections] = useState<number>();
-    console.log(openElectionNum);
     if (openElectionNum) {
         setTotalElections(openElectionNum?.openElection + openElectionNum?.closedElections + openElectionNum?.upcomingElections);
     }

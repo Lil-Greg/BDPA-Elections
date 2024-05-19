@@ -16,6 +16,9 @@ export default function UseElection(){
         }
         fetchData();
     },[elections]);
+    if(!elections){
+        throw new Error('Failed Fetch'); // Deletes the 'Undefined' type
+    }
     return elections;
 }
 
