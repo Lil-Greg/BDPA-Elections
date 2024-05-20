@@ -4,6 +4,7 @@ import App from './App.tsx'
 import './index.css'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import Navbar from './components/Navabar.tsx'
+import History from './pages/History.tsx'
 
 const router = createBrowserRouter([
   {
@@ -13,7 +14,11 @@ const router = createBrowserRouter([
       {
         path: '/',
         element: <App />
+      },{
+        path:'/history',
+        element:<History/>
       }
+
     ]
   }
 ])

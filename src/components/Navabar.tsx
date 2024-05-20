@@ -18,7 +18,7 @@ export default function Navbar() {
                     <a href="/History">History</a>
                 </li>
                 <li>
-                    <a href="/Elections">Elections: Open: {openElectionNum?.openElections} Closed:{openElectionNum?.closedElections} Total:{totalElections}</a>
+                    <a href="/Elections">Elections: <span className="menuStats"> Open: {openElectionNum?.openElections} Closed:{openElectionNum?.closedElections} Total:{totalElections} </span></a>
                 </li>
             </ul>
         </nav>
