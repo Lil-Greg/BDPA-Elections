@@ -1,30 +1,29 @@
 import useElectionHistory from "../hooks/useElectionHistory";
 
 export default function ElectionHistory(){
-    const elections = useElectionHistory;
+    const { elections, isLoading } = useElectionHistory();
+    console.log(isLoading);
+    console.log(elections);
+
+    if (isLoading) {
+        return <>
+            <div className="loadingText">Loading...</div>
+        </>
+    }
 
     return <>
-        <table>
-            <thead>
-                <tr>
-                    <th>Title</th>
-                    <th>Description</th>
-                    <th>Created At</th>
-                    <th>Opens At</th>
-                    <th>Closes At</th>
-                </tr>
-            </thead>
-            <tbody>
-                {elections.map((elections, index) => (
-                    <tr key={index}>
-                        <td>{elections.title}</td>
-                        <td>{elections.description}</td>
-                        <td>{elections.createdAt}</td>
-                        <td>{elections.opensAt}</td>
-                        <td>{elections.closesAt}</td>
-                    </tr>
-                ))}
-            </tbody>
-        </table>
+       <div>
+            {elections && elections.elections.map(election => (
+                <div key={election.election_id}>
+                    <h3>{election.title}</h3>
+                    <p>{election.description}</p>
+                    <ul>
+                        {election.options.map(option => (
+                            <li key={option}>{option}</li>
+                        ))}
+                    </ul>
+                </div>
+            ))}
+        </div>
     </>
 }

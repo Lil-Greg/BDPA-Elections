@@ -1,10 +1,10 @@
-import ElectionHistory from "../components/electionHistory"
+import ElectionHistory from "../components/ElectionHistory"
 
 export default function History(){
     return<>
         <div className = "container">
             <div className="electionBoxes">
-                 <ElectionHistory />
+                 {ElectionHistory()}
             </div>
         </div>
     </>

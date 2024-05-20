@@ -1,12 +1,33 @@
 import { useEffect, useState } from "react";
 
+interface Election {
+    election_id: string;
+    title: string;
+    description: string;
+    options: string[];
+    createdAt: number;
+    opensAt: number;
+    closesAt: number;
+    owned: boolean;
+    deleted: boolean;
+}
+
+interface ElectionsResponse {
+    success: boolean;
+    elections: Election[];
+}
 export default function useElectionHistory(){
-    const [elections, setElections] = useState();
+    const [elections, setElections] = useState<ElectionsResponse | null>(null);
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState();
+    const [url, setUrl] = useState ("https://elections_irv.api.hscc.bdpa.org/v1/elections")
+
     useEffect (()=>{
         async function fetchData(){
             try{
-                const res = await fetch("https://elections_irv.api.hscc.bdpa.org/v1/elections");
-                const data = await res.json();
+                setIsLoading(true);
+                const res = await fetch(url);
+                const data = await res.json() as ElectionsResponse;
                 setElections(data);
             }
             catch(error){
@@ -16,7 +37,7 @@ export default function useElectionHistory(){
                         "election_id": "5ec8adf06e38137ff2e5876f",
                         "title": "My election #1",
                         "description": "My demo election!",
-                        "options": [],
+                        "options": ["Ketchup", "Mayonaise", "Mustard"],
                         "createdAt": 1589347376211,
                         "opensAt": 1589347379811,
                         "closesAt": 1589347380731,
@@ -42,14 +63,14 @@ export default function useElectionHistory(){
                         "closesAt": 1589347380731,
                         "owned": true,
                         "deleted": false
-                    }]
-                });
+                    },
+                ]
+                })
+            } finally{
+                setIsLoading(false);
             }
         }
         fetchData();
-        return ()=>{
-            //setElections
-        }
-    },[])
-    return elections
+    },[url])
+    return { elections, isLoading };
 }
