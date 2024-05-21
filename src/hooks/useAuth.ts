@@ -1,5 +1,7 @@
-const url = import.meta.env.VITE_API_URL;
-const APIkey = import.meta.env.VITE_API_KEY;
+import { UserAuth } from "../type";
+
+const url:string = import.meta.env.VITE_API_EXURL;
+const APIkey:string = import.meta.env.VITE_API_EXKEY;
 
 // The API expects a 64 byte key (128 hex digits long):
 const KEY_SIZE_BYTES = 64;
@@ -123,10 +125,10 @@ async function getAuth(key:string, username:string){
   return data;
 }
 
-export default async function useAuth(password: string, username: string){
+export default async function userAuth(password: string, username: string){
     const [salt, user] = await getSalt(username);
     const key = await deriveKeyFromPassword(password, convertHexToBuffer(salt));
-    const result = await getAuth(key.keyString, username);
+    const result:UserAuth = await getAuth(key.keyString, username);
     console.log(result)
     return [result.success, user];
 }

@@ -1,6 +1,7 @@
 import { useContext, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import UserContext from "../context/UserContext";
+import userAuth from "../hooks/useAuth";
 
 export default function AuthPage() {
     const { user, setUser } = useContext(UserContext);
@@ -14,10 +15,10 @@ export default function AuthPage() {
         const username = usernameRef.current?.value;
         const password = passwordRef.current?.value;
         if (username && password) {
-            const [isAuthorized, userInline] = await useAuth(password, username);
+            const [isAuthorized, userInline] = await userAuth(password, username);
             if (isAuthorized) {
                 setUser && setUser(userInline);
-                window.localStorage.setItem('user', JSON.stringify(user))
+                window.localStorage.setItem('election-user', JSON.stringify(user))
                 navigate('/')
             }
             alert(`Username: ${username}` + ` Password: ${password}`)
@@ -27,7 +28,7 @@ export default function AuthPage() {
     }
     return <>
         <div className="container">
-            {user && username}
+            {user && user.username}
             <h1>Login</h1>
             <h3>Enter your login credentials</h3>
             <form onSubmit={handleSubmit}>

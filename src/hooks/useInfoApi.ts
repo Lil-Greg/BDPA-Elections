@@ -23,7 +23,7 @@ export default function useInfoApi(){
         }
         fetchData();
         return () =>{
-            // setInfo(undefined);
+            setInfo(undefined);
             //   setLoading(true);
             //   setError(null);
         };
