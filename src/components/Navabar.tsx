@@ -1,5 +1,6 @@
 import "./navbar.css"
 import useInfoApi from "../hooks/useInfoApi"
+import { Outlet } from "react-router-dom";
 //import "../public/dc.png"
 
 export default function Navbar() {
@@ -22,6 +23,7 @@ export default function Navbar() {
                 </li>
             </ul>
         </nav>
+        <Outlet></Outlet>
         </>
     )
 }
