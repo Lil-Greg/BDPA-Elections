@@ -10,11 +10,11 @@ export default function authPage(){
                 <input type="text" 
                    id="userName"
                    name="first" 
-                   placeholder="Enter your Username" required>
+                   placeholder="Enter your Username" required />
 
                 <label htmlFor="password">Password:</label>
                 <input type="password" id="passWord" 
-                   name="password" placeholder="Enter your Password" required>
+                   name="password" placeholder="Enter your Password" required />
                 <div className="submitButton">
                     <button type="submit">Submit</button>
                 </div>
