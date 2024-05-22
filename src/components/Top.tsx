@@ -15,7 +15,7 @@ export default function Top() {
     return (
         <>
             <Navbar expand="lg" style={{ width: "100vw" }} className="bg-body-tertiary">
-                <Container style={{ padding: '0.5rem' }}>
+                <Container>
                     <Navbar.Brand href="/"><img className='navHome' src="dc.png"></img>&nbsp;D.C. Elections</Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">

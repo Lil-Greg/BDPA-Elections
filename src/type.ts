@@ -6,23 +6,24 @@ export interface ElectionInfo{
         closedElections:number
     }
 }
+export interface ElectionsStatus{
+    success: true,
+    elections: Election[]
+}
 export interface ElectionStatus{
     success: true,
-    election: {
-        election_id: string,
-        title: string,
-        description: string,
-        options: [string],
-        createdAt: number,
-        opensAt: number,
-        closesAt: number,
-        owned: boolean,
-        deleted: boolean
-    }
+    election: Election
 }
-export interface Elections{
-    success:boolean,
-    elections:[ElectionStatus]
+export interface Election{
+    election_id: string,
+    title: string,
+    description: string,
+    options: string[],
+    createdAt: number,
+    opensAt: number,
+    closesAt: number,
+    owned: boolean,
+    deleted: boolean
 }
 export interface User{
     user_id:string,

@@ -1,7 +1,7 @@
 import { UserAuth } from "../type";
 
-const url:string = import.meta.env.VITE_API_EXURL;
-const APIkey:string = import.meta.env.VITE_API_EXKEY;
+const url:string = import.meta.env.VITE_API_URL;
+const APIkey:string = import.meta.env.VITE_API_KEY;
 
 // The API expects a 64 byte key (128 hex digits long):
 const KEY_SIZE_BYTES = 64;

@@ -1,5 +1,13 @@
 import { useEffect, useState } from "react";
 import { ElectionInfo } from "../type";
+const url:string = import.meta.env.VITE_API_URL;
+const APIKey:string = import.meta.env.VITE_API_KEY;
+const options = {
+    headers:{
+        'Authorization': APIKey,
+        'content-type':'application/json'
+    }
+}
 
 export default function useInfoApi(){
     const [info, setInfo] = useState<ElectionInfo>();
@@ -7,7 +15,7 @@ export default function useInfoApi(){
     useEffect(()=>{
         async function fetchData(){
             try{
-                const res = await fetch("https://elections_irv.api.hscc.bdpa.org/v1/info");
+                const res = await fetch(`${url}info`, options);
                 const data = await res.json();
                 setInfo(data);
             }

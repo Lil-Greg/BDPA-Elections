@@ -1,33 +1,17 @@
 import { useEffect, useState } from "react";
+import { ElectionsStatus } from "../type";
+const url = import.meta.env.VITE_API_URL;
 
-interface Election {
-    election_id: string;
-    title: string;
-    description: string;
-    options: string[];
-    createdAt: number;
-    opensAt: number;
-    closesAt: number;
-    owned: boolean;
-    deleted: boolean;
-}
-
-interface ElectionsResponse {
-    success: boolean;
-    elections: Election[];
-}
 export default function useElectionHistory(){
-    const [elections, setElections] = useState<ElectionsResponse | null>(null);
+    const [elections, setElections] = useState<ElectionsStatus | null>(null);
     const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState();
-    const [url, setUrl] = useState ("https://elections_irv.api.hscc.bdpa.org/v1/elections")
 
     useEffect (()=>{
         async function fetchData(){
             try{
                 setIsLoading(true);
                 const res = await fetch(url);
-                const data = await res.json() as ElectionsResponse;
+                const data = await res.json() as ElectionsStatus;
                 setElections(data);
             }
             catch(error){
@@ -71,6 +55,6 @@ export default function useElectionHistory(){
             }
         }
         fetchData();
-    },[url])
+    },[])
     return { elections, isLoading };
 }

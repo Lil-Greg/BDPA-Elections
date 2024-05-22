@@ -1,20 +1,23 @@
 import UseElection from "../hooks/useElection"
-import { Elections } from "../type";
+import { ElectionsStatus } from "../type";
 
 export default function ElectionPage() {
-    const Elections: Elections = UseElection();
+    const elections: ElectionsStatus | undefined = UseElection();
     return (
         <>
-            {Elections.elections.map((name, id) => {
-                <div className="election">{id}
+            {elections?.elections.map((election, id) =>
+
+                <div className="election">
                     <div className="name">
-                        <h1>{name.election.title}</h1>
+                        <h1>{election.title}</h1>
+                        <div className="id">{id}</div>
                     </div>
                     <div className="election-decription">
-                        <p className="description">{name.election.description}</p>
+                        <p className="description">{election.description}</p>
                     </div>
                 </div>
-            })}
+            )}
+
         </>
     )
 }

@@ -10,6 +10,7 @@ import DashboardPage from './pages/DashboardPage.tsx';
 import AuthPage from './pages/AuthPage.tsx';
 import ProtectedRoute from './components/ProtectedRoute.tsx';
 import HistoryPage from './pages/HistoryPage.tsx';
+import RegisterPage from './pages/RegisterPage.tsx';
 
 const router = createBrowserRouter([
   {
@@ -17,13 +18,16 @@ const router = createBrowserRouter([
     element: <ProtectedRoute><DashboardPage /></ProtectedRoute>
   }, {
     path: '/election',
-    element: <ProtectedRoute><ElectionPage /></ProtectedRoute>
+    element: <ElectionPage /> //<ProtectedRoute><ElectionPage /></ProtectedRoute>
   }, {
     path: '/history',
     element: <ProtectedRoute><HistoryPage /></ProtectedRoute>
   }, {
     path: '/login',
     element: <AuthPage />
+  }, {
+    path: '/register',
+    element: <RegisterPage />
   }
 ]);
 ReactDOM.createRoot(document.getElementById('root')!).render(

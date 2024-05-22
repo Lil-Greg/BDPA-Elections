@@ -1,35 +1,39 @@
 import { useEffect, useState } from "react";
-import { ElectionStatus, Elections } from "../type.ts";
+import { Election, ElectionStatus, ElectionsStatus } from "../type.ts";
 const url:string = import.meta.env.VITE_API_URL;
+const APIKey:string = import.meta.env.VITE_API_KEY
+const options = {
+    headers:{
+        'Authorization': APIKey,
+        'content-type':'application/json'
+    }
+}
 
 export default function UseElection(){
-    const [elections, setElections] = useState<Elections>();
+    const [elections, setElections] = useState<ElectionsStatus>();
     useEffect(()=>{
         async function fetchData(){
             try{
-                const res = await fetch(url + `/election`);
-                const data:Elections = await res.json();
+                const res = await fetch(url + `elections`, options);
+                const data:ElectionsStatus = await res.json();
                 setElections(data);
             } catch(error){
                 console.error(error);
             }
         }
         fetchData();
-    },[elections]);
-    if(!elections){
-        throw new Error('Failed Fetch'); // Deletes the 'Undefined' type
-    }
+    },[]);
     return elections;
 }
 
 export function UseSingleElection(id:number){
-    const [election, setElection] = useState<ElectionStatus>();
+    const [election, setElection] = useState<Election>();
     useEffect(()=>{
         async function fetchData(){
             try{
-                const data = await fetch(url + `/election/${id}`);
+                const data = await fetch(url + `election/${id}`, options);
                 const res:ElectionStatus = await data.json();
-                setElection(res);
+                setElection(res.election);
             }catch(error){
                 console.error(error);
             }
