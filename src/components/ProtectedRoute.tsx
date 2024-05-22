@@ -9,9 +9,7 @@ export default function ProtectedRoute({ children }: Props) {
     const navigate = useNavigate();
 
     if (!isAuthenticated) {
-        return (
-            navigate('/auth')
-        )
+        navigate('/login');
     }
     return <>{children}</>
 }

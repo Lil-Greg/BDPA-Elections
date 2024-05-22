@@ -16,8 +16,8 @@
   .navMenu a{
     color: inherit;
   }
-.navHome img{
-  height: 3em;
-  width: 3em;
+.navHome, .navHome img{
+  height: 3rem;
+  width: 3rem;
 }
   

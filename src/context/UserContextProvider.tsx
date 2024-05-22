@@ -1,4 +1,4 @@
-import { ReactNode, useContext, useState } from "react"
+import { ReactNode, useState } from "react"
 import UserContext from "./UserContext"
 import { User } from "../type";
 
@@ -13,7 +13,7 @@ export default function UserContextProvider({ children }: Props) {
     const brother = window.localStorage.getItem('election-user');
     const defaultUser = brother ? JSON.parse(brother) : null;
     const [user, setUser] = useState<User | null>(() => defaultUser);
-    const isAuthenticated = !!user; // if the user is not not undefined
+    const isAuthenticated = !!user; // if the user is not not undefined or is defined
 
     return <UserContext.Provider value={{ isAuthenticated, user, setUser }}>
         {children}

@@ -35,6 +35,6 @@ export function UseSingleElection(id:number){
             }
         }
         fetchData();
-    },[election, id]);
+    },[id]);
     return election;
 }

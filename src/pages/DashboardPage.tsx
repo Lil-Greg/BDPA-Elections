@@ -7,7 +7,7 @@ export default function DashboardPage() {
     return (
         <>
             <div className="container">
-
+                {user && user.type && user.username}
             </div>
         </>
     )
