@@ -7,7 +7,7 @@ export default function useInfoApi(){
     useEffect(()=>{
         async function fetchData(){
             try{
-                const res = await fetch("https://elections_irv.api.hscc.bdpa.org/v1/elections");
+                const res = await fetch("https://elections_irv.api.hscc.bdpa.org/v1/info");
                 const data = await res.json();
                 setInfo(data);
             }
