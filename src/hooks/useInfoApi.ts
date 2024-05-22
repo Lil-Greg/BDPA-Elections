@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
+import { ElectionInfo } from "../type";
 
 export default function useInfoApi(){
-    const [info, setInfo] = useState();
-
+    const [info, setInfo] = useState<ElectionInfo>();
 
     useEffect(()=>{
         async function fetchData(){
@@ -12,21 +12,24 @@ export default function useInfoApi(){
                 setInfo(data);
             }
             catch (error){
-                // console.log(error);
+                console.warn(error);
                 setInfo({
                     "success": true,
-                    "upcomingElections": 12,
-                    "openElections": 20,
-                    "closedElections": 423
+                    info:{
+                        "upcomingElections": 12,
+                        "openElection": 20,
+                        "closedElections": 423
+                    }
                 })
             }
         }
         fetchData();
         return () =>{
-            // setInfo(undefined);
+            setInfo(undefined);
             //   setLoading(true);
             //   setError(null);
         };
-    },[])
-    return info
+    },[]); // Dependecies can't be same value that's set in the useEffect
+               // If so, it results in re-render error
+    return info;
 }

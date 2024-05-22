@@ -1,35 +1,37 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import App from './App.tsx'
 import './index.css'
+import 'bootstrap/dist/css/bootstrap.min.css';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
-import Navbar from './components/Navabar.tsx'
-import History from './pages/HistoryPage.tsx'
-
+import Top from './components/Top.tsx'
+import ElectionPage from './pages/ElectionPage.tsx'
+import UserContextProvider from './context/UserContextProvider.tsx';
+import DashboardPage from './pages/DashboardPage.tsx';
+import AuthPage from './pages/AuthPage.tsx';
+import ProtectedRoute from './components/ProtectedRoute.tsx';
+import HistoryPage from './pages/HistoryPage.tsx';
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <Navbar />,
-    children: [
-      {
-        path: '/',
-        element: <App />
-      },{
-        path: '/history',
-        element: <History />
-      },{
-        path:'/dashboard'
-        //element:<Dashboard/>
-      }
-
-    ]
+    element: <ProtectedRoute><DashboardPage /></ProtectedRoute>
+  }, {
+    path: '/election',
+    element: <ProtectedRoute><ElectionPage /></ProtectedRoute>
+  }, {
+    path: '/history',
+    element: <ProtectedRoute><HistoryPage /></ProtectedRoute>
+  }, {
+    path: '/login',
+    element: <AuthPage />
   }
-])
-
+]);
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <RouterProvider router={router}></RouterProvider>
+    <UserContextProvider>
+      <Top />
+      <RouterProvider router={router}></RouterProvider>
+    </UserContextProvider>
   </React.StrictMode>,
 )
 

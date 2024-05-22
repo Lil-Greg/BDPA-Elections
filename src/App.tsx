@@ -1,20 +1,15 @@
-import './App.css'
-import React from 'react';
-import Login from './pages/Login';
-
-import "bootstrap/dist/css/bootstrap.min.css"
+import { useContext } from 'react';
+import './App.css';
+import UserContext from './context/UserContext';
+import DashboardPage from './pages/DashboardPage';
+import AuthPage from './pages/AuthPage';
 
 function App() {
-  
-  
-    
-  
-  
+  const { user } = useContext(UserContext);
+
   return (
     <>
-      
-      <h2>Please Login To Continue</h2>
-      <Login/>
+      {user ? (<DashboardPage />) : (<AuthPage />)}
     </>
 
   )
