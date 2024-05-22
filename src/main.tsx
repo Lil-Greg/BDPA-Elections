@@ -9,6 +9,7 @@ import UserContextProvider from './context/UserContextProvider.tsx';
 import DashboardPage from './pages/DashboardPage.tsx';
 import AuthPage from './pages/AuthPage.tsx';
 import ProtectedRoute from './components/ProtectedRoute.tsx';
+import HistoryPage from './pages/HistoryPage.tsx';
 
 const router = createBrowserRouter([
   {
@@ -17,6 +18,9 @@ const router = createBrowserRouter([
   }, {
     path: '/election',
     element: <ProtectedRoute><ElectionPage /></ProtectedRoute>
+  }, {
+    path: '/history',
+    element: <ProtectedRoute><HistoryPage /></ProtectedRoute>
   }, {
     path: '/login',
     element: <AuthPage />
