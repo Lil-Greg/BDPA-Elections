@@ -1,7 +1,7 @@
 export default function RegisterPage() {
     return (
         <>
-            Wesley's Theory
+            Creating Register Branch
         </>
     )
 }
