@@ -26,21 +26,22 @@ const convertBufferToHex = (buffer: Uint8Array | ArrayBuffer) => {
 
 // A function that converts a string of hexadecimal digits into an array of
 // bytes (you should verify that the string is hex first!)
-const convertHexToBuffer = (hexString: string) => {
+const convertHexToBuffer = (hexString: string): Uint8Array => {
+  const matches = hexString.match(/[0-9a-f]{1,2}/gi);
+
+  if (!matches) {
+    // If no matches are found, return an empty Uint8Array
+    return new Uint8Array();
+  }
+
   return Uint8Array.from(
-    // Keep in mind that:
-    // 1 byte = 8 bits
-    // 1 hex digit = 4 bits
-    // 1 byte = 2 hex digits
-    // So, convert every pair of hexadecimal digits into 1 byte
-    hexString.match(/[0-9a-f]{1,2}/gi).map((byte) => parseInt(byte, 16))
+    matches.map((byte) => parseInt(byte, 16))
   );
 };
-
 // Turns a password (string) and salt (buffer) into a key and salt (hex strings)
 const deriveKeyFromPassword = async (passwordString: string, saltBuffer: Uint8Array) => {
   // We'll use a TextEncoder to convert strings into arrays of bytes:
-  const textEncoder = new TextEncoder('utf-8');
+  const textEncoder = new TextEncoder(); // Doesn't Require utf-8
 
   // Convert the password string into an array of bytes:
   const passwordBuffer = textEncoder.encode(passwordString);

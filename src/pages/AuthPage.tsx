@@ -11,8 +11,8 @@ import { Button, Col, Container, InputGroup, ProgressBar, Row } from 'react-boot
 export default function AuthPage() {
     const { user, setUser } = useContext(UserContext);
     const navigate = useNavigate();
-    const usernameRef = useRef(null);
-    const passwordRef = useRef(null);
+    const usernameRef = useRef<HTMLInputElement>(null);
+    const passwordRef = useRef<HTMLInputElement>(null);
     const [progress, setProgress] = useState<number>(0);
     const [invalidUsername, setInvalidUsername] = useState(false);
     const [passwordShow, setPasswordShow] = useState(false);
@@ -36,12 +36,12 @@ export default function AuthPage() {
     }
     const handlePasswordChange = () => {
         const password = passwordRef.current?.value;
-        const passwordLength = password.length;
+        const passwordLength = password?.length || 0;
         setProgress(passwordLength);
     }
     const handleUsernameChange = () => {
         const username = usernameRef.current?.value;
-        setInvalidUsername((/[^0-9a-zA-Z]+/ig).test(username));
+        setInvalidUsername((/[^0-9a-zA-Z]+/ig).test(username || ''));
     }
     const togglePasswordShow = () => {
         setPasswordShow(!passwordShow);
