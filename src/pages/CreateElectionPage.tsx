@@ -1,16 +1,15 @@
-import { Button, Container, FloatingLabel, Form, Modal } from "react-bootstrap";
+import './CreateElectionStyle.css';
+import { Button, Col, Container, FloatingLabel, Form, Modal, Row } from "react-bootstrap";
 import { CreateElection } from "../type";
 import { useRef, useState } from "react";
 import AdminCreateElection from "../hooks/useCreateElection";
+import { useNavigate } from "react-router-dom";
 
 export default function CreateElectionPage() {
-    const [continueForm, setContinueForm] = useState<boolean | null>(null);
-    const [election, setElection] = useState<CreateElection | null>();
+    const navigate = useNavigate();
     const [show, setShow] = useState(false);
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
-    const titleRef = useRef<HTMLInputElement>(null);
-    const [formValues, setFormValues] = useState({
+    const [error, setError] = useState(false);
+    const [formValues, setFormValues] = useState<CreateElection>({
         /*use a useRef to set formValues, have to set all at once.*/
         title: '',
         description: '',
@@ -19,61 +18,110 @@ export default function CreateElectionPage() {
         closesAt: 0,
 
     });
+    const titleRef = useRef<HTMLInputElement>(null);
+    const descriptionRef = useRef<HTMLTextAreaElement>(null);
+    const optionsRef = useRef<HTMLInputElement>(null);
+    const opensAtRef = useRef<HTMLInputElement>(null);
+    const closesAtRef = useRef<HTMLInputElement>(null);
 
-    const handleSubmit = async (event: React.FormEvent) => {
+    const handleClose = () => setShow(false);
+    const handleShow = () => {
+        switch (error) {
+            case (true):
+                setShow(false)
+                break;
+            case (false):
+                setShow(true);
+                break;
+        }
+    };
+
+    const handleFormSubmit = (event: React.FormEvent) => {
         event.preventDefault();
 
-        setShow(!show);
-        if (continueForm === true) {
-            setElection(await AdminCreateElection(formValues));
-            setShow(!show);
+        const titleValue = titleRef.current?.value;
+        const descriptionValue = descriptionRef.current?.value;
+        const optionsValue = optionsRef.current?.value;
+        const opensAtValue = opensAtRef.current?.value;
+        const closesAtValue = closesAtRef.current?.value;
+
+        if (titleValue && descriptionValue && optionsValue && opensAtValue && closesAtValue) {
+            console.log(opensAtValue, closesAtValue);
+            const x = parseInt(opensAtValue);
+            const y = parseInt(closesAtValue);
+            setFormValues({
+                title: titleValue,
+                description: descriptionValue,
+                options: [optionsValue],
+                opensAt: x,
+                closesAt: y,
+            });
+            setError(false)
         } else {
-            return;
+            setError(true);
+            alert("Enter A Value!")
         }
+    }
+
+    const handleActualSubmit = () => {
+        AdminCreateElection(formValues);
+        navigate('/election', { replace: true })
     }
     return (
         <>
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Modal heading</Modal.Title>
+                    <Modal.Title>Are You Sure You Want To SUBMIT?</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>Woohoo, you are reading this text in a modal!</Modal.Body>
-                <Modal.Footer>
+                <Modal.Body>
+                    Although you can edit your election, you cannot add more options.
+                </Modal.Body>
+                <Modal.Footer style={{ display: 'flex', justifyContent: 'space-between' }}>
                     <Button variant="secondary" onClick={handleClose}>
                         Close
                     </Button>
-                    <Button variant="primary" onClick={handleClose}>
-                        Save Changes
+                    <Button variant="primary" onClick={handleActualSubmit}>
+                        Create Election
                     </Button>
                 </Modal.Footer>
             </Modal>
 
             {/* FORM */}
-            <Container>
+            <Container className="create-election-container">
                 <h1>Create An Election</h1>
-                <Form onSubmit={handleSubmit}>
+                <Form className='create-election-form' onSubmit={handleFormSubmit}>
                     <FloatingLabel
                         controlId="floatingInput"
                         label="Title"
                         className='mb-3 w-50'
                     >
-                        <Form.Control autoComplete="off" type="text" ref={titleRef} placeholder="Election Title" />
+                        <Form.Control autoComplete="off" type="text" ref={titleRef} placeholder="Title" />
                     </FloatingLabel>
                     <FloatingLabel
                         controlId="floatingInput"
-                        label="Username"
+                        label="Description"
                         className='mb-3 w-50'
                     >
-                        <Form.Control autoComplete="off" type="text" placeholder="Username" />
+                        <Form.Control autoComplete="off" type="text" as='textarea' ref={descriptionRef} placeholder="Description" />
                     </FloatingLabel>
                     <FloatingLabel
                         controlId="floatingInput"
-                        label="Username"
+                        label="Options"
                         className='mb-3 w-50'
                     >
-                        <Form.Control autoComplete="off" type="text" placeholder="Username" />
+                        <Form.Control autoComplete="off" type="text" ref={optionsRef} placeholder="Options" />
                     </FloatingLabel>
-                    <Button variant="primary" onClick={handleShow}>
+                    <Row>
+                        <Col style={{ marginTop: '1rem' }}>
+                            <p style={{ lineHeight: '0.25rem' }}>Opens At</p>
+                            <Form.Control ref={opensAtRef} type="date" />
+                        </Col>
+                        <Col style={{ marginTop: '1rem', marginBottom: '1rem' }}>
+                            <p style={{ lineHeight: '0.25rem' }}>Closes At</p>
+                            <Form.Control ref={closesAtRef} type="date" />
+                        </Col>
+                    </Row>
+                    <Button variant="primary" type="submit" onClick={handleShow}>
                         Submit Form
                     </Button>
                 </Form>
