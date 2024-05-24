@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Election, ElectionStatus, ElectionsStatus } from "../type.ts";
 const url:string = import.meta.env.VITE_API_URL;
-const APIKey:string = import.meta.env.VITE_API_KEY
+const APIKey:string = import.meta.env.VITE_API_KEY;
 const options = {
     headers:{
         'Authorization': APIKey,
@@ -31,7 +31,7 @@ export function UseSingleElection(id:number){
     useEffect(()=>{
         async function fetchData(){
             try{
-                const data = await fetch(url + `election/${id}`, options);
+                const data = await fetch(url + `/election/${id}`, options);
                 const res:ElectionStatus = await data.json();
                 setElection(res.election);
             }catch(error){

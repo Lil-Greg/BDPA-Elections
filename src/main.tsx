@@ -11,6 +11,7 @@ import AuthPage from './pages/AuthPage.tsx';
 import ProtectedRoute from './components/ProtectedRoute.tsx';
 import HistoryPage from './pages/HistoryPage.tsx';
 import RegisterPage from './pages/RegisterPage.tsx';
+import CreateElectionPage from './pages/CreateElectionPage.tsx';
 
 const router = createBrowserRouter([
   {
@@ -18,10 +19,13 @@ const router = createBrowserRouter([
     element: <ProtectedRoute><DashboardPage /></ProtectedRoute>
   }, {
     path: '/election',
-    element: <ElectionPage /> //<ProtectedRoute><ElectionPage /></ProtectedRoute>
+    element: <ElectionPage />, //<ProtectedRoute><ElectionPage /></ProtectedRoute>
+  }, {
+    path: '/create-election',
+    element: <CreateElectionPage />
   }, {
     path: '/history',
-    element: <ProtectedRoute><HistoryPage /></ProtectedRoute>
+    element: <HistoryPage /> //<ProtectedRoute><HistoryPage /></ProtectedRoute>
   }, {
     path: '/login',
     element: <AuthPage />

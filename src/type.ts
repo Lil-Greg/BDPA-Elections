@@ -25,6 +25,13 @@ export interface Election{
     owned: boolean,
     deleted: boolean
 }
+export interface CreateElection{
+    title: string,
+    description:string,
+    options:string[],
+    opensAt:number,
+    closesAt:number
+}
 export interface User{
     user_id:string,
     salt:string,

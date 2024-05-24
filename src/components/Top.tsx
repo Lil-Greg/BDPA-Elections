@@ -7,6 +7,7 @@ import useInfoApi from "../hooks/useInfoApi.ts"
 import { Outlet } from "react-router-dom";
 import { useContext } from 'react';
 import UserContext from '../context/UserContext.ts';
+import getImageURL from '../utils/image-util.ts';
 
 export default function Top() {
     const { user, isAuthenticated } = useContext(UserContext);
@@ -16,7 +17,7 @@ export default function Top() {
         <>
             <Navbar expand="lg" style={{ width: "100vw" }} className="bg-body-tertiary">
                 <Container>
-                    <Navbar.Brand href="/"><img className='navHome' src="dc.png"></img>&nbsp;D.C. Elections</Navbar.Brand>
+                    <Navbar.Brand href="/"><img className='navHome' src={getImageURL('dc.png')}></img>&nbsp;D.C. Elections</Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav style={{ textAlign: 'center' }} className="me-auto">
