@@ -1,7 +1,6 @@
-import { Button, Container, FloatingLabel, Form, InputGroup, Modal } from "react-bootstrap";
+import { Button, Container, FloatingLabel, Form, Modal } from "react-bootstrap";
 import { CreateElection } from "../type";
 import { useRef, useState } from "react";
-import Example from "../components/Modal";
 import AdminCreateElection from "../hooks/useCreateElection";
 
 export default function CreateElectionPage() {
