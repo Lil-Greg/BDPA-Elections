@@ -25,7 +25,7 @@ const router = createBrowserRouter([
     element: <CreateElectionPage />
   }, {
     path: '/history',
-    element: <ProtectedRoute><HistoryPage /></ProtectedRoute>
+    element: <HistoryPage /> //<ProtectedRoute></ProtectedRoute>
   }, {
     path: '/login',
     element: <AuthPage />
