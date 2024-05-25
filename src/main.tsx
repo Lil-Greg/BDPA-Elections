@@ -16,16 +16,16 @@ import CreateElectionPage from './pages/CreateElectionPage.tsx';
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <ProtectedRoute><DashboardPage /></ProtectedRoute>
+    element: <DashboardPage /> //<ProtectedRoute><DashboardPage /></ProtectedRoute>
   }, {
     path: '/election',
-    element: <ElectionPage />, //<ProtectedRoute><ElectionPage /></ProtectedRoute>
+    element: <ProtectedRoute><ElectionPage /></ProtectedRoute>
   }, {
     path: '/create-election',
     element: <CreateElectionPage />
   }, {
     path: '/history',
-    element: <HistoryPage /> //<ProtectedRoute><HistoryPage /></ProtectedRoute>
+    element: <ProtectedRoute><HistoryPage /></ProtectedRoute>
   }, {
     path: '/login',
     element: <AuthPage />

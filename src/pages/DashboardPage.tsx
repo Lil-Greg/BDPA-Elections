@@ -11,8 +11,8 @@ export default function DashboardPage() {
             <Container>
                 <Row>
                     <Col>
-                        {user && user.type && user.username}
                         <img src={getImageURL("default-pfp.jpg")} alt="User Profile Picture" />
+                        {user && user.type && user.username}
                     </Col>
                 </Row>
             </Container>
