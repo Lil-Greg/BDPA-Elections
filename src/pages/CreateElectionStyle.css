@@ -1,0 +1,10 @@
+.create-election-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+}
+.create-election-form{
+    display: contents;
+}
