@@ -59,7 +59,7 @@ export default function AuthPage() {
                     <Form.Control.Feedback type='invalid'>Must Be Alpha-Numeric</Form.Control.Feedback>
                 </FloatingLabel>
 
-                <InputGroup className="mb-3 w-50">
+                <InputGroup className="mb-1 w-50">
                     <FloatingLabel
                         controlId="floatingInput"
                         label="Password"
@@ -68,9 +68,7 @@ export default function AuthPage() {
                     </FloatingLabel>
                     <InputGroup.Text onClick={togglePasswordShow}>{passwordShow ? <FaRegEyeSlash /> : <FaRegEye />}</InputGroup.Text>
                 </InputGroup>
-                {passwordRef.current?.value && (
-                    <ProgressBar now={progress} max={18} variant={progress > 17 ? 'success' : progress <= 10 ? 'danger' : 'warning'} />
-                )}
+                <ProgressBar className="w-50 mb-3" now={progress} max={18} variant={progress > 17 ? 'success' : progress <= 10 ? 'danger' : 'warning'} />
                 <Row>
                     <a className="m-1" style={{ textDecoration: 'none' }} href=""><h5>Forgot Password?</h5></a>
                 </Row>

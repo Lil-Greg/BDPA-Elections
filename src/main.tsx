@@ -16,22 +16,24 @@ import CreateElectionPage from './pages/CreateElectionPage.tsx';
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <DashboardPage /> //<ProtectedRoute><DashboardPage /></ProtectedRoute>
+    element: <ProtectedRoute allowedUserTypes={['voter', 'administrator', 'moderator', 'reporter', 'super']}>
+      <DashboardPage />
+    </ProtectedRoute>
   }, {
     path: '/election',
-    element: <ProtectedRoute><ElectionPage /></ProtectedRoute>
+    element: <ProtectedRoute allowedUserTypes={['voter', 'administrator', 'reporter', 'super']}><ElectionPage /></ProtectedRoute>
   }, {
     path: '/create-election',
-    element: <CreateElectionPage />
+    element: <ProtectedRoute allowedUserTypes={['administrator', 'super']}><CreateElectionPage /></ProtectedRoute>
   }, {
     path: '/history',
-    element: <ProtectedRoute><HistoryPage /></ProtectedRoute>
+    element: <ProtectedRoute allowedUserTypes={['voter', 'administrator', 'super']}><HistoryPage /></ProtectedRoute>
   }, {
     path: '/login',
     element: <AuthPage />
   }, {
     path: '/register',
-    element: <RegisterPage />
+    element: <ProtectedRoute allowedUserTypes={['administrator', 'super']}><RegisterPage /></ProtectedRoute>
   }
 ]);
 ReactDOM.createRoot(document.getElementById('root')!).render(
