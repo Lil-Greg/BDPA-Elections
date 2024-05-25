@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 export default function useInfoApi(){
-    const [info, setInfo] = useState();
+    const [info, setInfo] = useState<unknown | undefined>();
 
 
     useEffect(()=>{

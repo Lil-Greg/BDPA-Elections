@@ -25,6 +25,7 @@ export default function useElectionHistory(){
     useEffect (()=>{
         async function fetchData(){
             try{
+                console.log(url);
                 setIsLoading(true);
                 const res = await fetch(`${url}`);
                 const data = await res.json() as ElectionsResponse;
@@ -63,6 +64,66 @@ export default function useElectionHistory(){
                         "closesAt": 1589347380731,
                         "owned": true,
                         "deleted": false
+                    },{
+                        "election_id": "5ec8adf06e38137ff2e5876f",
+                        "title": "My election #1",
+                        "description": "My demo election!",
+                        "options": ["Ketchup", "Mayonaise", "Mustard"],
+                        "createdAt": 1589347376211,
+                        "opensAt": 1589347379811,
+                        "closesAt": 1589347380731,
+                        "owned": true,
+                        "deleted": false
+                    },{
+                        "election_id": "5ec8adf06e38137ff2e5876e",
+                        "title": "My election #2",
+                        "description": "A custom election I made",
+                        "options": ["Option 1", "Option 2"],
+                        "createdAt": 1589347376211,
+                        "opensAt": 1589347379811,
+                        "closesAt": 1589347380731,
+                        "owned": false,
+                        "deleted": true
+                    },{
+                        "election_id": "5ec8adf06e38137ff2e5876d",
+                        "title": "My election #3",
+                        "description": "An election to end all elections?",
+                        "options": ["Vanilla", "Chocolate"],
+                        "createdAt": 1589347376211,
+                        "opensAt": 1589347379811,
+                        "closesAt": 1589347380731,
+                        "owned": true,
+                        "deleted": false
+                    },{
+                        "election_id": "5ec8adf06e38137ff2e5876f",
+                        "title": "My election #1",
+                        "description": "My demo election!",
+                        "options": ["Ketchup", "Mayonaise", "Mustard"],
+                        "createdAt": 1589347376211,
+                        "opensAt": 1589347379811,
+                        "closesAt": 1589347380731,
+                        "owned": true,
+                        "deleted": false
+                    },{
+                        "election_id": "5ec8adf06e38137ff2e5876e",
+                        "title": "My election #2",
+                        "description": "A custom election I made",
+                        "options": ["Option 1", "Option 2"],
+                        "createdAt": 1589347376211,
+                        "opensAt": 1589347379811,
+                        "closesAt": 1589347380731,
+                        "owned": false,
+                        "deleted": true
+                    },{
+                        "election_id": "5ec8adf06e38137ff2e5876d",
+                        "title": "My election #3",
+                        "description": "An election to end all elections?",
+                        "options": ["Vanilla", "Chocolate"],
+                        "createdAt": 1589347376211,
+                        "opensAt": 1589347379811,
+                        "closesAt": 1589347380731,
+                        "owned": true,
+                        "deleted": false
                     },
                 ]
                 })
@@ -72,5 +133,5 @@ export default function useElectionHistory(){
         }
         fetchData();
     },[url])
-    return elections;
+    return { elections, setUrl };
 }

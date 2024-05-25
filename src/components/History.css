@@ -1,5 +1,12 @@
+.electionBox{
+    background-color: rgb(138, 179, 255);
+    border-radius: 10px;
+    margin: 12px;
+    padding: 10px;
+}
 .electionTitle{
     color:black;
+    justify-content: end;
 }
 .electionDescript{
 
