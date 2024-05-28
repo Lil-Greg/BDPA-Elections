@@ -33,12 +33,12 @@ export interface CreateElection{
     closesAt:number
 }
 export interface User{
-    user_id:string,
+    userId:string,
     salt:string,
     username:string,
     email:string,
     blogname?:string,
-    type:'voter' | 'administrator' | 'reporter' | 'moderator' | 'super'
+    type: string | 'voter' | 'administrator' | 'reporter' | 'moderator' | 'super'
 }
 export interface UserApi{
     success:boolean,

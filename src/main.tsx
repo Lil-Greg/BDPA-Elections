@@ -33,7 +33,7 @@ const router = createBrowserRouter([
     element: <AuthPage />
   }, {
     path: '/register',
-    element: <ProtectedRoute allowedUserTypes={['administrator', 'super']}><RegisterPage /></ProtectedRoute>
+    element: <RegisterPage /> //<ProtectedRoute allowedUserTypes={['administrator', 'super']}><RegisterPage /></ProtectedRoute>
   }
 ]);
 ReactDOM.createRoot(document.getElementById('root')!).render(

@@ -24,6 +24,10 @@ export default function InitializeDatabase(formValues:{userId:string, salt:strin
             emailInit:formValues.email,
             typeInit:formValues.type
         })
+        const userIndex = store.index("user");
+
+        console.log("store", store);
+        console.log("userData", userIndex);
     }
 }
 export function GetDatabase(){
@@ -35,6 +39,5 @@ export function GetDatabase(){
 
     const allValues = store.getAll();
     console.log(allValues);
-    // Got Confused with id part,
-    // Don't know if data should be separate indexes
+    // Make the different indexes
 }
