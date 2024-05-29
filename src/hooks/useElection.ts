@@ -3,6 +3,7 @@ import { Election, ElectionStatus, ElectionsStatus } from "../type.ts";
 const url:string = import.meta.env.VITE_API_URL;
 const APIKey:string = import.meta.env.VITE_API_KEY;
 const options = {
+    method:"GET",
     headers:{
         'Authorization': APIKey,
         'content-type':'application/json'
@@ -26,12 +27,13 @@ export default function UseElection(){
     return elections;
 }
 
-export function UseSingleElection(id:number){
+export function UseSingleElection(id:string){
     const [election, setElection] = useState<Election>();
+
     useEffect(()=>{
         async function fetchData(){
             try{
-                const data = await fetch(url + `/election/${id}`, options);
+                const data = await fetch(url + `elections/${id}`, options);
                 const res:ElectionStatus = await data.json();
                 setElection(res.election);
             }catch(error){

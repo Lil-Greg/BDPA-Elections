@@ -1,23 +1,16 @@
-import UseElection from "../hooks/useElection"
-import { ElectionsStatus } from "../type";
+import { useParams } from "react-router-dom";
+import { UseSingleElection } from "../hooks/useElection"
+import { Election } from "../type";
 
 export default function ElectionPage() {
-    const elections: ElectionsStatus | undefined = UseElection();
+    const { electionId } = useParams();
+    const election: Election | undefined = UseSingleElection(electionId || '');
+
     return (
         <>
-            {elections?.elections.map((election, id) =>
-
-                <div className="election">
-                    <div className="name">
-                        <h1>{election.title}</h1>
-                        <div className="id">{id}</div>
-                    </div>
-                    <div className="election-decription">
-                        <p className="description">{election.description}</p>
-                    </div>
-                </div>
+            {election !== undefined && (
+                election.title
             )}
-
         </>
     )
 }
