@@ -15,7 +15,7 @@ export default function Top() {
     const totalElections = openElectionNum ? openElectionNum?.info.openElection + openElectionNum?.info.closedElections + openElectionNum?.info.upcomingElections : 0;
     return (
         <>
-            <Navbar expand="lg" style={{ width: "100vw" }} className="bg-body-tertiary">
+            <Navbar expand="lg" style={{}} className="bg-body-tertiary">
                 <Container>
                     <Navbar.Brand href="/"><img className='navHome' src={getImageURL('dc.png')}></img>&nbsp;D.C. Elections</Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
