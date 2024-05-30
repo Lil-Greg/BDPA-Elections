@@ -1,4 +1,4 @@
-import './CreateElectionStyle.css';
+import './components-style/CreateElectionStyle.css';
 import { Button, Col, Container, FloatingLabel, Form, Modal, Row } from "react-bootstrap";
 import { CreateElection } from "../type";
 import { useRef, useState } from "react";

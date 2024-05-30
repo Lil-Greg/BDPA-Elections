@@ -32,6 +32,14 @@ export interface CreateElection{
     opensAt:number,
     closesAt:number
 }
+export interface Ballots{
+    voter_id: string
+    ranking: {rank:number}
+}
+export interface GetBallotsResponse{
+    success:boolean,
+    ballots:Ballots[]
+}
 export interface User{
     userId:string,
     salt:string,

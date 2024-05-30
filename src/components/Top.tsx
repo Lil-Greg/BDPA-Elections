@@ -20,7 +20,7 @@ export default function Top() {
                     <Navbar.Brand href="/"><img className='navHome' src={getImageURL('dc.png')}></img>&nbsp;D.C. Elections</Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
-                        <Nav style={{ textAlign: 'center' }} className="me-auto">
+                        <Nav style={{ textAlign: 'center', textEmphasis: '300' }} className="me-auto">
                             <Nav.Link href="/history">History</Nav.Link>
                             <Nav.Link href="#link">Link</Nav.Link>
                             <NavDropdown title="Dropdown" id="basic-nav-dropdown">
