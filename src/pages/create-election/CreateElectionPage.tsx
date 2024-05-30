@@ -1,8 +1,8 @@
-import './components-style/CreateElectionStyle.css';
+import './CreateElectionStyle.css';
 import { Button, Col, Container, FloatingLabel, Form, Modal, Row } from "react-bootstrap";
-import { CreateElection } from "../type";
+import { CreateElection } from "../../type";
 import { useRef, useState } from "react";
-import AdminCreateElection from "../hooks/useCreateElection";
+import AdminCreateElection from "../../hooks/useCreateElection";
 import { useNavigate } from "react-router-dom";
 
 export default function CreateElectionPage() {

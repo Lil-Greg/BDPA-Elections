@@ -1,6 +1,6 @@
 import { useRef } from "react";
-import { User } from "../type";
-import InitializeDatabase from "../database/InitializeDatabase";
+import { User } from "../../type";
+import InitializeDatabase from "../../database/InitializeDatabase";
 
 export default function RegisterPage() {
 

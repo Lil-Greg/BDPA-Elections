@@ -1,8 +1,8 @@
-import './components-style/ElectionPage.css';
+import './ElectionPage.css';
 import { useParams } from "react-router-dom";
-import { UseSingleElection } from "../hooks/useElection"
-import { Election } from "../type";
-import IRVElections from "../components/IRV-Elections";
+import { UseSingleElection } from "../../hooks/useElection"
+import { Election } from "../../type";
+import IRVElections from "../../components/IRV-Elections";
 import { Card, Col, Container, Row } from "react-bootstrap";
 
 export default function ElectionPage() {

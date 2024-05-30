@@ -1,8 +1,8 @@
 import './components-style/DashboardPage.css';
 import { useContext } from "react";
-import UserContext from "../context/UserContext";
+import UserContext from '../../context/UserContext';
 import { Container, Tab, Tabs } from "react-bootstrap";
-import Profile from './profile-components/Profile';
+import Profile from './Profile';
 
 
 export default function DashboardPage() {

@@ -4,8 +4,8 @@ import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Form from 'react-bootstrap/Form';
 import { useContext, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import UserContext from "../context/UserContext";
-import userAuth from "../hooks/useAuth";
+import UserContext from "../../context/UserContext";
+import userAuth from "../../hooks/useAuth";
 import { Button, Col, Container, InputGroup, ProgressBar, Row } from 'react-bootstrap';
 
 export default function AuthPage() {
