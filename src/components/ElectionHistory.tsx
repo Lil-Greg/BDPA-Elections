@@ -1,4 +1,5 @@
 import useElectionHistory from "../hooks/useElectionHistory";
+import "./History.css"
 
 export default function ElectionHistory(){
     const { elections, isLoading } = useElectionHistory();
@@ -14,8 +15,9 @@ export default function ElectionHistory(){
     return <>
        <div>
             {elections && elections.elections.map(election => (
+                <div className="electionBox">
                 <div key={election.election_id}>
-                    <h3>{election.title}</h3>
+                    <h3 className="electionTitle">{election.title}</h3>
                     <p>{election.description}</p>
                     <ul>
                         {election.options.map(option => (
@@ -23,7 +25,12 @@ export default function ElectionHistory(){
                         ))}
                     </ul>
                 </div>
+                </div>
             ))}
+            <div className="pageButtons">
+                <button>Prev</button>
+                <button>Next</button>
+            </div>
         </div>
     </>
 }
