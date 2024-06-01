@@ -1,26 +1,19 @@
-import './App.css'
-
-import React from 'react';
-import Login from './Login';
-
-
-import "bootstrap/dist/css/bootstrap.min.css"
+import { useContext } from 'react';
+import './App.css';
+import UserContext from './context/UserContext';
+import DashboardPage from './pages/DashboardPage';
+import AuthPage from './pages/AuthPage';
 
 function App() {
+  const { user } = useContext(UserContext);
 
   return (
     <>
-      Cool
+      {user ? (<DashboardPage />) : (<AuthPage />)}
     </>
+
   )
 }
-const App: React.FC = () => {
-  return (
-    <div className="App">
-      <Login />
-    </div>
-  );
-};
 
 
 export default App

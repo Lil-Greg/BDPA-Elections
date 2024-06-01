@@ -1,0 +1,35 @@
+import { useEffect, useState } from "react";
+import { ElectionsStatus } from "../type";
+const url = import.meta.env.VITE_API_URL;
+const key = import.meta.env.VITE_API_KEY;
+
+export default function useElectionHistory(){
+    const [elections, setElections] = useState<ElectionsStatus | null>(null);
+    const [isLoading, setIsLoading] = useState(false);
+    const [isErroring, setIsErorring] = useState(false);
+
+    useEffect (()=>{
+        async function fetchData(){
+            const options = {
+                method: 'GET',
+                headers:{
+                    'Authorization':key,
+                    'content-type':'application/json'
+                }
+            };
+            try{
+                setIsLoading(true);
+                const res = await fetch(url + "elections", options);
+                const data = await res.json() as ElectionsStatus;
+                setElections(data);
+            }
+            catch(error){
+                setIsErorring(true);
+            } finally{
+                setIsLoading(false);
+            }
+        }   
+        fetchData();
+    },[])
+    return { elections, isLoading, isErroring };
+}
