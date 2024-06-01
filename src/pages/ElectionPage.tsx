@@ -6,16 +6,17 @@ export default function ElectionPage() {
     return (
         <>
             {elections?.elections.map((election, id) =>
-
-                <div className="election">
-                    <div className="name">
-                        <h1>{election.title}</h1>
-                        <div className="id">{id}</div>
+                <a href="/voting">
+                    <div className="election">
+                        <div className="name">
+                            <h1>{election.title}</h1>
+                            <div className="id">{id}</div>
+                        </div>
+                        <div className="election-decription">
+                            <p className="description">{election.description}</p>
+                        </div>
                     </div>
-                    <div className="election-decription">
-                        <p className="description">{election.description}</p>
-                    </div>
-                </div>
+                </a>
             )}
 
         </>
