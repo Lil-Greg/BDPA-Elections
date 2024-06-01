@@ -1,8 +1,10 @@
 import useElectionHistory from "../hooks/useElectionHistory";
+import errorMagnifier from "../assets/errorMagnifier.svg"
 import "./History.css"
+import { NavLink } from "react-router-dom";
 
 export default function ElectionHistory(){
-    const { elections, isLoading } = useElectionHistory();
+    const { elections, isLoading, isErroring} = useElectionHistory();
     console.log(isLoading);
     console.log(elections);
 
@@ -11,10 +13,21 @@ export default function ElectionHistory(){
             <div className="loadingText">Loading...</div>
         </>
     }
+    if(isErroring){
+        return <>
+        <div className="errorCard">
+            <div className="errorMessage">
+                <img src={errorMagnifier} alt="Error Magnifier" />
+                <p>Something went wrong!</p>
+            </div>
+        </div>
+        </>
+    }
 
     return <>
        <div>
             {elections && elections.elections.map(election => (
+                <NavLink to={`/history/${election.election_id}`}>
                 <div className="electionBox">
                 <div key={election.election_id}>
                     <h3 className="electionTitle">{election.title}</h3>
@@ -26,6 +39,7 @@ export default function ElectionHistory(){
                     </ul>
                 </div>
                 </div>
+                </NavLink>
             ))}
             <div className="pageButtons">
                 <button>Prev</button>
