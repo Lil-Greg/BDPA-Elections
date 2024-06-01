@@ -2,14 +2,16 @@ import './ElectionPage.css';
 import { useParams } from "react-router-dom";
 import { UseSingleElection } from "../../hooks/useElection"
 import { Election } from "../../type";
-import IRVElections from "../../components/IRV-Elections";
+// import IRVElections from "../../components/IRV-Elections";
 import { Card, Col, Container, Row } from "react-bootstrap";
 
 export default function ElectionPage() {
     const { electionId } = useParams();
     const election: Election | undefined = UseSingleElection(electionId || '');
 
-    IRVElections(electionId || "");
+    // Rendering error comes from IRVElections
+    // if (document.readyState) { IRVElections(electionId || ""); }
+
 
     return (
         <>
@@ -26,7 +28,7 @@ export default function ElectionPage() {
                         </Col>
                     </Row>
                 </Card>
-                <div style={{ display: 'flex', flexWrap: 'wrap', marginTop: '1rem' }}>
+                <div className='options-overlap-div'>
                     {election?.options.map((options, index) => {
                         return (
                             <>

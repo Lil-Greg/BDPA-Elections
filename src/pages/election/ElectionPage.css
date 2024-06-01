@@ -24,6 +24,13 @@
     font-family: "Reddit Mono","Freeman","Jersey 15", sans-serif;
     font-weight: 400;
 }
+.options-overlap-div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+}
 .every-option{
     border: 1px solid #00b3e7;
     padding: 0.1rem;
