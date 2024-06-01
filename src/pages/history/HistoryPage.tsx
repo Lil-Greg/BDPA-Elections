@@ -2,16 +2,27 @@ import './HistoryPage.css';
 import { NavLink } from "react-router-dom";
 import useElectionHistory from "../../hooks/useElectionHistory";
 import { Container } from 'react-bootstrap';
+import getImageURL from '../../utils/image-util';
 
 
 export default function HistoryPage() {
-    const { elections, isLoading } = useElectionHistory();
+    const { elections, isLoading, isErroring } = useElectionHistory();
     console.log(isLoading);
     console.log(elections);
 
     if (isLoading) {
         return <>
             <div className="loadingText">Loading...</div>
+        </>
+    }
+    if (isErroring) {
+        return <>
+            <div className="errorCard">
+                <div className="errorMessage">
+                    <img src={getImageURL('errorMagnifier.svg')} alt="Error Magnifier" />
+                    <p>Something went wrong!</p>
+                </div>
+            </div>
         </>
     }
     return (
@@ -38,6 +49,10 @@ export default function HistoryPage() {
                             </NavLink>
                         </Container>
                     ))}
+                    <div className="pageButtons">
+                        <button>Prev</button>
+                        <button>Next</button>
+                    </div>
                 </div>
             </div>
         </>
