@@ -9,6 +9,7 @@ import userAuth from "../../hooks/useAuth";
 import { Button, Col, Container, InputGroup, ProgressBar, Row } from 'react-bootstrap';
 
 export default function AuthPage() {
+
     const { user, setUser } = useContext(UserContext);
     const navigate = useNavigate();
     const usernameRef = useRef<HTMLInputElement>(null);
@@ -22,8 +23,9 @@ export default function AuthPage() {
         event.preventDefault();
         const username = usernameRef.current?.value;
         const password = passwordRef.current?.value;
+
         if (username && password) {
-            const [isAuthorized, userInline] = await userAuth(password, username);
+            const [isAuthorized, userInline /*avoid conflict*/] = await userAuth(password, username);
             if (isAuthorized) {
                 setUser && setUser(userInline);
                 window.localStorage.setItem('election-user', JSON.stringify(user))
@@ -51,7 +53,7 @@ export default function AuthPage() {
             <h1>Login</h1>
             <Form style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }} onSubmit={handleSubmit}>
                 <FloatingLabel
-                    controlId="floatingInput"
+                    controlId="floatingInputUsername"
                     label="Username"
                     className='mb-3 w-50'
                 >
@@ -61,7 +63,7 @@ export default function AuthPage() {
 
                 <InputGroup className="mb-1 w-50">
                     <FloatingLabel
-                        controlId="floatingInput"
+                        controlId="floatingInputPassword"
                         label="Password"
                     >
                         <Form.Control type={passwordShow ? "text" : "password"} placeholder="Password" ref={passwordRef} onChange={handlePasswordChange} />
