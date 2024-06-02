@@ -41,12 +41,19 @@ export interface GetBallotsResponse{
     ballots:Ballots[]
 }
 export interface User{
-    userId:string,
+    user_id?:string,
     salt:string,
+    key:string,
     username:string,
     email:string,
     blogname?:string,
-    type: string | 'voter' | 'administrator' | 'reporter' | 'moderator' | 'super'
+    type: string | 'voter' | 'administrator' | 'reporter' | 'moderator' | 'super',
+    city:string,
+    state:string,
+    zip:string,
+    address:string,
+    firstName:string,
+    lastName:string
 }
 export interface UserApi{
     success:boolean,

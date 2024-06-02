@@ -39,7 +39,7 @@ const convertHexToBuffer = (hexString: string): Uint8Array => {
   );
 };
 // Turns a password (string) and salt (buffer) into a key and salt (hex strings)
-const deriveKeyFromPassword = async (passwordString: string, saltBuffer: Uint8Array) => {
+export const deriveKeyFromPassword = async (passwordString: string, saltBuffer: Uint8Array) => {
   // We'll use a TextEncoder to convert strings into arrays of bytes:
   const textEncoder = new TextEncoder(); // Doesn't Require utf-8
 
