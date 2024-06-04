@@ -99,7 +99,10 @@ export const deriveKeyFromPassword = async (passwordString: string, saltBuffer?:
 };
 
 export default function useAuth(){
-    const [params, setParams] = useState<{username:string, password:string}>();
+    const [params, setParams] = useState<{username:string, password:string}>({
+      username:'',
+      password:''
+    });
     const [success, setSuccess] = useState<boolean>(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const singleUser = useQuery(api.users.getSingleUser, {username: params ? params.username : ''}) || [{salt:"", key:""}];

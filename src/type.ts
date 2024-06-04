@@ -1,3 +1,5 @@
+import { Id } from "../convex/_generated/dataModel"
+
 export interface ElectionInfo{
     success:boolean,
     info:{
@@ -41,20 +43,20 @@ export interface GetBallotsResponse{
     ballots:Ballots[]
 }
 export interface User{
-    user_id?:string,
-    password: string,
-    salt:string,
-    key:string,
-    username:string,
-    email:string,
-    blogname?:string,
-    type: string | 'voter' | 'administrator' | 'reporter' | 'moderator' | 'super',
-    city:string,
-    state:string,
-    zip:string,
-    address:string,
-    firstName:string,
-    lastName:string
+    _id: Id<"users">;
+    _creationTime: number;
+    username: string;
+    password: string;
+    type: string | 'voter' | 'administrator' | 'reporter' | 'moderator' | 'super';
+    salt: string;
+    key: string;
+    email: string;
+    city: string;
+    state: string;
+    zip: string;
+    address: string;
+    firstName: string;
+    lastName: string;
 }
 export interface UserApi{
     success:boolean,

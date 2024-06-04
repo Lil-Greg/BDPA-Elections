@@ -28,11 +28,11 @@ export default function AuthPage() {
             setParams({
                 username: username,
                 password: password
-            })
+            });
             if (success) {
                 setUser && setUser(user);
-                window.localStorage.setItem('election-user', JSON.stringify(user))
-                navigate('/')
+                window.localStorage.setItem('election-user', JSON.stringify(user));
+                navigate('/');
             }
             alert(`Username: ${username}` + ` Password: ${password}`)
         } else {
