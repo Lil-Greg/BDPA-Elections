@@ -34,6 +34,12 @@ export interface CreateElection{
     opensAt:number,
     closesAt:number
 }
+export interface optionRankings{
+    name: string,
+    rank1Votes: number,
+    rank2Votes: number,
+    rank3Votes: number,
+}
 export interface Ballots{
     voter_id: string
     ranking: {rank:number}

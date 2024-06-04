@@ -13,6 +13,7 @@ export default function useElectionHistory(){
             "content-type":"application/json"
         }
     }
+    const [isErroring, setIsErorring] = useState(false);
 
     useEffect (()=>{
         async function fetchData(){
@@ -23,46 +24,12 @@ export default function useElectionHistory(){
                 setElections(data);
             }
             catch(error){
-                setElections({
-                    "success": true,
-                    "elections": [{
-                        "election_id": "5ec8adf06e38137ff2e5876f",
-                        "title": "My election #1",
-                        "description": "My demo election!",
-                        "options": ["Ketchup", "Mayonaise", "Mustard"],
-                        "createdAt": 1589347376211,
-                        "opensAt": 1589347379811,
-                        "closesAt": 1589347380731,
-                        "owned": true,
-                        "deleted": false
-                    },{
-                        "election_id": "5ec8adf06e38137ff2e5876e",
-                        "title": "My election #2",
-                        "description": "A custom election I made",
-                        "options": ["Option 1", "Option 2"],
-                        "createdAt": 1589347376211,
-                        "opensAt": 1589347379811,
-                        "closesAt": 1589347380731,
-                        "owned": false,
-                        "deleted": true
-                    },{
-                        "election_id": "5ec8adf06e38137ff2e5876d",
-                        "title": "My election #3",
-                        "description": "An election to end all elections?",
-                        "options": ["Vanilla", "Chocolate"],
-                        "createdAt": 1589347376211,
-                        "opensAt": 1589347379811,
-                        "closesAt": 1589347380731,
-                        "owned": true,
-                        "deleted": false
-                    },
-                ]
-                })
+                setIsErorring(true);
             } finally{
                 setIsLoading(false);
             }
-        }
+        }   
         fetchData();
     },[])
-    return { elections, isLoading };
+    return { elections, isLoading, isErroring };
 }
