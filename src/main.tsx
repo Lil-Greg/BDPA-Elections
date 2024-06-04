@@ -12,6 +12,9 @@ import ProtectedRoute from './components/ProtectedRoute.tsx';
 import HistoryPage from './pages/history/HistoryPage.tsx';
 import RegisterPage from './pages/auth/RegisterPage.tsx';
 import CreateElectionPage from './pages/create-election/CreateElectionPage.tsx';
+import { ConvexProvider, ConvexReactClient } from 'convex/react';
+
+const convex = new ConvexReactClient(import.meta.env.VITE_CONVEX_URL as string);
 
 const router = createBrowserRouter([
   {
@@ -39,10 +42,12 @@ const router = createBrowserRouter([
 ]);
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <UserContextProvider>
-      <Top />
-      <RouterProvider router={router}></RouterProvider>
-    </UserContextProvider>
+    <ConvexProvider client={convex}>
+      <UserContextProvider>
+        <Top />
+        <RouterProvider router={router}></RouterProvider>
+      </UserContextProvider>
+    </ConvexProvider>
   </React.StrictMode>,
 )
 

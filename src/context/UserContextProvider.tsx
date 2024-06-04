@@ -13,7 +13,7 @@ export default function UserContextProvider({ children }: Props) {
     const brother = window.localStorage.getItem('election-user');
     const defaultUser = brother ? JSON.parse(brother) : null;
     const [user, setUser] = useState<User | null>(() => defaultUser);
-    const isAuthenticated = !!user; // sets Authenticated to user's defined/undefined
+    const isAuthenticated = !!user; // sets Authenticated to user but with a boolean 
     // But, makes sure it returns a boolean
 
     return <UserContext.Provider value={{ isAuthenticated, user, setUser }}>
