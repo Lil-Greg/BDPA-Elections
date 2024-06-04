@@ -110,8 +110,8 @@ export default function RegisterPage() {
             </div>
             <div className="col-md-4">
                 <label htmlFor="inputState" className="form-label">State</label>
-                <select id="inputState" className="form-select" ref={stateRef} required>
-                    <option value='none' selected>Choose...</option>
+                <select id="inputState" className="form-select" ref={stateRef} defaultValue={'none'} required>
+                    <option value='none' disabled>Choose...</option>
                     <option value="AL">Alabama</option>
                     <option value="AK">Alaska</option>
                     <option value="AZ">Arizona</option>

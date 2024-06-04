@@ -49,8 +49,8 @@ export interface GetBallotsResponse{
     ballots:Ballots[]
 }
 export interface User{
-    _id: Id<"users">;
-    _creationTime: number;
+    _id?: Id<"users">;
+    _creationTime?: number;
     username: string;
     password: string;
     type: string | 'voter' | 'administrator' | 'reporter' | 'moderator' | 'super';
