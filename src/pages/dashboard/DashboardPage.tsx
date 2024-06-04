@@ -7,6 +7,7 @@ import Profile from './Profile';
 
 export default function DashboardPage() {
     const { user } = useContext(UserContext);
+    // Make another table for pfp
     return (
         <Container className="dashboard-container mt-3">
             <h1>Welcome, {user?.username}</h1>

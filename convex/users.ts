@@ -9,33 +9,23 @@ export const get = query({
   },
 });
 
-export const getForLogin = query({
-  args:{
-    username:v.string()
-  },
-  handler: async (ctx, args) => {
-    const user = await ctx.db.query("users")
-      .filter(q => q.eq(q.field("username"), args.username))
-      .collect();
-    return user;
-  }
-});
-
 export const getSingleUser = query({
   args:{
-    user_id:v.id("users")
+    username:v.string()
   },
   handler: async(ctx, args) => {
     const user = await ctx.db
       .query("users")
-      .filter((q) => q.eq(q.field("_id"), args.user_id));
+      .filter((q) => q.eq(q.field("username"), args.username))
+      .collect()
     return user
   }
-})
+});
 
 export const createUser = mutation(
     {
   args: {
+    password: v.string(),
     type: v.string(),
     salt: v.string(),
     key: v.string(),
@@ -49,7 +39,7 @@ export const createUser = mutation(
     lastName:v.string()
     },
   handler: async (ctx, args) => {
-    const userData = await ctx.db.insert("users", { type: args.type, salt: args.salt, key: args.key, email: args.email, username: args.username, city: args.city, state: args.state, address: args.address, zip:args.zip, firstName: args.firstName, lastName: args.lastName });
+    const userData = await ctx.db.insert("users", { password: args.password, type: args.type, salt: args.salt, key: args.key, email: args.email, username: args.username, city: args.city, state: args.state, address: args.address, zip:args.zip, firstName: args.firstName, lastName: args.lastName });
     console.log(userData);
     // do something with `taskId`
   },

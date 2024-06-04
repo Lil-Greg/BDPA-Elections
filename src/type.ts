@@ -42,6 +42,7 @@ export interface GetBallotsResponse{
 }
 export interface User{
     user_id?:string,
+    password: string,
     salt:string,
     key:string,
     username:string,

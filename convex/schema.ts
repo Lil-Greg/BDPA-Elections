@@ -4,6 +4,7 @@ import { v } from "convex/values";
 // Add User ID later using the id of the object
 export default defineSchema({
     users: defineTable({
+        password: v.string(),
         salt: v.string(),
         key:v.string(),
         username: v.string(),

@@ -1,9 +1,6 @@
 import { useQuery } from "convex/react";
-import { UserAuth } from "../type";
 import { api } from "../../convex/_generated/api";
-
-const url:string = import.meta.env.VITE_API_URL;
-const APIkey:string = import.meta.env.VITE_API_KEY;
+import { useEffect, useState } from "react";
 
 // The API expects a 64 byte key (128 hex digits long):
 const KEY_SIZE_BYTES = 64;
@@ -100,31 +97,42 @@ export const deriveKeyFromPassword = async (passwordString: string, saltBuffer?:
   // Return the key and salt as hexadecimal strings
   return { keyString, saltString };
 };
-async function GetSalt(username: string){
-    const getWithUsername = useQuery(api.users.getForLogin, {username:username});
-    const {salt} = getWithUsername;
-    return [salt, getWithUsername];
-}
-async function getAuth(key:string, username:string){
-  const options = {
-    method: 'POST',
-    body:JSON.stringify({
-      key:key
-    }),
-    headers:{
-        'Authorization': APIkey,
-        'content-type': 'application/json'
-    }
-  };
-  const result = await fetch(`${url}users/${username}/auth`, options);
-  const data = await result.json();
-  return data;
+
+export default function useAuth(){
+    const [params, setParams] = useState<{username:string, password:string}>();
+    const [success, setSuccess] = useState<boolean>(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const singleUser = useQuery(api.users.getSingleUser, {username: params ? params.username : ''}) || [{salt:"", key:""}];
+
+    const salt = singleUser.length > 0 ? singleUser[0].salt : "";
+    useEffect(() => {
+      async function fetchData(){
+        const {keyString} = await deriveKeyFromPassword(params?.password, convertHexToBuffer(salt));
+        setSuccess(singleUser[0].key == keyString);
+      }
+      fetchData()
+      return () => {}
+    }, [singleUser, salt, params]);
+
+    return {success, setParams, user:singleUser[0]};
+    
 }
 
-export default async function userAuth(password: string, username: string){
-    const [salt, user] = await GetSalt(username);
-    const key = await deriveKeyFromPassword(password, convertHexToBuffer(salt));
-    const result:UserAuth = await getAuth(key.keyString, username);
-    console.log(result)
-    return [result.success, user];
-}
+// import { useQuery } from "convex/react";
+// import { api } from "../../convex/_generated/api";
+
+// const [params, setParams] = useState<unknown | object>();
+
+// export default function useAuth(password: string, username: string){
+//   setParams({
+//     username:username,
+//     password:password
+//   })
+//   const getSingleUser = useQuery(api.users.getSingleUser, params);
+
+//   if(getSingleUser !== undefined){
+//     return{userInline: getSingleUser[0], isAuthorized: true}
+//   }else{
+//     return{userInline: null, isAuthorized: false}
+//   }
+// }

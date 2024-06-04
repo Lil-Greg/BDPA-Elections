@@ -35,6 +35,7 @@ export default function RegisterPage() {
         if (emailValue && usernameValue && passwordValue && typeValue && cityValue && stateValue && zipValue && addressValue && firstNameValue && lastNameValue != null && stateValue != 'none') {
             const { keyString, saltString } = await UserDerivePassword(passwordValue);
             const formValues: User = {
+                password: passwordValue,
                 salt: saltString,
                 key: keyString,
                 username: usernameValue,
@@ -53,6 +54,20 @@ export default function RegisterPage() {
             alert("ADD SOME STUFF!!");
         }
     };
+
+
+    // const handlePasswordChange = () => {
+    //     const password = passwordRef.current?.value;
+    //     const passwordLength = password?.length || 0;
+    //     setProgress(passwordLength);
+    // }
+    // const handleUsernameChange = () => {
+    //     const username = usernameRef.current?.value;
+    //     setInvalidUsername((/[^0-9a-zA-Z]+/ig).test(username || ''));
+    // }
+    // const togglePasswordShow = () => {
+    //     setPasswordShow(!passwordShow);
+    // }
 
     return <>
         <h1>Register</h1>
