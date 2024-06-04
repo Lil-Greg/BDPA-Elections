@@ -3,7 +3,6 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
-import useInfoApi from "../hooks/useInfoApi.ts"
 import { Outlet } from "react-router-dom";
 import { useContext } from 'react';
 import UserContext from '../context/UserContext.ts';
@@ -11,8 +10,7 @@ import getImageURL from '../utils/image-util.ts';
 
 export default function Top() {
     const { user, isAuthenticated } = useContext(UserContext);
-    const openElectionNum = useInfoApi();
-    const totalElections = openElectionNum ? openElectionNum?.info.openElection + openElectionNum?.info.closedElections + openElectionNum?.info.upcomingElections : 0;
+
     return (
         <>
             <Navbar expand="lg" style={{}} className="bg-body-tertiary">
@@ -36,9 +34,8 @@ export default function Top() {
                             </NavDropdown>
                             {isAuthenticated ? (
                                 <>
-                                    <p>Hello, {user?.username}</p>
-                                    <Nav.Link href="/elections">
-                                        Open Elections: {openElectionNum?.info.openElection} &nbsp; Closed Elections: {openElectionNum?.info.closedElections} &nbsp; Total Elections: {totalElections}
+                                    <Nav.Link href='/'>
+                                        <img src={getImageURL('default-pfp.jpg')} alt={`${user?.username}'s Profile Picture`} className="pfp" />
                                     </Nav.Link>
                                 </>
 

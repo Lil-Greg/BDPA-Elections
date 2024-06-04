@@ -3,10 +3,13 @@ import { NavLink } from "react-router-dom";
 import useElectionHistory from "../../hooks/useElectionHistory";
 import { Container } from 'react-bootstrap';
 import getImageURL from '../../utils/image-util';
+import useInfoApi from "../../hooks/useInfoApi.ts";
 
 
 export default function HistoryPage() {
     const { elections, isLoading, isErroring } = useElectionHistory();
+    const openElectionNum = useInfoApi();
+    const totalElections = openElectionNum ? openElectionNum?.info.openElection + openElectionNum?.info.closedElections + openElectionNum?.info.upcomingElections : 0;
     console.log(isLoading);
     console.log(elections);
 
@@ -28,6 +31,9 @@ export default function HistoryPage() {
     return (
         <>
             <div className="container">
+                <span className="totalElections">{totalElections}</span>
+                <span className="openElections">{openElectionNum?.info.openElection}</span>
+                <span className="closedElections">{openElectionNum?.info.closedElections}</span>
                 <div className="electionBoxes">
                     {elections && elections.elections.map((election, index) => (
                         <Container className={`election-container container-${(index % 2) === 0 ? 'even' : 'odd'}`}>
