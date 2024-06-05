@@ -3,6 +3,8 @@ import { NavLink } from "react-router-dom";
 import useElectionHistory from "../../hooks/useElectionHistory";
 import { Container } from 'react-bootstrap';
 import getImageURL from '../../utils/image-util';
+import handlePrev from "../../hooks/useElectionHistory"
+import handleNext from "../../hooks/useElectionHistory"
 
 
 export default function HistoryPage() {
@@ -50,8 +52,8 @@ export default function HistoryPage() {
                         </Container>
                     ))}
                     <div className="pageButtons">
-                        <button>Prev</button>
-                        <button>Next</button>
+                        <button onClick={handlePrev}>Prev</button>
+                        <button onClick={handleNext}>Next</button>
                     </div>
                 </div>
             </div>

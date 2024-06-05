@@ -16,12 +16,10 @@ import CreateElectionPage from './pages/create-election/CreateElectionPage.tsx';
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <ProtectedRoute allowedUserTypes={['voter', 'administrator', 'moderator', 'reporter', 'super']}>
-      <DashboardPage />
-    </ProtectedRoute>
+    element: <DashboardPage /> //<ProtectedRoute allowedUserTypes={['voter', 'administrator', 'moderator', 'reporter', 'super']}></ProtectedRoute>
   }, {
     path: '/create-election',
-    element: <ProtectedRoute allowedUserTypes={['administrator', 'super']}><CreateElectionPage /></ProtectedRoute>
+    element: <CreateElectionPage />//<ProtectedRoute allowedUserTypes={['administrator', 'super']}></ProtectedRoute>
   }, {
     path: '/history',
     element: <HistoryPage />// <ProtectedRoute allowedUserTypes={['voter', 'administrator', 'super']}><HistoryPage /></ProtectedRoute>,
