@@ -1,29 +1,50 @@
 import './DashboardPage.css';
-import { useContext } from "react";
+import { RefAttributes, useContext } from "react";
 import UserContext from '../../context/UserContext';
-import { Container, Tab, Tabs } from "react-bootstrap";
+import { Container, OverlayTrigger, Row, Tab, Tabs, Tooltip, TooltipProps } from "react-bootstrap";
 import Profile from './Profile';
+import getImageURL from '../../utils/image-util';
+import { JSX } from 'react/jsx-runtime';
+import UserElections from './UserElections';
+import UserSettings from './UserSettings';
 
 
 export default function DashboardPage() {
     const { user } = useContext(UserContext);
+    const renderTooltip = (props: JSX.IntrinsicAttributes & TooltipProps & RefAttributes<HTMLDivElement>) => (
+        <Tooltip id="button-tooltip" {...props}>
+            Change Profile Picture
+        </Tooltip>
+    );
+    const changePfp = () => { };
+    const handleOnClick = () => {
+        changePfp(/*Mutation that changes the user's saved pfp */);
+    }
     // Make another table for pfp
     return (
         <Container className="dashboard-container mt-3">
             <h1>Welcome, {user?.username}</h1>
+            <Row className='dashboard-base-content'>
+                <OverlayTrigger
+                    placement="bottom"
+                    delay={{ show: 250, hide: 400 }}
+                    overlay={renderTooltip}>
+                    <img src={getImageURL('default-pfp.jpg')} alt="User's Pfp" className='dashboard-pfp' onClick={handleOnClick} />
+                </OverlayTrigger>
+            </Row>
             <Tabs
                 defaultActiveKey="profile"
                 id="uncontrolled-tab-example"
                 className="mb-3"
             >
-                <Tab eventKey="home" title='Profile'>
+                <Tab eventKey="profile" title='Profile'>
                     <Profile />
                 </Tab>
-                <Tab eventKey="profile" title="Elections">
-                    Tab content for Profile
+                <Tab eventKey="elections" title="Elections">
+                    <UserElections />
                 </Tab>
-                <Tab eventKey="contact" title="Settings">
-                    Tab content for Contact
+                <Tab eventKey="settings" title="Settings">
+                    <UserSettings />
                 </Tab>
             </Tabs>
         </Container>

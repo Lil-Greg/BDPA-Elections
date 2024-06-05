@@ -3,4 +3,27 @@
     padding: 1rem;
     text-align: center;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+    min-height: 20rem;
+}
+.dashboard-base-content{
+    padding: 1rem;
+    margin-right: 1.5rem;
+    margin-left: 1.5rem;
+    justify-content: center;
+    align-items: center;
+}
+.dashboard-pfp{
+    padding: 0;
+    width: 8rem;
+    height: 8rem;
+    border-radius: 50%;
+    border: 1px solid #000;
+
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+}
+.dashboard-pfp:hover{
+    background-color: rgba(0, 0, 0, 0.3);
+    cursor: pointer;
 }

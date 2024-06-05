@@ -1,15 +1,20 @@
 import { useContext } from "react"
 import UserContext from "../../context/UserContext"
-import getImageURL from "../../utils/image-util";
-import { Container } from "react-bootstrap";
+import { Col, Container, Row } from "react-bootstrap";
 
 export default function Profile() {
     const { user } = useContext(UserContext);
     return (
         <>
             <Container>
-                <img src={getImageURL("default-pfp.jpg")} alt="User Profile Picture" />
-                {user?.username}
+                <Row>
+                    <Col>
+                        <p className="dashboard-firstName">First Name:&nbsp;{user?.firstName}</p>
+                    </Col>
+                    <Col>
+                        <p className="dashboard-lastName">Last Name:&nbsp;{user?.lastName}</p>
+                    </Col>
+                </Row>
             </Container>
         </>
     )
