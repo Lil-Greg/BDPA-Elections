@@ -1,74 +1,117 @@
 import { useRef } from "react";
 import { User } from "../../type";
-import InitializeDatabase from "../../database/InitializeDatabase";
+import { api } from '../../../convex/_generated/api';
+import { useMutation } from "convex/react";
+import UserDerivePassword from "../../hooks/useDerivePassword";
 
 export default function RegisterPage() {
+    const createUser = useMutation(api.users.createUser);
 
     const emailRef = useRef<HTMLInputElement>(null);
     const usernameRef = useRef<HTMLInputElement>(null);
     const passwordRef = useRef<HTMLInputElement>(null);
     const typeRef = useRef<HTMLSelectElement>(null);
+    const cityRef = useRef<HTMLInputElement>(null);
+    const stateRef = useRef<HTMLSelectElement>(null);
+    const zipRef = useRef<HTMLInputElement>(null);
+    const addressRef = useRef<HTMLInputElement>(null);
+    const firstNameRef = useRef<HTMLInputElement>(null);
+    const lastNameRef = useRef<HTMLInputElement>(null);
 
-    const handleSubmit = (event: React.FormEvent) => {
+    const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
 
         const emailValue = emailRef.current?.value;
         const usernameValue = usernameRef.current?.value;
         const passwordValue = passwordRef.current?.value;
         const typeValue = typeRef.current?.value;
+        const cityValue = cityRef.current?.value;
+        const stateValue = stateRef.current?.value;
+        const zipValue = zipRef.current?.value;
+        const addressValue = addressRef.current?.value;
+        const firstNameValue = firstNameRef.current?.value;
+        const lastNameValue = lastNameRef.current?.value;
 
-        if (emailValue && usernameValue && passwordValue && typeValue != null) {
+        if (emailValue && usernameValue && passwordValue && typeValue && cityValue && stateValue && zipValue && addressValue && firstNameValue && lastNameValue != null && stateValue != 'none') {
+            const { keyString, saltString } = await UserDerivePassword(passwordValue);
             const formValues: User = {
-                userId: "",
-                salt: "",
+                password: passwordValue,
+                salt: saltString,
+                key: keyString,
                 username: usernameValue,
                 email: emailValue,
-                type: typeValue
-            }
-            InitializeDatabase(formValues);
+                type: typeValue,
+                city: cityValue,
+                state: stateValue,
+                zip: zipValue,
+                address: addressValue,
+                firstName: firstNameValue.toUpperCase(),
+                lastName: lastNameValue.toUpperCase()
+            };
+            // Create user
+            createUser(formValues);
         } else {
-            alert("ADD SOME STUFF!!")
+            alert("ADD SOME STUFF!!");
         }
-    }
+    };
+
+
+    // const handlePasswordChange = () => {
+    //     const password = passwordRef.current?.value;
+    //     const passwordLength = password?.length || 0;
+    //     setProgress(passwordLength);
+    // }
+    // const handleUsernameChange = () => {
+    //     const username = usernameRef.current?.value;
+    //     setInvalidUsername((/[^0-9a-zA-Z]+/ig).test(username || ''));
+    // }
+    // const togglePasswordShow = () => {
+    //     setPasswordShow(!passwordShow);
+    // }
 
     return <>
         <h1>Register</h1>
         <form className="row g-3" onSubmit={handleSubmit}>
             <div className="col-md-6">
                 <label htmlFor="inputEmail4" className="form-label" >Email</label>
-                <input type="email" className="form-control" id="inputEmail4" ref={emailRef} />
+                <input type="email" className="form-control" id="inputEmail4" ref={emailRef} required />
+            </div>
+            <div className="col-md-6">
+                <label htmlFor="inputFirst" className="form-label" >First Name</label>
+                <input type="text" className="form-control" id="inputFirst" ref={firstNameRef} required />
+            </div>
+            <div className="col-md-6">
+                <label htmlFor="inputLast" className="form-label" >Last Name</label>
+                <input type="text" className="form-control" id="inputLast" ref={lastNameRef} required />
             </div>
             <div className="col-md-6">
                 <label htmlFor="inputPassword4" className="form-label" >Password</label>
-                <input type="password" className="form-control" id="inputPassword4" ref={passwordRef} />
+                <input type="password" className="form-control" id="inputPassword4" ref={passwordRef} required />
             </div>
             <div className="col-md-6">
                 <label htmlFor="inputUsername" className="form-label" >Username</label>
-                <input type="text" className="form-control" id="inputUsername" ref={usernameRef} />
+                <input type="text" className="form-control" id="inputUsername" ref={usernameRef} required />
             </div>
             <div className="col-12">
                 <label htmlFor="inputAddress" className="form-label">Address</label>
-                <input type="text" className="form-control" id="inputAddress" placeholder="1234 Main St" />
-            </div>
-            <div className="col-12">
-                <label htmlFor="inputAddress2" className="form-label">Address 2</label>
-                <input type="text" className="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor" />
+                <input type="text" className="form-control" id="inputAddress" placeholder="1234 Main St" ref={addressRef} required />
             </div>
             <div className="col-md-6">
                 <label htmlFor="inputCity" className="form-label">City</label>
-                <input type="text" className="form-control" id="inputCity" />
+                <input type="text" className="form-control" id="inputCity" ref={cityRef} required />
             </div>
             <div className="col-md-4">
                 <label htmlFor="typeState" className="form-label">Type</label>
                 <select id="typeState" className="form-select" ref={typeRef}>
                     <option value="voter" selected>Voter</option>
                     <option value="reporter">Reporter</option>
+                    <option value="administrator">Administrator</option>
                 </select>
             </div>
             <div className="col-md-4">
                 <label htmlFor="inputState" className="form-label">State</label>
-                <select id="inputState" className="form-select">
-                    <option selected>Choose...</option>
+                <select id="inputState" className="form-select" ref={stateRef} required>
+                    <option value='none' selected>Choose...</option>
                     <option value="AL">Alabama</option>
                     <option value="AK">Alaska</option>
                     <option value="AZ">Arizona</option>
@@ -124,7 +167,7 @@ export default function RegisterPage() {
             </div>
             <div className="col-md-2">
                 <label htmlFor="inputZip" className="form-label">Zip</label>
-                <input type="text" className="form-control" id="inputZip" />
+                <input type="text" className="form-control" id="inputZip" ref={zipRef} required />
             </div>
             <div className="col-12">
                 <div className="form-check">
