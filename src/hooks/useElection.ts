@@ -45,19 +45,10 @@ export function UseSingleElection(id:string){
     return election;
 }
 
-export function GetBallots(election_id:string){
-    const [ballots, setBallots] = useState<GetBallotsResponse>();
-
-    useEffect(()=>{
-        async function fetchData(){
-            try{
-                const data = await fetch(`${url}elections/${election_id}/ballots`, options).then(res => res.json());
-                setBallots(data);
-            } catch(error){
-                console.error("Error With GetBallots",error);
-            }
-        }
-        fetchData();
-    }, []);
-    return ballots;
+export async function GetBallots(election_id:string):Promise<GetBallotsResponse | undefined>{
+    try{
+        return await fetch(`${url}elections/${election_id}/ballots`, options).then(res => res.json());
+    } catch(error){
+        console.error("Error With GetBallots ",error);
+    }
 }

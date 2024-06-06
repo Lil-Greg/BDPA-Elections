@@ -1,43 +1,60 @@
-// import { useState } from "react";
-// import { GetBallots } from "../hooks/useElection";
-// import { GetBallotsResponse } from "../type";
+import { GetBallots } from "../hooks/useElection";
 
-// export default function IRVElections(election_id:string){
-//     // -----ALGO-----
-//     // Count first choices
-//     // Find candidate with fewest votes within first places
-//     // Eliminate candidate
-//     // Add the vote to the 2nd placer
+export default async function IRVElections(election_id:string){
+    // -----ALGO-----
+    // Count first choices
+    // Find candidate with fewest votes within first places
+    // Eliminate candidate
+    // Add the vote to the 2nd placer
 
-//     const optionsResponse = GetBallots(election_id);
-//     const [similarName, setSimilarName] = useState<string>('');
+    const optionsResponse = await GetBallots(election_id);
+    let ballotsConverted = optionsResponse?.ballots.map((ballots) => {
+        return Object.keys(ballots.ranking);
+    }) || [];
 
-//     const countFirstPlacers = (options: GetBallotsResponse | undefined) => {
-//         const order:string[] = [];
-//         const ballotsConverted = options?.ballots.map((ballots) => {
-//             return Object.keys(ballots.ranking);
-//         });
-//         console.log("Converted Ballots: ", ballotsConverted)
-//         const firstPlacers = ballotsConverted?.map((array) => {
-//             const spliced = array.splice(0,1)
-//             return spliced.toString();
-//         });
-//         firstPlacers?.map((placings, index) => {
-//             setSimilarName(placings);
-//             if(index > 0){
-//                 const findSimilarName = (value:string) => {return value === firstPlacers[index-1]}
-//                 const ifSimilar = order.find(findSimilarName);
-//                 if(ifSimilar === placings){
-//                     similarName
-//                 }
-//             }else{order.push(placings)}
-//         });
-//         console.log("Something?? - the Similar Name: ", similarName);
-//         console.log("First Placings Order: ",order);
-//         return firstPlacers;
-//     }
-//     console.log('Testing Function: ', countFirstPlacers(optionsResponse));
-// }
-// // Confusion with finding the similar names
-// // and the logic flows with this.
-// // Also, confusion with array method usage.
+    const countFirstPlacers = () => {
+        const firstPlaceCount: { [x: string]: number; } = {};
+        for(const ballot of ballotsConverted){
+            const firstChoice = ballot[0];
+            if(firstPlaceCount[firstChoice]){
+                firstPlaceCount[firstChoice] += 1;// Increases value if the same name in object
+            }else{
+                firstPlaceCount[firstChoice] = 1;// Sets new value if not the same name in object
+            }
+        }    
+        return firstPlaceCount;// candidate name: number of first place votes.    
+    }
+    const findCandidateWithLeastVotes = (count: { [x: string]: number; }):string => {
+        let fewestVotes = Infinity;
+        let candidateWithFewest = '';
+
+        for(const candidate in count){
+            if(count[candidate] < fewestVotes){
+                fewestVotes = count[candidate];
+                candidateWithFewest = candidate;
+            }
+        }
+        return candidateWithFewest;
+    }
+    const eliminateCandidateWithFewest = (ballots:string[][], candidateToElim:string) => {
+        return ballots.map((ballot) => {
+            return ballot.filter((candidate) => {
+                return candidate !== candidateToElim;
+            });
+        });
+    }
+
+    // eslint-disable-next-line no-constant-condition
+    while(true){
+        const count = countFirstPlacers();
+        for(const candidate in count){ // Checking each candidate to see if they have more than 50%
+            if(count[candidate] > Math.floor(ballotsConverted.length / 2)){
+                return candidate;
+            }
+        }
+        ballotsConverted = eliminateCandidateWithFewest(ballotsConverted, findCandidateWithLeastVotes(count));
+    }
+}
+// Confusion with finding the similar names
+// and the logic flows with this.
+// Also, confusion with array method usage.

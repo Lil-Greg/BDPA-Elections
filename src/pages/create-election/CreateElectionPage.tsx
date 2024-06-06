@@ -46,7 +46,6 @@ export default function CreateElectionPage() {
         const closesAtValue = closesAtRef.current?.value;
 
         if (titleValue && descriptionValue && optionsValue && opensAtValue && closesAtValue) {
-            console.log(opensAtValue, closesAtValue);
             const x = parseInt(opensAtValue);
             const y = parseInt(closesAtValue);
             setFormValues({

@@ -2,19 +2,28 @@ import './ElectionPage.css';
 import { useParams } from "react-router-dom";
 import { UseSingleElection } from "../../hooks/useElection"
 import { Election } from "../../type";
-// import IRVElections from "../../components/IRV-Elections";
+import IRVElections from "../../components/IRV-Elections";
 import { Card, Col, Container, Row } from "react-bootstrap";
+import { useEffect, useState } from 'react';
 
 export default function ElectionPage() {
     const { electionId } = useParams();
     const election: Election | undefined = UseSingleElection(electionId || '');
+    const [winner, setWinner] = useState<string>('');
 
     // Rendering error comes from IRVElections
-    // if (document.readyState) { IRVElections(electionId || ""); }
+    useEffect(() => {
+        async function fetchData() {
+            const data = await IRVElections(electionId || "");
+            setWinner(data);
+        }
+        fetchData();
+    }, [electionId])
 
 
     return (
         <>
+            {winner}
             <Container className="electionPage-container">
                 <Card className="electionPage-jumboCard">
                     <h1 className="electionPage-title">{election?.title}</h1>

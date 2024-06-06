@@ -39,8 +39,8 @@ export const createUser = mutation(
     lastName:v.string()
     },
   handler: async (ctx, args) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const userData = await ctx.db.insert("users", { password: args.password, type: args.type, salt: args.salt, key: args.key, email: args.email, username: args.username, city: args.city, state: args.state, address: args.address, zip:args.zip, firstName: args.firstName, lastName: args.lastName });
-    console.log(userData);
     // do something with `taskId`
   },
 });

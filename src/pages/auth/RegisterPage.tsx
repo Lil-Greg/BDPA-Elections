@@ -1,3 +1,4 @@
+import './RegisterPage.css';
 import { useRef } from "react";
 import { User } from "../../type";
 import { api } from '../../../convex/_generated/api';
@@ -45,8 +46,8 @@ export default function RegisterPage() {
                 state: stateValue,
                 zip: zipValue,
                 address: addressValue,
-                firstName: firstNameValue.toUpperCase(),
-                lastName: lastNameValue.toUpperCase()
+                firstName: firstNameValue,
+                lastName: lastNameValue
             };
             // Create user
             createUser(formValues);

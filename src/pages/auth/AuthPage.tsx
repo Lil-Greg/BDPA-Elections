@@ -22,7 +22,6 @@ export default function AuthPage() {
         event.preventDefault();
         const username = usernameRef.current?.value;
         const password = passwordRef.current?.value;
-        console.log(success);
 
         if (username && password) {
             setParams({

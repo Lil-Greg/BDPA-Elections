@@ -10,8 +10,6 @@ export default function HistoryPage() {
     const { elections, isLoading, isErroring } = useElectionHistory();
     const openElectionNum = useInfoApi();
     const totalElections = openElectionNum ? openElectionNum?.info.openElection + openElectionNum?.info.closedElections + openElectionNum?.info.upcomingElections : 0;
-    console.log(isLoading);
-    console.log(elections);
 
     if (isLoading) {
         return <>
