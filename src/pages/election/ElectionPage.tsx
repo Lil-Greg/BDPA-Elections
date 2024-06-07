@@ -1,13 +1,15 @@
 import './ElectionPage.css';
-import { useParams } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import { UseSingleElection } from "../../hooks/useElection"
 import { Election } from "../../type";
 import IRVElections from "../../components/IRV-Elections";
-import { Card, Col, Container, Row } from "react-bootstrap";
-import { useEffect, useState } from 'react';
+import { Button, Card, Col, Container, Row } from "react-bootstrap";
+import { useContext, useEffect, useState } from 'react';
+import UserContext from '../../context/UserContext';
 
 export default function ElectionPage() {
     const { electionId } = useParams();
+    const { user } = useContext(UserContext);
     const election: Election | undefined = UseSingleElection(electionId || '');
     const [winner, setWinner] = useState<string>('');
 
@@ -46,7 +48,11 @@ export default function ElectionPage() {
                         )
                     })}
                 </div>
-
+                <Row>
+                    <NavLink to={`/history/${electionId}/${user?._id}`}>
+                        <Button>Want to Vote?</Button>
+                    </NavLink>
+                </Row>
             </Container>
         </>
     )

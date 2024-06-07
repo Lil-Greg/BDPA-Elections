@@ -13,6 +13,7 @@ import HistoryPage from './pages/history/HistoryPage.tsx';
 import RegisterPage from './pages/auth/RegisterPage.tsx';
 import CreateElectionPage from './pages/create-election/CreateElectionPage.tsx';
 import { ConvexProvider, ConvexReactClient } from 'convex/react';
+import VotingPage from './pages/election/VotingPage.tsx';
 
 const convex = new ConvexReactClient(import.meta.env.VITE_CONVEX_URL as string);
 
@@ -32,6 +33,9 @@ const router = createBrowserRouter([
   }, {
     path: '/history/:electionId',
     element: <ElectionPage /> //<ProtectedRoute allowedUserTypes={['voter', 'administrator', 'reporter', 'super']}><ElectionPage /></ProtectedRoute>
+  }, {
+    path: '/history/:electionId/:userId',
+    element: <VotingPage /> //<ProtectedRoute allowedUserTypes={['voter']}><VotingPage/></ProtectedRoute>
   }, {
     path: '/login',
     element: <AuthPage />

@@ -1,8 +1,11 @@
-export default function VotingPage(){
+import { Container } from "react-bootstrap";
+import { useParams } from "react-router-dom";
 
-    return<>
-        <div className="votingBoard">
-            
-        </div>
+export default function VotingPage() {
+    const { userId } = useParams();
+    return <>
+        <Container>
+            {userId}
+        </Container>
     </>
 }
