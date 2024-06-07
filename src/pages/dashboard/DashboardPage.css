@@ -27,3 +27,13 @@
     background-color: rgba(0, 0, 0, 0.3);
     cursor: pointer;
 }
+.editableElements{
+    margin: 10px;
+    font-weight: bold;
+    font-size: 1.5em;
+}
+.editableElements input{
+    margin-left: 5px;
+    size: 0.5em;
+    
+}

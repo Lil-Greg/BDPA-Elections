@@ -20,12 +20,10 @@ const convex = new ConvexReactClient(import.meta.env.VITE_CONVEX_URL as string);
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <ProtectedRoute allowedUserTypes={['voter', 'administrator', 'moderator', 'reporter', 'super']}>
-      <DashboardPage />
-    </ProtectedRoute>
+    element: <ProtectedRoute allowedUserTypes={['voter', 'administrator', 'moderator', 'reporter', 'super']}><DashboardPage /></ProtectedRoute>
   }, {
     path: '/create-election',
-    element: <ProtectedRoute allowedUserTypes={['administrator', 'super']}><CreateElectionPage /></ProtectedRoute>
+    element: <CreateElectionPage />//<ProtectedRoute allowedUserTypes={['administrator', 'super']}></ProtectedRoute>
   }, {
     path: '/history',
     element: <HistoryPage />// <ProtectedRoute allowedUserTypes={['voter', 'administrator', 'super']}><HistoryPage /></ProtectedRoute>,

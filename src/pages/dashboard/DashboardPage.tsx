@@ -6,7 +6,7 @@ import Profile from './Profile';
 import getImageURL from '../../utils/image-util';
 import { JSX } from 'react/jsx-runtime';
 import UserElections from './UserElections';
-import UserSettings from './UserSettings';
+import Settings from './Settings';
 
 
 export default function DashboardPage() {
@@ -43,8 +43,8 @@ export default function DashboardPage() {
                 <Tab eventKey="elections" title="Elections">
                     <UserElections />
                 </Tab>
-                <Tab eventKey="settings" title="Settings">
-                    <UserSettings />
+                <Tab eventKey="contact" title="Settings">
+                    <Settings></Settings>
                 </Tab>
             </Tabs>
         </Container>
