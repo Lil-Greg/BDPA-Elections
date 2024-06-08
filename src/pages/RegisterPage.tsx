@@ -1,5 +1,14 @@
+import { useRef, useState } from "react";
+import { ProgressBar } from "react-bootstrap";
+import { NavLink } from "react-router-dom";
 export default function RegisterPage() {
-
+    const passwordRef = useRef<HTMLInputElement>(null);
+    const [progress, setProgress] = useState<number>(0);
+    const handlePasswordChange = () => {
+        const password = passwordRef.current?.value;
+        const passwordLength = password?.length || 0;
+        setProgress(passwordLength);
+    }
     return <>
         <h1>Register</h1>
         <form className="row g-3">
@@ -9,7 +18,9 @@ export default function RegisterPage() {
             </div>
             <div className="col-md-6">
                 <label htmlFor="inputPassword4" className="form-label">Password</label>
-                <input type="password" className="form-control" id="inputPassword4"></input>
+                <input type="password" className="form-control" ref={passwordRef} id="inputPassword4" onChange={handlePasswordChange}></input>
+                <ProgressBar now={progress} max={18} variant={progress > 17 ? 'success' : progress <= 10 ? 'danger' : 'warning'} />
+
             </div>
             <div className="col-12">
                 <label htmlFor="inputAddress" className="form-label">Address</label>
@@ -92,9 +103,11 @@ export default function RegisterPage() {
                     </label>
                 </div>
             </div>
-            <div className="col-12">
-                <button type="submit" className="btn btn-primary" >Sign in</button>
+            <div className="col-12"><NavLink to={'/forgot'} replace>
+                <button type="submit" className="btn btn-primary">Sign In</button>
+                </NavLink>
             </div>
         </form>
     </>
 }
+

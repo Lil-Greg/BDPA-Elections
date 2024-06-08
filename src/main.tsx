@@ -12,6 +12,7 @@ import ProtectedRoute from './components/ProtectedRoute.tsx';
 import HistoryPage from './pages/HistoryPage.tsx';
 import RegisterPage from './pages/RegisterPage.tsx';
 import CreateElectionPage from './pages/CreateElectionPage.tsx';
+import ForgotPassword from './pages/ForgotPassword.tsx';
 
 const router = createBrowserRouter([
   {
@@ -33,8 +34,11 @@ const router = createBrowserRouter([
     element: <AuthPage />
   }, {
     path: '/register',
-    element: <ProtectedRoute allowedUserTypes={['administrator', 'super']}><RegisterPage /></ProtectedRoute>
-  }
+    element: <RegisterPage/> //<ProtectedRoute allowedUserTypes={['administrator', 'super']}><RegisterPage /></ProtectedRoute>
+  },{
+    path:'/login/forgot',
+    element:<ForgotPassword/>
+  },
 ]);
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>

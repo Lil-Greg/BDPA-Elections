@@ -1,4 +1,15 @@
-export default function forgotPassword() {
+import { useRef } from "react";
+
+export default function ForgotPassword() {
+  const emailRef = useRef()
+  const email =emailRef.current?.value; 
+  if (email) {
+            alert(`Email: ${email}`);
+        } else {
+            alert(`Email sent.`)
+        }
+
+    
     return(
     <>
    <form className="row g-3">
