@@ -42,7 +42,7 @@ const router = createBrowserRouter([
     path: '/register',
     element: <RegisterPage/> //<ProtectedRoute allowedUserTypes={['administrator', 'super']}><RegisterPage /></ProtectedRoute>
   },{
-    path:'/login/forgot',
+    path:'/forgot',
     element:<ForgotPassword/>
   },
 ]);
