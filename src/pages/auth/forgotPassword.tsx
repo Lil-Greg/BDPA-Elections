@@ -1,7 +1,7 @@
 import { useRef } from "react";
 
 export default function ForgotPassword() {
-  const emailRef = useRef()
+  const emailRef = useRef<HTMLInputElement>()
   const email =emailRef.current?.value; 
   if (email) {
             alert(`Email: ${email}`);
