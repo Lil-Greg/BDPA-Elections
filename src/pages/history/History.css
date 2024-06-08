@@ -46,9 +46,9 @@
 .electionBox:hover{
     background-color: rgb(103, 156, 255);;
 }
-.electionOption{
+/* .electionOption{
     
-}
+} */
 .pageButtons{
     flex-direction: row;
     

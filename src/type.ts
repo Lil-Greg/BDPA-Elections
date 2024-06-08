@@ -1,3 +1,5 @@
+import { Id } from "../convex/_generated/dataModel"
+
 export interface ElectionInfo{
     success:boolean,
     info:{
@@ -38,13 +40,29 @@ export interface optionRankings{
     rank2Votes: number,
     rank3Votes: number,
 }
+export interface Ballots{
+    voter_id: string
+    ranking: {rank:number}
+}
+export interface GetBallotsResponse{
+    success:boolean,
+    ballots:Ballots[]
+}
 export interface User{
-    user_id:string,
-    salt:string,
-    username:string,
-    email:string,
-    blogname?:string,
-    type:'voter' | 'administrator' | 'reporter' | 'moderator' | 'super'
+    _id?: Id<"users">;
+    _creationTime?: number;
+    username: string;
+    password: string;
+    type: string | 'voter' | 'administrator' | 'reporter' | 'moderator' | 'super';
+    salt: string;
+    key: string;
+    email: string;
+    city: string;
+    state: string;
+    zip: string;
+    address: string;
+    firstName: string;
+    lastName: string;
 }
 export interface UserApi{
     success:boolean,

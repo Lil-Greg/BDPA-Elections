@@ -1,8 +1,8 @@
 import './CreateElectionStyle.css';
 import { Button, Col, Container, FloatingLabel, Form, Modal, Row } from "react-bootstrap";
-import { CreateElection } from "../type";
+import { CreateElection } from "../../type";
 import { useRef, useState } from "react";
-import AdminCreateElection from "../hooks/useCreateElection";
+import AdminCreateElection from "../../hooks/useCreateElection";
 import { useNavigate } from "react-router-dom";
 
 export default function CreateElectionPage() {
@@ -46,7 +46,6 @@ export default function CreateElectionPage() {
         const closesAtValue = closesAtRef.current?.value;
 
         if (titleValue && descriptionValue && optionsValue && opensAtValue && closesAtValue) {
-            console.log(opensAtValue, closesAtValue);
             const x = parseInt(opensAtValue);
             const y = parseInt(closesAtValue);
             setFormValues({

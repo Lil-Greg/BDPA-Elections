@@ -1,0 +1,20 @@
+[
+    {
+        "password":"password",
+        "salt":"064d7e8fc858477a81ec47099ca5314b",
+        "key":"827463e107ddd5a775935c252c9f5094b5fbc3964e6fcd3e379f1abe6dab7fc2e4fcd0e347b054400b9c8a2883055280f560e10ba3df01283b1ecfd09627d324",
+        "username":"lilgreg007",
+        "email":"gregory@gmail.com",
+        "type":"voter",
+        "city":"Washington",
+        "state":"District of Columbia",
+        "zip":"20018",
+        "address":"227 Cromwell St.",
+        "firstName":"Gregory",
+        "lastName":"Williams"
+    },
+    {
+        "userId":"",
+        "picture":""
+    }
+]

@@ -23,4 +23,25 @@
 .menuStats{
   font-size: 10px;
 }
-  
+.pfp{
+  order:1000;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  border: 1px solid #00b3e7;
+
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+}
+@media (min-width: 992px){
+  .pfp{
+    order: 1000;
+    align-self: flex-end;
+  }
+}
+@media(max-width:991px){
+  .pfp{
+    align-self: center;
+  }
+}
