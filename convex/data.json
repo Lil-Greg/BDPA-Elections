@@ -12,5 +12,9 @@
         "address":"227 Cromwell St.",
         "firstName":"Gregory",
         "lastName":"Williams"
+    },
+    {
+        "userId":"",
+        "picture":""
     }
 ]

@@ -6,6 +6,7 @@ const APIKey = import.meta.env.VITE_API_KEY;
 export default function useElectionHistory(){
     const [elections, setElections] = useState<ElectionsStatus | null>(null);
     const [isLoading, setIsLoading] = useState(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const options = {
         method:'GET',
         headers:{

@@ -5,7 +5,6 @@ import { Container, OverlayTrigger, Row, Tab, Tabs, Tooltip, TooltipProps } from
 import Profile from './Profile';
 import getImageURL from '../../utils/image-util';
 import { JSX } from 'react/jsx-runtime';
-import UserElections from './UserElections';
 import Settings from './Settings';
 
 
@@ -41,7 +40,7 @@ export default function DashboardPage() {
                     <Profile />
                 </Tab>
                 <Tab eventKey="elections" title="Elections">
-                    <UserElections />
+                    There Are None
                 </Tab>
                 <Tab eventKey="contact" title="Settings">
                     <Settings></Settings>

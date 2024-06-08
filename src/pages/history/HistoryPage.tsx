@@ -1,4 +1,5 @@
 import './HistoryPage.css';
+import './History.css';
 import { NavLink } from "react-router-dom";
 import useElectionHistory from "../../hooks/useElectionHistory";
 import { Container } from 'react-bootstrap';

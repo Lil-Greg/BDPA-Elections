@@ -17,4 +17,8 @@ export default defineSchema({
         firstName:v.string(),
         lastName:v.string()
     }),
+    profilePicture:defineTable({
+        userId: v.string(),
+        picture: v.string()
+    })
 });

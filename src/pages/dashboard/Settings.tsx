@@ -45,7 +45,7 @@ export default function Settings() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     onBlur={() => setEditEmail(false)}  // Save and exit edit mode when input loses focus
-                    onKeyPress={(e) => handleKeyPress(e, () => setEditEmail(false))}
+                    onKeyUp={(e) => handleKeyPress(e, () => setEditEmail(false))}
                 />
             ) : (
                 <span>{email} <BsPencilSquare onClick={handleToggleEmail} /></span>
