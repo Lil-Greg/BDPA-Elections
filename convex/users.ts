@@ -45,24 +45,32 @@ export const createUser = mutation(
   },
 });
 //  PATCH (UPDATE) METHOD
-// export const updateTask = mutation({
-//   args: { id: v.id("users") },
-//   handler: async (ctx, args) => {
-//     const { id } = args;
-//     console.log(await ctx.db.get(id));
-//     // { text: "foo", status: { done: true }, _id: ... }
-
-//     // Add `tag` and overwrite `status`:
-//     await ctx.db.patch(id, { tag: "bar", status: { archived: true } });
-//     console.log(await ctx.db.get(id));
-//     // { text: "foo", tag: "bar", status: { archived: true }, _id: ... }
-
-//     // Unset `tag` by setting it to `undefined`
-//     await ctx.db.patch(id, { tag: undefined });
-//     console.log(await ctx.db.get(id));
-//     // { text: "foo", status: { archived: true }, _id: ... }
-//   },
-// });
+export const changeUser = mutation({
+  args: { 
+    id: v.id("users"),
+    selectedField: v.object({
+      username:v.optional(v.string()),
+      password:v.optional(v.string()),
+      lastName:v.optional(v.string()),
+      firstName:v.optional(v.string()),
+      email:v.optional(v.string()),
+    })
+   },
+  handler: async (ctx, args) => {
+    const { id, selectedField } = args;
+    const beforeChange = await ctx.db.get(id);
+    // Add `tag` and overwrite `status`:
+    return await ctx.db.patch(id, 
+      {
+        password: beforeChange?.password !== selectedField.password ? selectedField.password : beforeChange?.password,
+        email: beforeChange?.email !== selectedField.email ? selectedField.email : beforeChange?.email,
+        username: beforeChange?.username !== selectedField.username ? selectedField.username : beforeChange?.username,
+        firstName: beforeChange?.firstName !== selectedField.firstName ? selectedField.firstName : beforeChange?.firstName,
+        lastName: beforeChange?.lastName !== selectedField.lastName ? selectedField.lastName : beforeChange?.lastName
+      }
+    );
+  },
+});
 
 export const deleteTask = mutation({
     args: { id: v.id("users") },

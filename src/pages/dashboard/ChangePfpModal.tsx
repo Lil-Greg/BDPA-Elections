@@ -18,7 +18,7 @@ export default function ChangePfpModal({ show }: Props) {
     const changeProfile = useMutation(api.profilePicture.changeProfilePicture);
     const [newPicture, setNewPicture] = useState('');
 
-    if (user !== null) {
+    if (user?._id !== undefined) {
         const handleChangePfp = () => {
             changeProfile({ id: user._id, newPictureFile: newPicture });
         }

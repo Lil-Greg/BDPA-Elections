@@ -1,35 +1,28 @@
 import './DashboardPage.css';
-import { RefAttributes, useContext, useState } from "react";
+import { RefAttributes, useContext } from "react";
 import UserContext from '../../context/UserContext';
 import { Container, OverlayTrigger, Row, Tab, Tabs, Tooltip, TooltipProps } from "react-bootstrap";
 import Profile from './Profile';
 import getImageURL from '../../utils/image-util';
 import { JSX } from 'react/jsx-runtime';
 import Settings from './Settings';
-import ChangePfpModal from './ChangePfpModal';
 
 export default function DashboardPage() {
     const { user } = useContext(UserContext);
-    const [show, setShow] = useState(false);
     const renderTooltip = (props: JSX.IntrinsicAttributes & TooltipProps & RefAttributes<HTMLDivElement>) => (
         <Tooltip id="button-tooltip" {...props}>
             Change Profile Picture
         </Tooltip>
     );
-    const handleOnClick = () => {
-        setShow(true);
-    };
-    // Make another table for pfp
     return (
         <Container className="dashboard-container mt-3">
-            <ChangePfpModal show={show} />
             <h1>Welcome, {user?.username}</h1>
             <Row className='dashboard-base-content'>
                 <OverlayTrigger
                     placement="bottom"
                     delay={{ show: 250, hide: 400 }}
                     overlay={renderTooltip}>
-                    <img src={getImageURL('default-pfp.jpg')} alt="User's Pfp" className='dashboard-pfp' onClick={handleOnClick} />
+                    <img src={getImageURL('default-pfp.jpg')} alt="User's Pfp" className='dashboard-pfp' />
                 </OverlayTrigger>
             </Row>
             <Tabs
@@ -43,7 +36,7 @@ export default function DashboardPage() {
                 <Tab eventKey="elections" title="Elections">
                     There Are None
                 </Tab>
-                <Tab eventKey="contact" title="Settings">
+                <Tab eventKey="settings" title="Settings">
                     <Settings />
                 </Tab>
             </Tabs>
