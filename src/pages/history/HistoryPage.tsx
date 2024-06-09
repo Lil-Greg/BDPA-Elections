@@ -37,7 +37,7 @@ export default function HistoryPage() {
                 <div className="electionBoxes">
                     {elections && elections.elections.map((election, index) => (
                         <Container className={`election-container container-${(index % 2) === 0 ? 'even' : 'odd'}`}>
-                            <NavLink to={`/history/${election.election_id}`}>
+                            <NavLink to={`/elections/${election.election_id}`}>
                                 <div
                                     key={election.election_id}
                                     className='boxes'>

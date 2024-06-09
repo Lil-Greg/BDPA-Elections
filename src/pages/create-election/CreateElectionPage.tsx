@@ -58,13 +58,14 @@ export default function CreateElectionPage() {
             setError(false)
         } else {
             setError(true);
+            setShow(false);
             alert("Enter A Value!")
         }
     }
 
     const handleActualSubmit = () => {
         AdminCreateElection(formValues);
-        navigate('/election', { replace: true })
+        navigate('/elections', { replace: true })
     }
     return (
         <>

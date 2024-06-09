@@ -49,7 +49,7 @@ export default function ElectionPage() {
                     })}
                 </div>
                 <Row>
-                    <NavLink to={`/history/${electionId}/${user?._id}`}>
+                    <NavLink to={`/elections/${electionId}/${user?._id}`}>
                         <Button>Want to Vote?</Button>
                     </NavLink>
                 </Row>

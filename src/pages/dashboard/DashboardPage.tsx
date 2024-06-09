@@ -1,27 +1,28 @@
 import './DashboardPage.css';
-import { RefAttributes, useContext } from "react";
+import { RefAttributes, useContext, useState } from "react";
 import UserContext from '../../context/UserContext';
 import { Container, OverlayTrigger, Row, Tab, Tabs, Tooltip, TooltipProps } from "react-bootstrap";
 import Profile from './Profile';
 import getImageURL from '../../utils/image-util';
 import { JSX } from 'react/jsx-runtime';
 import Settings from './Settings';
-
+import ChangePfpModal from './ChangePfpModal';
 
 export default function DashboardPage() {
     const { user } = useContext(UserContext);
+    const [show, setShow] = useState(false);
     const renderTooltip = (props: JSX.IntrinsicAttributes & TooltipProps & RefAttributes<HTMLDivElement>) => (
         <Tooltip id="button-tooltip" {...props}>
             Change Profile Picture
         </Tooltip>
     );
-    const changePfp = () => { };
     const handleOnClick = () => {
-        changePfp(/*Mutation that changes the user's saved pfp */);
-    }
+        setShow(true);
+    };
     // Make another table for pfp
     return (
         <Container className="dashboard-container mt-3">
+            <ChangePfpModal show={show} />
             <h1>Welcome, {user?.username}</h1>
             <Row className='dashboard-base-content'>
                 <OverlayTrigger
@@ -43,9 +44,9 @@ export default function DashboardPage() {
                     There Are None
                 </Tab>
                 <Tab eventKey="contact" title="Settings">
-                    <Settings></Settings>
+                    <Settings />
                 </Tab>
             </Tabs>
         </Container>
-    )
+    );
 }

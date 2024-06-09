@@ -14,7 +14,7 @@ export default function ProtectedRoute({ allowedUserTypes, children }: Props) {
         const isAllowed = allowedUserTypes.includes(user.type);
         if (isAuthenticated === false) {
             return <Navigate to='/login' replace />;
-            // replaces entire history with login page, so user cannot go back to previous pages unauthenticated
+            // replaces entire elections with login page, so user cannot go back to previous pages unauthenticated
         }
         if (!isAllowed) {
             return <Navigate to='/' replace />;

@@ -25,14 +25,14 @@ const router = createBrowserRouter([
     path: '/create-election',
     element: <CreateElectionPage />//<ProtectedRoute allowedUserTypes={['administrator', 'super']}></ProtectedRoute>
   }, {
-    path: '/history',
+    path: '/elections',
     element: <HistoryPage />// <ProtectedRoute allowedUserTypes={['voter', 'administrator', 'super']}><HistoryPage /></ProtectedRoute>,
 
   }, {
-    path: '/history/:electionId',
+    path: '/elections/:electionId',
     element: <ElectionPage /> //<ProtectedRoute allowedUserTypes={['voter', 'administrator', 'reporter', 'super']}><ElectionPage /></ProtectedRoute>
   }, {
-    path: '/history/:electionId/:userId',
+    path: '/elections/:electionId/:userId',
     element: <VotingPage /> //<ProtectedRoute allowedUserTypes={['voter']}><VotingPage/></ProtectedRoute>
   }, {
     path: '/login',
