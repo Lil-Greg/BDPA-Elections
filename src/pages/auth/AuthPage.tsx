@@ -63,7 +63,8 @@ export default function AuthPage() {
                     <InputGroup.Text onClick={togglePasswordShow}>{passwordShow ? <FaRegEyeSlash /> : <FaRegEye />}</InputGroup.Text>
                 </InputGroup>
                 <Row>
-                    <a className="m-1" style={{ textDecoration: 'none' }} href=""><h5>Forgot Password?</h5></a>
+                    
+                    <a className="m-1" style={{ textDecoration: 'none' }} href="/login/forgot"><h5>Forgot Password?</h5></a>
                 </Row>
                 <Row className="mt-2 mb-4">
                     <Col xs="auto">

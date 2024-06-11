@@ -1,12 +1,18 @@
+import { Form, InputGroup, ProgressBar } from "react-bootstrap";
+import { NavLink } from "react-router-dom";
 import './RegisterPage.css';
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { UserToCreate } from "../../type";
 import { api } from '../../../convex/_generated/api';
 import { useMutation } from "convex/react";
 import UserDerivePassword from "../../hooks/useDerivePassword";
+import { FaRegEyeSlash, FaRegEye } from "react-icons/fa6";
 
 export default function RegisterPage() {
     const createUser = useMutation(api.users.createUser);
+    const [progress, setProgress] = useState<number>(0);
+    const [invalidUsername, setInvalidUsername] = useState(false);
+    const [passwordShow, setPasswordShow] = useState(false);
 
     const emailRef = useRef<HTMLInputElement>(null);
     const usernameRef = useRef<HTMLInputElement>(null);
@@ -56,19 +62,18 @@ export default function RegisterPage() {
         }
     };
 
-
-    // const handlePasswordChange = () => {
-    //     const password = passwordRef.current?.value;
-    //     const passwordLength = password?.length || 0;
-    //     setProgress(passwordLength);
-    // }
-    // const handleUsernameChange = () => {
-    //     const username = usernameRef.current?.value;
-    //     setInvalidUsername((/[^0-9a-zA-Z]+/ig).test(username || ''));
-    // }
-    // const togglePasswordShow = () => {
-    //     setPasswordShow(!passwordShow);
-    // }
+    const handlePasswordChange = () => {
+        const password = passwordRef.current?.value;
+        const passwordLength = password?.length || 0;
+        setProgress(passwordLength);
+    }
+    const handleUsernameChange = () => {
+        const username = usernameRef.current?.value;
+        setInvalidUsername((/[^0-9a-zA-Z]+/ig).test(username || ''));
+    }
+    const togglePasswordShow = () => {
+        setPasswordShow(!passwordShow);
+    }
 
     return <>
         <h1>Register</h1>
@@ -79,19 +84,25 @@ export default function RegisterPage() {
             </div>
             <div className="col-md-6">
                 <label htmlFor="inputFirst" className="form-label" >First Name</label>
-                <input type="text" className="form-control" id="inputFirst" ref={firstNameRef} required />
+                <input type="text" autoCapitalize="on" className="form-control" id="inputFirst" ref={firstNameRef} required />
             </div>
             <div className="col-md-6">
                 <label htmlFor="inputLast" className="form-label" >Last Name</label>
-                <input type="text" className="form-control" id="inputLast" ref={lastNameRef} required />
+                <input type="text" autoCapitalize="on" className="form-control" id="inputLast" ref={lastNameRef} required />
             </div>
             <div className="col-md-6">
-                <label htmlFor="inputPassword4" className="form-label" >Password</label>
-                <input type="password" className="form-control" id="inputPassword4" ref={passwordRef} required />
+                <label htmlFor="inputPassword4" className="form-label">Password</label>
+                <InputGroup className="mb-1">
+                    <Form.Control type={passwordShow ? "text" : "password"} placeholder="Password" onChange={handlePasswordChange} ref={passwordRef} id="inputPassword4" required />
+                    <InputGroup.Text onClick={togglePasswordShow}>{passwordShow ? <FaRegEyeSlash /> : <FaRegEye />}</InputGroup.Text>
+                </InputGroup>
+                <ProgressBar now={progress} max={18} variant={progress > 17 ? 'success' : progress <= 10 ? 'danger' : 'warning'} />
             </div>
+
             <div className="col-md-6">
                 <label htmlFor="inputUsername" className="form-label" >Username</label>
-                <input type="text" className="form-control" id="inputUsername" ref={usernameRef} required />
+                <Form.Control type="text" autoComplete="off" className="form-control" onChange={handleUsernameChange} id="inputUsername" ref={usernameRef} isInvalid={invalidUsername} required />
+                <Form.Control.Feedback type="invalid">Must Be Alpha-Numeric</Form.Control.Feedback>
             </div>
             <div className="col-12">
                 <label htmlFor="inputAddress" className="form-label">Address</label>
@@ -179,8 +190,11 @@ export default function RegisterPage() {
                 </div>
             </div>
             <div className="col-12">
-                <button type="submit" className="btn btn-primary" >Sign in</button>
+                <NavLink to={'/forgot'} replace>
+                    <button type="submit" className="btn btn-primary">Sign In</button>
+                </NavLink>
             </div>
         </form>
     </>
 }
+
