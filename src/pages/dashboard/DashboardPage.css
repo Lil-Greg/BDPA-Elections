@@ -45,3 +45,35 @@
     padding: 1rem;
     border-color: #dc3545;
 }
+.settings-card-register{
+    padding: 1rem;
+    border-color: #00b3e7;
+}
+.settings-card-title{
+    font-weight: 500;
+    font-size: 2rem;
+    color: #00b3e7;
+    text-decoration: underline #00b3e7;
+}
+.settings-card{
+    padding: 1rem;
+    margin: 0.5rem;
+    height: fit-content;
+}
+.settings-register-button{
+    background-color: #00b3e7;
+    border-color: #00b3e7;
+}
+.settings-register-button:hover{
+    animation: ease-in;
+    animation-duration: 1;
+    background-color: rgba(0, 179, 231, 0.5);
+}
+@media (min-width: 992px){
+    .settings-card-container{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        gap: 1rem;
+    }
+}

@@ -63,22 +63,33 @@ export default function Settings() {
                 </Modal.Footer>
             </Modal>
             {/* CARD */}
-            <Card className="settings-danger-zone">
-                <Card.Title style={{ color: '#dc3545', textDecoration: 'underline #dc3545' }}>Danger Zone</Card.Title>
-                <Card.Body>
-                    <Row className="mb-2">
-                        <Col>
-                            <Button type="button" variant="danger" onClick={handleLogOutClick}>Log Out</Button>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col>
-                            <Button type="button" variant="danger" onClick={handleDeleteClick}>Delete Account</Button>
-                        </Col>
-                    </Row>
-                </Card.Body>
+            <Container className={user?.type === 'administrator' ? "settings-card-container" : ''}>
+                {user?.type === 'administrator' && (
+                    <Card className="settings-card-register mb-2 settings-card">
+                        <Card.Title className="settings-card-title">Create A User</Card.Title>
+                        <Card.Body className="settings-card-body">
+                            <Button onClick={() => navigate('/register')} className="settings-register-button">Register</Button>
+                        </Card.Body>
+                    </Card>
+                )}
 
-            </Card>
+                <Card className="settings-danger-zone settings-card">
+                    <Card.Title style={{ fontSize: '2rem', fontWeight: '500', color: '#dc3545', textDecoration: 'underline #dc3545' }}>Danger Zone</Card.Title>
+                    <Card.Body>
+                        <Row className="mb-2">
+                            <Col>
+                                <Button type="button" variant="danger" onClick={handleLogOutClick}>Log Out</Button>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col>
+                                <Button type="button" variant="danger" onClick={handleDeleteClick}>Delete Account</Button>
+                            </Col>
+                        </Row>
+                    </Card.Body>
+
+                </Card>
+            </Container>
         </Container>
     </>
 }

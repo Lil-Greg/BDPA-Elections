@@ -6,6 +6,7 @@ import Profile from './Profile';
 import getImageURL from '../../utils/image-util';
 import { JSX } from 'react/jsx-runtime';
 import Settings from './Settings';
+import AdminElections from './AdminElections';
 
 export default function DashboardPage() {
     const { user } = useContext(UserContext);
@@ -35,7 +36,7 @@ export default function DashboardPage() {
                 </Tab>
                 {user?.type === 'administrator' && (
                     <Tab eventKey="elections" title="Elections">
-                        There Are None
+                        <AdminElections />
                     </Tab>
                 )}
                 <Tab eventKey="settings" title="Settings">
