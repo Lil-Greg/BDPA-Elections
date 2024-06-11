@@ -33,9 +33,11 @@ export default function DashboardPage() {
                 <Tab eventKey="profile" title='Profile'>
                     <Profile />
                 </Tab>
-                <Tab eventKey="elections" title="Elections">
-                    There Are None
-                </Tab>
+                {user?.type === 'administrator' && (
+                    <Tab eventKey="elections" title="Elections">
+                        There Are None
+                    </Tab>
+                )}
                 <Tab eventKey="settings" title="Settings">
                     <Settings />
                 </Tab>

@@ -72,7 +72,7 @@ export const changeUser = mutation({
   },
 });
 
-export const deleteTask = mutation({
+export const deleteUser = mutation({
     args: { id: v.id("users") },
     handler: async (ctx, args) => {
       await ctx.db.delete(args.id);

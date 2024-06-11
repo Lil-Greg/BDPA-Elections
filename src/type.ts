@@ -50,7 +50,21 @@ export interface GetBallotsResponse{
 }
 export interface User{
     _id: Id<"users">;
-    _creationTime?: number;
+    _creationTime: number;
+    username: string;
+    password: string;
+    type: string | 'voter' | 'administrator' | 'reporter' | 'moderator' | 'super';
+    salt: string;
+    key: string;
+    email: string;
+    city: string;
+    state: string;
+    zip: string;
+    address: string;
+    firstName: string;
+    lastName: string;
+}
+export interface UserToCreate{
     username: string;
     password: string;
     type: string | 'voter' | 'administrator' | 'reporter' | 'moderator' | 'super';

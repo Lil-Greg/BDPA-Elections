@@ -1,10 +1,11 @@
 import React, { useContext, useRef, useState } from "react";
 import UserContext from "../../context/UserContext";
-import { Button, Col, Container, Form, Row } from "react-bootstrap";
-import { BsPencilSquare } from "react-icons/bs";
+import { Button, Col, Container, Form, InputGroup, ProgressBar, Row } from "react-bootstrap";
+import { TbPencil, TbPencilOff } from "react-icons/tb";
 import { useMutation } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import { User } from "../../type";
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa6";
 
 export default function Profile() {
     const { user, setUser } = useContext(UserContext);
@@ -12,10 +13,16 @@ export default function Profile() {
 
     const [noValue, setNoValue] = useState<boolean>(true);
     const [editState, setEditState] = useState<boolean>(false);
+
     const usernameRef = useRef<HTMLInputElement>(null);
     const firstNameRef = useRef<HTMLInputElement>(null);
     const lastNameRef = useRef<HTMLInputElement>(null);
     const emailRef = useRef<HTMLInputElement>(null);
+    const passwordRef = useRef<HTMLInputElement>(null);
+
+    const [passwordShow, setPasswordShow] = useState(false);
+    const [invalidUsername, setInvalidUsername] = useState(false);
+    const [progress, setProgress] = useState<number>(0);
 
     const handleEditMode = () => {
         setEditState(!editState);
@@ -23,10 +30,11 @@ export default function Profile() {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         const username = usernameRef.current?.value;
+        const password = passwordRef.current?.value;
         const firstName = firstNameRef.current?.value;
         const lastName = lastNameRef.current?.value;
         const email = emailRef.current?.value;
-        if (username || firstName || lastName || email !== null) {
+        if (username || password || firstName || lastName || email !== null) {
             setNoValue(false);
             const formValues = {
                 username: username,
@@ -66,11 +74,26 @@ export default function Profile() {
         }
     }
 
+    const togglePasswordShow = () => {
+        setPasswordShow(!passwordShow);
+    }
+
+    const handlePasswordChange = () => {
+        const password = passwordRef.current?.value;
+        const passwordLength = password?.length || 0;
+        setProgress(passwordLength);
+    }
+    const handleUsernameChange = () => {
+        const username = usernameRef.current?.value;
+        setInvalidUsername((/[^0-9a-zA-Z]+/ig).test(username || ''));
+    }
     return (
         <>
             <Container>
-                <Button className="mb-2" onClick={handleEditMode}>Toggle Edit Mode {editState === true ?? (
-                    <BsPencilSquare />)}
+                <Button className="mb-2" onClick={handleEditMode}>Toggle Edit Mode {editState === false ? (
+                    <TbPencil size={'1.5rem'} />) : (
+                    <TbPencilOff size={'1.5rem'} />
+                )}
                 </Button>
                 {editState === true ? (
                     <Form onSubmit={handleSubmit}>
@@ -81,7 +104,7 @@ export default function Profile() {
                                     label='First Name'
                                 >
 
-                                    <Form.Control defaultValue={user?.firstName} autoComplete="off" placeholder="First Name" ref={firstNameRef} />
+                                    <Form.Control type="text" defaultValue={user?.firstName} autoComplete="off" placeholder="First Name" ref={firstNameRef} />
                                 </Form.FloatingLabel>
                             </Col >
                             <Col>
@@ -89,7 +112,7 @@ export default function Profile() {
                                     controlId="lastName"
                                     label='Last Name'
                                 >
-                                    <Form.Control defaultValue={user?.lastName} autoComplete="off" placeholder="Last Name" ref={lastNameRef} />
+                                    <Form.Control type="text" defaultValue={user?.lastName} autoComplete="off" placeholder="Last Name" ref={lastNameRef} />
                                 </Form.FloatingLabel>
                             </Col>
                         </Row >
@@ -99,7 +122,8 @@ export default function Profile() {
                                     controlId="username"
                                     label='Username'
                                 >
-                                    <Form.Control defaultValue={user?.username} autoComplete="off" placeholder="Username" ref={usernameRef} />
+                                    <Form.Control type="text" defaultValue={user?.username} autoComplete="off" placeholder="Username" onChange={handleUsernameChange} isInvalid={invalidUsername} ref={usernameRef} />
+                                    <Form.Control.Feedback type='invalid'>Must Be Alpha-Numeric</Form.Control.Feedback>
                                 </Form.FloatingLabel>
                             </Col>
                             <Col>
@@ -108,12 +132,24 @@ export default function Profile() {
                                     label='Email'
                                 >
 
-                                    <Form.Control defaultValue={user?.email} autoComplete="off" placeholder="Email" ref={emailRef} />
+                                    <Form.Control type="email" defaultValue={user?.email} autoComplete="off" placeholder="Email" ref={emailRef} />
                                 </Form.FloatingLabel>
                             </Col>
                         </Row>
+                        <Row className="mb-2" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                            <InputGroup className="mb-1">
+                                <Form.FloatingLabel
+                                    controlId="password"
+                                    label="Password"
+                                >
+                                    <Form.Control type={passwordShow ? "text" : "password"} defaultValue={user?.password} autoComplete="off" placeholder="Password" onChange={handlePasswordChange} ref={passwordRef} />
+                                </Form.FloatingLabel>
+                                <InputGroup.Text onClick={togglePasswordShow}>{passwordShow ? <FaRegEyeSlash /> : <FaRegEye />}</InputGroup.Text>
+                            </InputGroup>
+                            <ProgressBar now={progress} max={18} variant={progress > 17 ? 'success' : progress <= 10 ? 'danger' : 'warning'} style={{ width: '80vw' }} />
+                        </Row>
                         <Button type="submit"
-                            variant={noValue === true ? 'warning' : 'success'}>
+                            variant={noValue === true ? 'danger' : 'success'}>
                             Change Data
                         </Button>
                     </Form>

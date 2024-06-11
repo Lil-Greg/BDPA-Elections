@@ -41,3 +41,7 @@
     border: none;
     background: none;
 }
+.settings-danger-zone{
+    padding: 1rem;
+    border-color: #dc3545;
+}

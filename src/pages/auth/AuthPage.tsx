@@ -29,7 +29,7 @@ export default function AuthPage() {
                 password: password
             });
             if (success) {
-                setUser && setUser(user);
+                setUser && setUser(user); // Set Types
                 window.localStorage.setItem('election-user', JSON.stringify(user));
                 navigate('/');
             }
@@ -51,7 +51,6 @@ export default function AuthPage() {
                     className='mb-3 w-50'
                 >
                     <Form.Control autoComplete="off" type="text" ref={usernameRef} placeholder="Username" />
-                    <Form.Control.Feedback type='invalid'>Must Be Alpha-Numeric</Form.Control.Feedback>
                 </FloatingLabel>
 
                 <InputGroup className="mb-1 w-50">

@@ -1,6 +1,6 @@
 import './RegisterPage.css';
 import { useRef } from "react";
-import { User } from "../../type";
+import { UserToCreate } from "../../type";
 import { api } from '../../../convex/_generated/api';
 import { useMutation } from "convex/react";
 import UserDerivePassword from "../../hooks/useDerivePassword";
@@ -35,7 +35,7 @@ export default function RegisterPage() {
 
         if (emailValue && usernameValue && passwordValue && typeValue && cityValue && stateValue && zipValue && addressValue && firstNameValue && lastNameValue != null && stateValue != 'none') {
             const { keyString, saltString } = await UserDerivePassword(passwordValue);
-            const formValues: User = {
+            const formValues: UserToCreate = {
                 password: passwordValue,
                 salt: saltString,
                 key: keyString,
