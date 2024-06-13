@@ -118,7 +118,6 @@ export default function useAuth(){
     }, [singleUser, salt, params]);
 
     return {success, setParams, user:singleUser[0]};
-    
 }
 
 // import { useQuery } from "convex/react";

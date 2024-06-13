@@ -13,7 +13,6 @@ export default function ElectionPage() {
     const election: Election | undefined = UseSingleElection(electionId || '');
     const [winner, setWinner] = useState<string>('');
 
-    // Rendering error comes from IRVElections
     useEffect(() => {
         async function fetchData() {
             const data = await IRVElections(electionId || "");
@@ -48,7 +47,7 @@ export default function ElectionPage() {
                         )
                     })}
                 </div>
-                <Row>
+                <Row className='election-vote-btn'>
                     <NavLink to={`/elections/${electionId}/${user?._id}`}>
                         <Button>Want to Vote?</Button>
                     </NavLink>

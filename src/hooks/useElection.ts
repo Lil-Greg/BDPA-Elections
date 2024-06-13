@@ -53,16 +53,16 @@ export async function GetBallots(election_id:string):Promise<GetBallotsResponse 
     }
 }
 export async function MakeVote(election_id:string, voter_id:string, ranking:object){
-    const optionsUpdate = {
+    const optionsMakeVote = {
         method:"PUT",
-        header:{
+        headers:{
             "Authorization": APIKey,
             "content-type":"application/json"
         },
         body:JSON.stringify(ranking)
     }
     try{
-        return await fetch(`${url}elections/${election_id}/ballots/${voter_id}`, optionsUpdate);
+        return await fetch(`${url}elections/${election_id}/ballots/${voter_id}`, optionsMakeVote);
     }catch(error){
         console.error("Error with making vote", error);
     }

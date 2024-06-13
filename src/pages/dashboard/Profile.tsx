@@ -34,11 +34,10 @@ export default function Profile() {
         const firstName = firstNameRef.current?.value;
         const lastName = lastNameRef.current?.value;
         const email = emailRef.current?.value;
-        if (username || password || firstName || lastName || email !== null) {
-            setNoValue(false);
+        if (username || password || firstName || lastName || email !== null && noValue === false) {
             const formValues = {
                 username: username,
-                password: user?.password,
+                password: password,
                 firstName: firstName,
                 lastName: lastName,
                 email: email
@@ -54,7 +53,7 @@ export default function Profile() {
                     firstName: firstName,
                     key: user.key,
                     lastName: lastName,
-                    password: user.password,
+                    password: password,
                     salt: user.salt,
                     state: user.state,
                     type: user.type,
@@ -69,8 +68,7 @@ export default function Profile() {
                 setEditState(false);
             }
         } else {
-            alert("Input Values");
-            setNoValue(true);
+            alert("Put Some Values");
         }
     }
 
@@ -78,14 +76,16 @@ export default function Profile() {
         setPasswordShow(!passwordShow);
     }
 
-    const handlePasswordChange = () => {
+    const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const password = passwordRef.current?.value;
         const passwordLength = password?.length || 0;
         setProgress(passwordLength);
+        e.currentTarget.value !== e.currentTarget.defaultValue ? setNoValue(false) : setNoValue(true)
     }
-    const handleUsernameChange = () => {
+    const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const username = usernameRef.current?.value;
         setInvalidUsername((/[^0-9a-zA-Z]+/ig).test(username || ''));
+        e.currentTarget.value !== e.currentTarget.defaultValue ? setNoValue(false) : setNoValue(true)
     }
     return (
         <>
@@ -104,7 +104,9 @@ export default function Profile() {
                                     label='First Name'
                                 >
 
-                                    <Form.Control type="text" defaultValue={user?.firstName} autoComplete="off" placeholder="First Name" ref={firstNameRef} />
+                                    <Form.Control type="text" defaultValue={user?.firstName} autoComplete="off" placeholder="First Name" ref={firstNameRef} onChange={(e) => {
+                                        e.currentTarget.value !== e.currentTarget.defaultValue ? setNoValue(false) : setNoValue(true)
+                                    }} />
                                 </Form.FloatingLabel>
                             </Col >
                             <Col>
@@ -112,7 +114,9 @@ export default function Profile() {
                                     controlId="lastName"
                                     label='Last Name'
                                 >
-                                    <Form.Control type="text" defaultValue={user?.lastName} autoComplete="off" placeholder="Last Name" ref={lastNameRef} />
+                                    <Form.Control type="text" defaultValue={user?.lastName} autoComplete="off" placeholder="Last Name" ref={lastNameRef} onChange={(e) => {
+                                        e.currentTarget.value !== e.currentTarget.defaultValue ? setNoValue(false) : setNoValue(true)
+                                    }} />
                                 </Form.FloatingLabel>
                             </Col>
                         </Row >
@@ -132,7 +136,9 @@ export default function Profile() {
                                     label='Email'
                                 >
 
-                                    <Form.Control type="email" defaultValue={user?.email} autoComplete="off" placeholder="Email" ref={emailRef} />
+                                    <Form.Control type="email" defaultValue={user?.email} autoComplete="off" placeholder="Email" ref={emailRef} onChange={(e) => {
+                                        e.currentTarget.value !== e.currentTarget.defaultValue ? setNoValue(false) : setNoValue(true)
+                                    }} />
                                 </Form.FloatingLabel>
                             </Col>
                         </Row>
