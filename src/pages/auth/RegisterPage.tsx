@@ -80,7 +80,7 @@ export default function RegisterPage() {
     return <>
         <Container className="register-container">
             <Card className="register-card">
-                <Card.Title style={{ textAlign: 'center' }}><h1>Register</h1></Card.Title>
+                <Card.Title style={{ textAlign: 'center' }}><h1>Create A User</h1></Card.Title>
                 <form className="row g-3" onSubmit={handleSubmit}>
                     <div className="col-md-6">
                         <label htmlFor="inputEmail4" className="form-label" >Email</label>
