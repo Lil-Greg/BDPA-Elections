@@ -25,10 +25,12 @@ export interface Election{
     opensAt: number,
     closesAt: number,
     owned: boolean,
-    deleted: boolean
+    deleted: boolean,
+    type: "irv" | "cpl"
 }
 export interface CreateElection{
     title: string,
+    type: string | 'irv' | 'cpl',
     description:string,
     options:string[],
     opensAt:number,

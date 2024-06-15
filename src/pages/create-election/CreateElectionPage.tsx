@@ -12,6 +12,7 @@ export default function CreateElectionPage() {
     const [formValues, setFormValues] = useState<CreateElection>({
         /*use a useRef to set formValues, have to set all at once.*/
         title: '',
+        type: 'irv' || 'cpl',
         description: '',
         options: [],
         opensAt: 0,
@@ -19,6 +20,7 @@ export default function CreateElectionPage() {
 
     });
     const titleRef = useRef<HTMLInputElement>(null);
+    const typeRef = useRef<HTMLSelectElement>(null);
     const descriptionRef = useRef<HTMLTextAreaElement>(null);
     const optionsRef = useRef<HTMLInputElement>(null);
     const opensAtRef = useRef<HTMLInputElement>(null);
@@ -40,16 +42,18 @@ export default function CreateElectionPage() {
         event.preventDefault();
 
         const titleValue = titleRef.current?.value;
+        const typeValue = typeRef.current?.value;
         const descriptionValue = descriptionRef.current?.value;
         const optionsValue = optionsRef.current?.value;
         const opensAtValue = opensAtRef.current?.value;
         const closesAtValue = closesAtRef.current?.value;
 
-        if (titleValue && descriptionValue && optionsValue && opensAtValue && closesAtValue) {
+        if (titleValue && descriptionValue && optionsValue && opensAtValue && closesAtValue && typeValue && typeValue !== 'none') {
             const x = parseInt(opensAtValue);
             const y = parseInt(closesAtValue);
             setFormValues({
                 title: titleValue,
+                type: typeValue,
                 description: descriptionValue,
                 options: [optionsValue],
                 opensAt: x,
@@ -111,6 +115,11 @@ export default function CreateElectionPage() {
                     >
                         <Form.Control autoComplete="off" type="text" ref={optionsRef} placeholder="Options" />
                     </FloatingLabel>
+                    <Form.Select defaultValue='none' ref={typeRef}>
+                        <option value="none">Select A Type...</option>
+                        <option value='irv'>Instant-Runoff Voting Method</option>
+                        <option value='cpl'>Copeland Voting Method</option>
+                    </Form.Select>
                     <Row>
                         <Col style={{ marginTop: '1rem' }}>
                             <p style={{ lineHeight: '0.25rem' }}>Opens At</p>

@@ -1,14 +1,15 @@
 import './ElectionPage.css';
 import { useNavigate, useParams } from "react-router-dom";
-import { UseSingleElection } from "../../hooks/useElection"
-import { Election } from "../../type";
-import IRVElections from "../../components/IRV-Elections";
+import { GetBallots, UseSingleElection } from "../../hooks/useElection"
+import { Election, GetBallotsResponse } from "../../type";
+import IRVElections from "../../algo/IRV-Elections";
 import { Button, Card, Col, Container, Row } from "react-bootstrap";
 import { useContext, useEffect, useState } from 'react';
 import UserContext from '../../context/UserContext';
+import CPLElections from '../../algo/CPL-Elections';
 
 export default function ElectionPage() {
-    const { electionId } = useParams();
+    const { electionId } = useParams<string>() || '';
     const { user } = useContext(UserContext);
     const election: Election | undefined = UseSingleElection(electionId || '');
     const navigate = useNavigate();
@@ -16,11 +17,20 @@ export default function ElectionPage() {
 
     useEffect(() => {
         async function fetchData() {
-            const data = await IRVElections(electionId || "");
-            setWinner(data);
+            const optionsResponse: GetBallotsResponse | undefined = await GetBallots(election?.election_id || '');
+            const ballotsConverted = optionsResponse?.ballots.map((ballots) => {
+                return Object.keys(ballots.ranking);
+            }) || [];
+            if (election?.type === 'irv') {
+                const data = IRVElections(ballotsConverted);
+                setWinner(data);
+            } else if (election?.type === 'cpl') {
+                const { CPL } = CPLElections(ballotsConverted, election.options);
+                setWinner(CPL);
+            }
         }
         fetchData();
-    }, [electionId])
+    }, [election])
 
     const handleVoteClick = () => {
         if (user?.type === 'voter') {
