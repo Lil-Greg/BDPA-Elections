@@ -1,5 +1,5 @@
 import './ElectionPage.css';
-import { NavLink, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { UseSingleElection } from "../../hooks/useElection"
 import { Election } from "../../type";
 import IRVElections from "../../components/IRV-Elections";
@@ -11,6 +11,7 @@ export default function ElectionPage() {
     const { electionId } = useParams();
     const { user } = useContext(UserContext);
     const election: Election | undefined = UseSingleElection(electionId || '');
+    const navigate = useNavigate();
     const [winner, setWinner] = useState<string>('');
 
     useEffect(() => {
@@ -21,6 +22,11 @@ export default function ElectionPage() {
         fetchData();
     }, [electionId])
 
+    const handleVoteClick = () => {
+        if (user?.type === 'voter') {
+            navigate(`/elections/${electionId}/${user._id}`)
+        }
+    }
 
     return (
         <>
@@ -47,11 +53,11 @@ export default function ElectionPage() {
                         )
                     })}
                 </div>
-                <Row className='election-vote-btn'>
-                    <NavLink to={`/elections/${electionId}/${user?._id}`}>
-                        <Button>Want to Vote?</Button>
-                    </NavLink>
-                </Row>
+                {user?.type === 'voter' && (
+                    <Row className='election-vote-btn'>
+                        <Button onClick={handleVoteClick}>Want to Vote?</Button>
+                    </Row>
+                )}
             </Container>
         </>
     )
