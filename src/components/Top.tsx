@@ -7,9 +7,11 @@ import { Outlet } from "react-router-dom";
 import { useContext } from 'react';
 import UserContext from '../context/UserContext.ts';
 import getImageURL from '../utils/image-util.ts';
+import useInfoApi from '../hooks/useInfoApi.ts';
 
 export default function Top() {
     const { user, isAuthenticated } = useContext(UserContext);
+    const info = useInfoApi();
 
     return (
         <>
@@ -44,6 +46,9 @@ export default function Top() {
                                     Login
                                 </Nav.Link>
                             )}
+                        </Nav>
+                        <Nav style={{ textAlign: 'end', textEmphasis: '300' }}>
+                            Total: {info?.info?.closedElections + info?.info?.openElections} Closed:{info?.info?.closedElections} Open:{info?.info?.openElections}}
                         </Nav>
                     </Navbar.Collapse>
                 </Container>

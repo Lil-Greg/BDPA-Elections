@@ -23,9 +23,9 @@ export default function useInfoApi(){
                 console.warn(error);
                 setInfo({
                     "success": true,
-                    info:{
+                    "info": {
                         "upcomingElections": 12,
-                        "openElection": 20,
+                        "openElections": 20,
                         "closedElections": 423
                     }
                 })
@@ -33,9 +33,9 @@ export default function useInfoApi(){
         }
         fetchData();
         return () =>{
-            setInfo(undefined);
-            //   setLoading(true);
-            //   setError(null);
+            // setInfo(undefined);
+            // //   setLoading(true);
+            // //   setError(null);
         };
     },[]); // Dependecies can't be same value that's set in the useEffect
                // If so, it results in re-render error
