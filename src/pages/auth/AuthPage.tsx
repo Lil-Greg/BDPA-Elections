@@ -3,7 +3,7 @@ import { FaRegEye } from "react-icons/fa6";
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Form from 'react-bootstrap/Form';
 import { useContext, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import UserContext from "../../context/UserContext";
 import useAuth from "../../hooks/useAuth";
 import { Button, Col, Container, InputGroup, Row } from 'react-bootstrap';
@@ -33,9 +33,7 @@ export default function AuthPage() {
                 window.localStorage.setItem('election-user', JSON.stringify(user));
                 navigate('/');
             }
-            alert(`Username: ${username}` + ` Password: ${password}`)
-        } else {
-            alert(`Please insert value`)
+            
         }
     }
     const togglePasswordShow = () => {
@@ -64,8 +62,9 @@ export default function AuthPage() {
                     <InputGroup.Text onClick={togglePasswordShow}>{passwordShow ? <FaRegEyeSlash /> : <FaRegEye />}</InputGroup.Text>
                 </InputGroup>
                 <Row>
-                    
-                    <a className="m-1" style={{ textDecoration: 'none' }} href="/login/forgot"><h5>Forgot Password?</h5></a>
+                    <NavLink to={'/forgot'} replace>
+                        <a className="m-1" style={{ textDecoration: 'none' }}><h5>Forgot Password?</h5></a>
+                    </NavLink>
                 </Row>
                 <Row className="mt-2 mb-4">
                     <Col xs="auto">

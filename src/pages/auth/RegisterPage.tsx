@@ -118,6 +118,7 @@ export default function RegisterPage() {
                     <option value="voter" selected>Voter</option>
                     <option value="reporter">Reporter</option>
                     <option value="administrator">Administrator</option>
+                    <option value="moderator">Moderartor</option>
                 </select>
             </div>
             <div className="col-md-4">
@@ -190,7 +191,7 @@ export default function RegisterPage() {
                 </div>
             </div>
             <div className="col-12">
-                <NavLink to={'/forgot'} replace>
+                <NavLink to={'/login'} replace>
                     <button type="submit" className="btn btn-primary">Sign In</button>
                 </NavLink>
             </div>

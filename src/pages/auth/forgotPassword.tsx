@@ -1,15 +1,8 @@
-import { useRef } from "react";
-
+import { NavLink } from "react-router-dom"
 export default function ForgotPassword() {
-  const emailRef = useRef<HTMLInputElement>()
-  const email =emailRef.current?.value; 
-  if (email) {
-            alert(`Email: ${email}`);
-        } else {
-            alert(`Email sent.`)
-        }
-
-    
+  {
+    alert(`Sent.`)
+}
     return(
     <>
    <form className="row g-3">
@@ -18,7 +11,9 @@ export default function ForgotPassword() {
       <input type="email" className="form-control" id="inputemail2" placeholder="email"></input>
     </div>
     <div className="col-auto">
+    <NavLink to={'/login'} >
       <button type="submit" className="btn btn-primary mb-3">send to email</button>
+      </NavLink>
     </div>
   </form>
     </> //remember connect all buttons to each other (sign up page)
