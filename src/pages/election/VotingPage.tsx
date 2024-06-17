@@ -3,13 +3,15 @@ import { Button, Card, Col, Container, FloatingLabel, Form, FormControl, InputGr
 import { useParams } from "react-router-dom";
 import { Election } from "../../type";
 import { UseSingleElection } from "../../hooks/useElection";
-import React from 'react';
+import React, { useState } from 'react';
 import { IoAddCircleOutline } from "react-icons/io5";
 import InputGroupText from 'react-bootstrap/esm/InputGroupText';
+import { IoCloseCircle, IoCloseCircleOutline } from "react-icons/io5";
 
 export default function VotingPage() {
     const { userId } = useParams();
     const { electionId } = useParams();
+    const [switchCloseButton, setSwitchCloseButton] = useState(false);
 
     const election: Election | undefined = UseSingleElection(electionId || '');
 
@@ -22,6 +24,12 @@ export default function VotingPage() {
     }
     const handleVoteSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+    }
+    const handleCloseHover = () => {
+        setSwitchCloseButton(true);
+    }
+    const handleCloseMouseOut = () => {
+        setSwitchCloseButton(false);
     }
     return <>
         <Container>
@@ -36,7 +44,7 @@ export default function VotingPage() {
                         {election?.options.map((option, index) => {
                             const evenOrOdd = index % 2 === 0 ? 'even' : 'odd';
                             return (
-                                <div key={option} draggable="true" className={`option-${evenOrOdd} option col-md-6`}>
+                                <div key={option} className={`option-${evenOrOdd} option col-md-6`}>
                                     {index}.&nbsp;{option}
                                 </div>
                             )
@@ -52,6 +60,7 @@ export default function VotingPage() {
                                     <tr>
                                         <th>#</th>
                                         <th>Option</th>
+                                        <th>Add New Row</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -73,13 +82,21 @@ export default function VotingPage() {
                                                                 {election?.options.map((option, index) => <option value={option} key={index}>{option}</option>)}
                                                             </datalist>
                                                         </FloatingLabel>
-                                                        <InputGroupText onClick={handleAddOnClick}><IoAddCircleOutline className='plus-icon' /></InputGroupText>
+                                                        <InputGroupText onMouseOver={handleCloseHover} onMouseOut={handleCloseMouseOut}>
+                                                            {switchCloseButton === true ? <IoCloseCircle /> : <IoCloseCircleOutline />}
+                                                        </InputGroupText>
                                                     </InputGroup>
+                                                </td>
+                                                <td>
+                                                    <Button>
+                                                        <IoAddCircleOutline className='plus-icon' onClick={handleAddOnClick} />
+                                                    </Button>
                                                 </td>
                                             </tr>
                                         )
                                     })}
-
+                                    <td>
+                                    </td>
                                 </tbody>
                             </Table>
                             <Button type='submit'>Submit Rankings</Button>
