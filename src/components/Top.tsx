@@ -48,7 +48,8 @@ export default function Top() {
                             )}
                         </Nav>
                         <Nav style={{ textAlign: 'end', textEmphasis: '300' }}>
-                            Total: {info?.info?.closedElections + info?.info?.openElections} Closed:{info?.info?.closedElections} Open:{info?.info?.openElections}}
+                            <h4>Elections Info:</h4>
+                            Total: {info?.info?.closedElections + info?.info?.openElections} Closed:{info?.info?.closedElections} Open:{info?.info?.openElections}
                         </Nav>
                     </Navbar.Collapse>
                 </Container>

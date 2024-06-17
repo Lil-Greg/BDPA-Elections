@@ -7,9 +7,15 @@ import getImageURL from '../../utils/image-util';
 import useInfoApi from "../../hooks/useInfoApi.ts";
 import handlePrev from "../../hooks/useElectionHistory"
 import handleNext from "../../hooks/useElectionHistory"
+const { elections, isLoading, isErroring } = useElectionHistory();
 
+function sortByAlphabet(){
+    // elections?.elections.sort((a, b) => a.createdAt - b.createdAt);
+}
 export default function HistoryPage() {
-    const { elections, isLoading, isErroring } = useElectionHistory();
+    console.log(elections?.elections);
+    elections?.elections.sort((a, b) => a.createdAt - b.createdAt);
+    console.log(elections?.elections);
     const openElectionNum = useInfoApi();
     const totalElections = openElectionNum ? openElectionNum?.info.openElection + openElectionNum?.info.closedElections + openElectionNum?.info.upcomingElections : 0;
 
