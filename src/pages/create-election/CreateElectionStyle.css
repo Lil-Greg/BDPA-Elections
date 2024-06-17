@@ -8,3 +8,27 @@
 .create-election-form{
     display: contents;
 }
+.create-election-type-selection{
+    min-height: 58px;
+}
+.create-election-option-input-group-text{
+    font-size: 100%;
+}
+.create-election-option-input-group-text:hover{
+    cursor: pointer;
+}
+.create-election-options-input{
+    text-transform: capitalize;
+}
+.create-election-delete-option{
+    cursor: pointer;
+}
+.removed-option{
+    text-decoration: line-through;
+}
+.odd-option{
+    background-color: #fff;
+}
+.even-option{
+    background-color: #A9A9A9;
+}
