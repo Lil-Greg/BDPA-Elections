@@ -32,6 +32,34 @@
         gap: 0.5rem;
     }
 }
+.voting-options-delete{
+    width: 2rem;
+    height: 2rem;
+}
+.voting-options-delete:hover{
+    animation: 0.5s fadeIn forwards;
+    animation-delay: 0.5s;
+}
+.voting-input-group-text:hover{
+    cursor: pointer;
+}
+.voting-input-group-text-invalid{
+    height: 58px;
+}
+.plus-icon{
+    width: 1.5rem;
+    height: 1.5rem;
+}
+.fadeIn{
+    animation: 0.5s fadeIn forwards;
+    animation-delay: 0.5s;
+}
+@keyframes fadeIn{
+    to{
+        scale: 1;
+        opacity: 1;
+    }
+}
 /* .options-even{
 
 }
