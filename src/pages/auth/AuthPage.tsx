@@ -31,7 +31,7 @@ export default function AuthPage() {
             if (success) {
                 setUser && setUser(user); // Set Types
                 window.localStorage.setItem('election-user', JSON.stringify(user));
-                navigate('/');
+                navigate('/', { replace: true });
             }
             alert(`Username: ${username}` + ` Password: ${password}`)
         } else {

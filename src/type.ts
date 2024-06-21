@@ -25,10 +25,12 @@ export interface Election{
     opensAt: number,
     closesAt: number,
     owned: boolean,
-    deleted: boolean
+    deleted: boolean,
+    type: "irv" | "cpl"
 }
 export interface CreateElection{
     title: string,
+    type: string | 'irv' | 'cpl',
     description:string,
     options:string[],
     opensAt:number,
@@ -41,8 +43,15 @@ export interface optionRankings{
     rank3Votes: number,
 }
 export interface Ballots{
-    voter_id: string
+    voter_id: string,
     ranking: {rank:number}
+}
+export interface GetSingleBallotType{
+    success:boolean,
+    ballot:{
+        voter_id: string,
+        ranking: {rank: number}
+    }
 }
 export interface GetBallotsResponse{
     success:boolean,

@@ -1,28 +1,41 @@
 import './ElectionPage.css';
 import { useNavigate, useParams } from "react-router-dom";
-import { UseSingleElection } from "../../hooks/useElection"
-import { Election } from "../../type";
-import IRVElections from "../../components/IRV-Elections";
+import { GetBallots, UseSingleElection, GetSingleBallot } from "../../hooks/useElection"
+import { Election, GetBallotsResponse, GetSingleBallotType } from "../../type";
+import IRVElections from "../../algo/IRV-Elections";
 import { Button, Card, Col, Container, Row } from "react-bootstrap";
 import { useContext, useEffect, useState } from 'react';
 import UserContext from '../../context/UserContext';
+import CPLElections from '../../algo/CPL-Elections';
 
 export default function ElectionPage() {
-    const { electionId } = useParams();
+    const { electionId } = useParams<string>() || '';
     const { user } = useContext(UserContext);
     const election: Election | undefined = UseSingleElection(electionId || '');
     const navigate = useNavigate();
     const [winner, setWinner] = useState<string>('');
+    const [ballot, setBallot] = useState<GetSingleBallotType | undefined>();
 
     useEffect(() => {
         async function fetchData() {
-            const data = await IRVElections(electionId || "");
-            setWinner(data);
+            const ballotCall = await GetSingleBallot(electionId || '', user?.username || '');
+            setBallot(ballotCall);
+            const optionsResponse: GetBallotsResponse | undefined = await GetBallots(election?.election_id || '');
+            const ballotsConverted = optionsResponse?.ballots.map((ballots) => {
+                return Object.keys(ballots.ranking);
+            }) || [];
+            if (election?.type === 'irv') {
+                const data = IRVElections(ballotsConverted);
+                setWinner(data);
+            } else if (election?.type === 'cpl') {
+                const { CPL } = CPLElections(ballotsConverted, election.options);
+                setWinner(CPL);
+            }
         }
         fetchData();
-    }, [electionId])
+    }, [election])
 
-    const handleVoteClick = () => {
+    const handleVoteClick = async () => {
         if (user?.type === 'voter') {
             navigate(`/elections/${electionId}/${user._id}`)
         }
@@ -30,7 +43,6 @@ export default function ElectionPage() {
 
     return (
         <>
-            {winner}
             <Container className="electionPage-container">
                 <Card className="electionPage-jumboCard">
                     <h1 className="electionPage-title">{election?.title}</h1>
@@ -45,17 +57,23 @@ export default function ElectionPage() {
                     </Row>
                 </Card>
                 <div className='options-overlap-div'>
-                    {election?.options.map((options, index) => {
+                    {election?.options.map((option) => {
                         return (
                             <>
-                                <p className={`every-option option-number-${index}`}>{options}</p>&nbsp;&nbsp;
+                                <p className={`every-option option-${winner === option ? 'winner' : 'regular'}`}>{option}</p>&nbsp;&nbsp;
                             </>
                         )
                     })}
                 </div>
-                {user?.type === 'voter' && (
+                {user?.type === 'voter' && ballot?.success === true ? (
                     <Row className='election-vote-btn'>
-                        <Button onClick={handleVoteClick}>Want to Vote?</Button>
+                        <Button variant='danger'>
+                            Already Voted, Want to Go Back?
+                        </Button>
+                    </Row>
+                ) : (
+                    <Row className='election-vote-btn'>
+                        <Button onClick={handleVoteClick} variant='success'>Want to Vote?</Button>
                     </Row>
                 )}
             </Container>

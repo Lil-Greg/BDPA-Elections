@@ -1,9 +1,11 @@
 import './CreateElectionStyle.css';
-import { Button, Col, Container, FloatingLabel, Form, Modal, Row } from "react-bootstrap";
+import { Button, Col, Container, FloatingLabel, Form, InputGroup, ListGroup, ListGroupItem, Modal, Row } from "react-bootstrap";
 import { CreateElection } from "../../type";
 import { useRef, useState } from "react";
 import AdminCreateElection from "../../hooks/useCreateElection";
 import { useNavigate } from "react-router-dom";
+import InputGroupText from 'react-bootstrap/esm/InputGroupText';
+import { IoCloseCircle, IoCloseCircleOutline } from "react-icons/io5";
 
 export default function CreateElectionPage() {
     const navigate = useNavigate();
@@ -12,6 +14,7 @@ export default function CreateElectionPage() {
     const [formValues, setFormValues] = useState<CreateElection>({
         /*use a useRef to set formValues, have to set all at once.*/
         title: '',
+        type: 'irv' || 'cpl',
         description: '',
         options: [],
         opensAt: 0,
@@ -19,12 +22,17 @@ export default function CreateElectionPage() {
 
     });
     const titleRef = useRef<HTMLInputElement>(null);
+    const typeRef = useRef<HTMLSelectElement>(null);
     const descriptionRef = useRef<HTMLTextAreaElement>(null);
     const optionsRef = useRef<HTMLInputElement>(null);
     const opensAtRef = useRef<HTMLInputElement>(null);
     const closesAtRef = useRef<HTMLInputElement>(null);
 
-    const handleClose = () => setShow(false);
+    const [show2, setShow2] = useState(false);
+    const [optionSameName, setOptionSameName] = useState(false);
+    const [optionsArray, setOptionsArray] = useState<string[]>([]);
+
+    const handleClose = () => { setShow(false); setShow2(false); };
     const handleShow = () => {
         switch (error) {
             case (true):
@@ -35,23 +43,57 @@ export default function CreateElectionPage() {
                 break;
         }
     };
+    const handleCheckOption = () => {
+        const optionsValue = optionsRef.current?.value;
+        if (optionsValue !== undefined) {
+            const checking = optionsArray.filter((option) => optionsValue === option);
+            checking[0] === optionsValue ? setOptionSameName(true) : setOptionSameName(false);
+        }
+    };
+    const handleAddNewOption = () => {
+        if (optionsRef.current?.value !== undefined) {
+            const optionValue = optionsRef.current.value;
+            // optionsArray.find((value) => value === optionValue ? setOptionSameName(true) : setOptionSameName(false));
+            switch (optionSameName) {
+                case (false):
+                    optionsArray.push(optionValue);
+                    setOptionsArray(optionsArray);
+                    optionsRef.current.value = '';
+                    break;
+            }
+            console.log('Option Same Name variable', optionSameName);
+            // console.log("Checking Array Method", optionsArray[optionValue]);
+            console.log('Options Array', optionsArray);
+        }
+    };
+    const handleShow2 = () => {
+        switch (optionSameName) {
+            case (true):
+                setShow2(false)
+                break;
+            case (false):
+                setShow2(true);
+                break;
+        }
+    }
 
     const handleFormSubmit = (event: React.FormEvent) => {
         event.preventDefault();
 
         const titleValue = titleRef.current?.value;
+        const typeValue = typeRef.current?.value;
         const descriptionValue = descriptionRef.current?.value;
-        const optionsValue = optionsRef.current?.value;
         const opensAtValue = opensAtRef.current?.value;
         const closesAtValue = closesAtRef.current?.value;
 
-        if (titleValue && descriptionValue && optionsValue && opensAtValue && closesAtValue) {
+        if (titleValue && descriptionValue && optionsArray && opensAtValue && closesAtValue && typeValue && typeValue !== undefined) {
             const x = parseInt(opensAtValue);
             const y = parseInt(closesAtValue);
             setFormValues({
                 title: titleValue,
+                type: typeValue,
                 description: descriptionValue,
-                options: [optionsValue],
+                options: optionsArray,
                 opensAt: x,
                 closesAt: y,
             });
@@ -86,6 +128,42 @@ export default function CreateElectionPage() {
                 </Modal.Footer>
             </Modal>
 
+            {/* Options Modal */}
+            <Modal show={show2} onHide={handleClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Current Options</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <ListGroup>
+                        {optionsArray.map((option, index) => {
+                            const removed = optionsArray[index] === option ? false : true;
+                            const evenOrOdd = index % 2 === 0 ? 'even' : 'odd';
+                            return <>
+                                <ListGroupItem
+                                    key={index}
+                                    style={{ display: 'flex', alignItems: "", justifyContent: 'space-between' }}
+                                    className={removed ? 'removed-option' : evenOrOdd === 'even' ? 'even-option' : 'odd-option'}
+                                >
+                                    {index + 1}.&nbsp;{option}
+                                    <IoCloseCircleOutline key={index} size={'1.5rem'} className='create-election-delete-option'
+                                        onClick={() => {
+                                            optionsArray.splice(index, 1);
+                                            setOptionsArray(optionsArray);
+                                            console.log(optionsArray);
+                                        }}
+                                        onMouseOver={() => <IoCloseCircle />} />
+                                </ListGroupItem>
+                            </>
+                        })}
+                    </ListGroup>
+                </Modal.Body>
+                <Modal.Footer style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <Button variant="secondary" onClick={handleClose}>
+                        Close
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+
             {/* FORM */}
             <Container className="create-election-container">
                 <h1>Create An Election</h1>
@@ -104,13 +182,22 @@ export default function CreateElectionPage() {
                     >
                         <Form.Control autoComplete="off" type="text" as='textarea' ref={descriptionRef} placeholder="Description" />
                     </FloatingLabel>
-                    <FloatingLabel
-                        controlId="floatingInput"
-                        label="Options"
-                        className='mb-3 w-50'
-                    >
-                        <Form.Control autoComplete="off" type="text" ref={optionsRef} placeholder="Options" />
-                    </FloatingLabel>
+                    <InputGroup className='mb-1 w-50'>
+                        <FloatingLabel
+                            controlId="floatingInputOptions"
+                            label="Options"
+                        >
+                            <Form.Control className='create-election-options-input' autoComplete="off" type="text" ref={optionsRef} onChange={handleCheckOption} isInvalid={optionSameName} placeholder="Options" />
+                            <Form.Control.Feedback type='invalid'>Options Cannot Have The Same Name</Form.Control.Feedback>
+                        </FloatingLabel>
+                        {optionSameName === false && (<InputGroupText onClick={handleAddNewOption} className='create-election-option-input-group-text'>+</InputGroupText>)}
+                    </InputGroup>
+                    <Button className='mb-2' variant={optionSameName ? 'danger' : 'success'} onClick={handleShow2}>See Options</Button>
+                    <Form.Select defaultValue='none' className='mb-3 w-50 create-election-type-selection' ref={typeRef}>
+                        <option value="none">Select A Type...</option>
+                        <option value='irv'>Instant-Runoff Voting Method (IRV)</option>
+                        <option value='cpl'>Copeland Voting Method (CPL)</option>
+                    </Form.Select>
                     <Row>
                         <Col style={{ marginTop: '1rem' }}>
                             <p style={{ lineHeight: '0.25rem' }}>Opens At</p>

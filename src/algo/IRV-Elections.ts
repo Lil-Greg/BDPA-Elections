@@ -1,16 +1,9 @@
-import { GetBallots } from "../hooks/useElection";
-
-export default async function IRVElections(election_id:string){
+export default function IRVElections(ballotsConverted:string[][]){
     // -----ALGO-----
     // Count first choices
     // Find candidate with fewest votes within first places
     // Eliminate candidate
     // Add the vote to the 2nd placer
-
-    const optionsResponse = await GetBallots(election_id);
-    let ballotsConverted = optionsResponse?.ballots.map((ballots) => {
-        return Object.keys(ballots.ranking);
-    }) || [];
 
     const countFirstPlacers = () => {
         const firstPlaceCount: { [x: string]: number; } = {};
