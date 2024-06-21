@@ -35,6 +35,9 @@
     border: 1px solid #00b3e7;
     padding: 0.1rem;
 }
+.option-winner{
+    background-color: #AFE1AF;
+}
 .election-vote-btn{
     text-align: center;
 }

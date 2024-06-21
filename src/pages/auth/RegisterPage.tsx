@@ -58,7 +58,7 @@ export default function RegisterPage() {
             };
             // Create user
             createUser(formValues);
-            navigate('/login');
+            navigate('/login', { replace: true });
         } else {
             alert("ADD SOME STUFF!!");
         }
