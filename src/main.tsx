@@ -9,7 +9,7 @@ import UserContextProvider from './context/UserContextProvider.tsx';
 import DashboardPage from './pages/dashboard/DashboardPage.tsx';
 import AuthPage from './pages/auth/AuthPage.tsx';
 import ProtectedRoute from './components/ProtectedRoute.tsx';
-import HistoryPage from './pages/history/HistoryPage.tsx';
+import MultiElectionsPage from './pages/multi-elections/MultiElectionsPage.tsx';
 import RegisterPage from './pages/auth/RegisterPage.tsx';
 import CreateElectionPage from './pages/create-election/CreateElectionPage.tsx';
 import { ConvexProvider, ConvexReactClient } from 'convex/react';
@@ -27,7 +27,7 @@ const router = createBrowserRouter([
     element: <ProtectedRoute allowedUserTypes={['administrator', 'super']}><CreateElectionPage /></ProtectedRoute>
   }, {
     path: '/elections',
-    element: <ProtectedRoute allowedUserTypes={['voter', 'administrator', 'super']}><HistoryPage /></ProtectedRoute>,
+    element: <ProtectedRoute allowedUserTypes={['voter', 'administrator', 'super']}><MultiElectionsPage /></ProtectedRoute>,
   }, {
     path: '/elections/:electionId',
     element: <ProtectedRoute allowedUserTypes={['voter', 'administrator', 'reporter', 'super']}><ElectionPage /></ProtectedRoute>
@@ -39,10 +39,10 @@ const router = createBrowserRouter([
     element: <AuthPage />
   }, {
     path: '/register',
-    element: <RegisterPage/> //<ProtectedRoute allowedUserTypes={['administrator', 'super']}><RegisterPage /></ProtectedRoute>
-  },{
-    path:'/forgot',
-    element:<ForgotPassword/>
+    element: <RegisterPage /> //<ProtectedRoute allowedUserTypes={['administrator', 'super']}><RegisterPage /></ProtectedRoute>
+  }, {
+    path: '/forgot',
+    element: <ForgotPassword />
   },
 ]);
 ReactDOM.createRoot(document.getElementById('root')!).render(
