@@ -1,17 +1,19 @@
 import { Card, Container, Form, InputGroup, ProgressBar } from "react-bootstrap";
 import './RegisterPage.css';
-import { useRef, useState } from "react";
+import { ChangeEvent, useRef, useState } from "react";
 import { UserToCreate } from "../../type";
 import { api } from '../../../convex/_generated/api';
-import { useMutation } from "convex/react";
+import { useMutation, useQuery } from "convex/react";
 import UserDerivePassword from "../../hooks/useDerivePassword";
 import { FaRegEyeSlash, FaRegEye } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 
 export default function RegisterPage() {
+    const getAllUsers = useQuery(api.users.get);
     const createUser = useMutation(api.users.createUser);
     const [progress, setProgress] = useState<number>(0);
     const [invalidUsername, setInvalidUsername] = useState(false);
+    const [sameUsername, setSameUsername] = useState(false);
     const [passwordShow, setPasswordShow] = useState(false);
     const navigate = useNavigate();
 
@@ -40,7 +42,7 @@ export default function RegisterPage() {
         const firstNameValue = firstNameRef.current?.value;
         const lastNameValue = lastNameRef.current?.value;
 
-        if (emailValue && usernameValue && passwordValue && typeValue && cityValue && stateValue && zipValue && addressValue && firstNameValue && lastNameValue != null && stateValue != 'none') {
+        if (emailValue && usernameValue && passwordValue && typeValue && cityValue && stateValue && zipValue && addressValue && firstNameValue && lastNameValue != null && stateValue != 'none' && sameUsername !== false && invalidUsername !== false) {
             const { keyString, saltString } = await UserDerivePassword(passwordValue);
             const formValues: UserToCreate = {
                 password: passwordValue,
@@ -69,7 +71,13 @@ export default function RegisterPage() {
         const passwordLength = password?.length || 0;
         setProgress(passwordLength);
     }
-    const handleUsernameChange = () => {
+    const handleUsernameChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const checkForSameUsername = getAllUsers?.filter(userData => userData.username === e.currentTarget.value);
+        if (checkForSameUsername?.length === 0) {
+            setSameUsername(false);
+        } else {
+            setSameUsername(true);
+        }
         const username = usernameRef.current?.value;
         setInvalidUsername((/[^0-9a-zA-Z]+/ig).test(username || ''));
     }
@@ -105,8 +113,20 @@ export default function RegisterPage() {
 
                     <div className="col-md-6">
                         <label htmlFor="inputUsername" className="form-label" >Username</label>
-                        <Form.Control type="text" autoComplete="off" className="form-control" onChange={handleUsernameChange} id="inputUsername" ref={usernameRef} isInvalid={invalidUsername} required />
-                        <Form.Control.Feedback type="invalid">Must Be Alpha-Numeric</Form.Control.Feedback>
+                        <Form.Control
+                            type="text"
+                            autoComplete="off"
+                            className="form-control"
+                            onChange={handleUsernameChange}
+                            id="inputUsername"
+                            ref={usernameRef}
+                            isInvalid={invalidUsername === true ? invalidUsername : sameUsername}
+                            required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                            {invalidUsername === true ? 'Must Be Alpha-Numeric' :
+                                sameUsername === true && 'Already A User With this Username'}
+                        </Form.Control.Feedback>
                     </div>
                     <div className="col-md-6">
                         <label htmlFor="typeState" className="form-label">Type</label>

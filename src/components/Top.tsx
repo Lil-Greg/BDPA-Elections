@@ -20,35 +20,31 @@ export default function Top() {
                     <Navbar.Brand href="/"><img className='navHome' src={getImageURL('dc.png')}></img>&nbsp;D.C. Elections</Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
-                        <Nav style={{ textAlign: 'center', textEmphasis: '300' }} className="me-auto">
+                        <Nav style={{ textAlign: 'center', textEmphasis: '300' }} className="me-auto navigation-element-container">
                             <Nav.Link href="/elections">Elections</Nav.Link>
                             <Nav.Link href="#link">Link</Nav.Link>
-                            <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-                                <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-                                <NavDropdown.Item href="#action/3.2">
-                                    Another action
+                            <NavDropdown title="Election Info" id="basic-nav-dropdown">
+                                <NavDropdown.Item href="#action/3.1">
+                                    Total:&nbsp;{(info?.info?.closedElections || 0) + (info?.info?.openElection || 0)}
                                 </NavDropdown.Item>
-                                <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-                                <NavDropdown.Divider />
-                                <NavDropdown.Item href="#action/3.4">
-                                    Separated link
+                                <NavDropdown.Item href="#action/3.2">
+                                    Open:{info?.info?.openElection ? info.info.openElection : 0}
+                                </NavDropdown.Item>
+                                <NavDropdown.Item href="#action/3.3">
+                                    Closed:{info?.info?.closedElections}
                                 </NavDropdown.Item>
                             </NavDropdown>
-                            {isAuthenticated ? (
-                                <>
+                            <Nav style={{ alignSelf: 'end' }}>
+                                {isAuthenticated ? (
                                     <Nav.Link href='/'>
                                         <img src={getImageURL('default-pfp.jpg')} alt={`${user?.username}'s Profile Picture`} className="pfp" />
                                     </Nav.Link>
-                                </>
-
-                            ) : (
-                                <Nav.Link href='/login'>
-                                    Login
-                                </Nav.Link>
-                            )}
-                        </Nav>
-                        <Nav style={{ textAlign: 'end', textEmphasis: '300' }}>
-                            Total: {info?.info?.closedElections + info?.info?.openElections} Closed:{info?.info?.closedElections} Open:{info?.info?.openElections}}
+                                ) : (
+                                    <Nav.Link href='/login'>
+                                        Login
+                                    </Nav.Link>
+                                )}
+                            </Nav>
                         </Nav>
                     </Navbar.Collapse>
                 </Container>
