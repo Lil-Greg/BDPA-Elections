@@ -20,10 +20,6 @@
   height: 3rem;
   width: 3rem;
 }
-.navigation-element-container{
-  display: flex;
-  flex-direction: row;
-}
 .menuStats{
   font-size: 10px;
 }
@@ -46,6 +42,6 @@
 }
 @media(max-width:991px){
   .pfp{
-    align-self: center;
+    align-self: center !important;
   }
 }

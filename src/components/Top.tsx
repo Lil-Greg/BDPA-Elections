@@ -22,19 +22,18 @@ export default function Top() {
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav style={{ textAlign: 'center', textEmphasis: '300' }} className="me-auto navigation-element-container">
                             <Nav.Link href="/elections">Elections</Nav.Link>
-                            <Nav.Link href="#link">Link</Nav.Link>
                             <NavDropdown title="Election Info" id="basic-nav-dropdown">
                                 <NavDropdown.Item href="#action/3.1">
                                     Total:&nbsp;{(info?.info?.closedElections || 0) + (info?.info?.openElection || 0)}
                                 </NavDropdown.Item>
                                 <NavDropdown.Item href="#action/3.2">
-                                    Open:{info?.info?.openElection ? info.info.openElection : 0}
+                                    Open:&nbsp;{info?.info?.openElection ? info.info.openElection : 0}
                                 </NavDropdown.Item>
                                 <NavDropdown.Item href="#action/3.3">
-                                    Closed:{info?.info?.closedElections}
+                                    Closed:&nbsp;{info?.info?.closedElections}
                                 </NavDropdown.Item>
                             </NavDropdown>
-                            <Nav style={{ alignSelf: 'end' }}>
+                            <Nav>
                                 {isAuthenticated ? (
                                     <Nav.Link href='/'>
                                         <img src={getImageURL('default-pfp.jpg')} alt={`${user?.username}'s Profile Picture`} className="pfp" />
