@@ -63,10 +63,21 @@ export default function Settings() {
                 </Modal.Footer>
             </Modal>
             {/* CARD */}
-            <Container className={user?.type === 'administrator' ? "settings-card-container" : ''}>
-                {user?.type === 'administrator' && (
+            <Container className={user?.type === 'administrator' || user?.type === 'super' ? "settings-card-container" : ''}>
+                {user?.type === 'administrator' ? (
                     <Card className="settings-card-register mb-2 settings-card">
-                        <Card.Title className="settings-card-title">Create A User</Card.Title>
+                        <Card.Title className="settings-card-title">
+                            Create A Moderator
+                        </Card.Title>
+                        <Card.Body className="settings-card-body">
+                            <Button onClick={() => navigate('/register')} className="settings-register-button">Register</Button>
+                        </Card.Body>
+                    </Card>
+                ) : user?.type === 'super' && (
+                    <Card className="settings-card-register mb-2 settings-card">
+                        <Card.Title className="settings-card-title">
+                            Create An Administrator
+                        </Card.Title>
                         <Card.Body className="settings-card-body">
                             <Button onClick={() => navigate('/register')} className="settings-register-button">Register</Button>
                         </Card.Body>

@@ -1,14 +1,16 @@
 import { Card, Container, Form, InputGroup, ProgressBar } from "react-bootstrap";
 import './RegisterPage.css';
-import { ChangeEvent, useRef, useState } from "react";
+import { ChangeEvent, useContext, useRef, useState } from "react";
 import { UserToCreate } from "../../type";
 import { api } from '../../../convex/_generated/api';
 import { useMutation, useQuery } from "convex/react";
 import UserDerivePassword from "../../hooks/useDerivePassword";
 import { FaRegEyeSlash, FaRegEye } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
+import UserContext from "../../context/UserContext";
 
 export default function RegisterPage() {
+    const { user } = useContext(UserContext);
     const getAllUsers = useQuery(api.users.get);
     const createUser = useMutation(api.users.createUser);
     const [progress, setProgress] = useState<number>(0);
@@ -42,7 +44,7 @@ export default function RegisterPage() {
         const firstNameValue = firstNameRef.current?.value;
         const lastNameValue = lastNameRef.current?.value;
 
-        if (emailValue && usernameValue && passwordValue && typeValue && cityValue && stateValue && zipValue && addressValue && firstNameValue && lastNameValue != null && stateValue != 'none' && sameUsername !== false && invalidUsername !== false) {
+        if (emailValue && usernameValue && passwordValue && typeValue && cityValue && stateValue && zipValue && addressValue && firstNameValue && lastNameValue != null && stateValue != 'none' && sameUsername === false && invalidUsername === false) {
             const { keyString, saltString } = await UserDerivePassword(passwordValue);
             const formValues: UserToCreate = {
                 password: passwordValue,
@@ -131,9 +133,12 @@ export default function RegisterPage() {
                     <div className="col-md-6">
                         <label htmlFor="typeState" className="form-label">Type</label>
                         <select id="typeState" className="form-select" ref={typeRef}>
-                            <option value="voter" selected>Voter</option>
-                            <option value="reporter">Reporter</option>
-                            <option value="administrator">Administrator</option>
+                            {user === null && (
+                                <>
+                                    <option value="voter" selected>Voter</option>
+                                    <option value="reporter">Reporter</option>
+                                </>
+                            )}
                         </select>
                     </div>
                     <div className="col-12">
