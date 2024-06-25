@@ -6,6 +6,11 @@
     gap: 1rem;
     margin: 1rem;
 }
+.voting-modal-body{
+    display: grid;
+    grid-template-columns: 1fr 1fr auto;
+    grid-template-rows: auto;
+}
 .side{
     text-align: center;
     padding: 1rem;
@@ -27,9 +32,93 @@
 @media(max-width: 992px){
     .grid-placement{
         display: grid;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr 1fr !important;
         grid-template-rows: auto;
         gap: 0.5rem;
+    }
+}
+.grid-placement{
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        grid-template-rows: auto;
+        gap: 0.5rem; 
+}
+.voting-options-delete{
+    width: 2rem;
+    height: 2rem;
+}
+.voting-options-delete:hover{
+    animation: 0.5s fadeIn forwards;
+    animation-delay: 0.5s;
+}
+.voting-input-group-text:hover{
+    cursor: pointer;
+}
+.voting-input-group-text-invalid{
+    height: 58px;
+}
+.plus-icon{
+    width: 1.5rem;
+    height: 1.5rem;
+}
+.voting-rank-list{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
+    gap: none;
+}
+.voting-rank-list-item{
+    width: 25rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.voting-change-button{
+    border: 1px black solid;
+}
+.voting-change-button:hover{
+    background: #ADADAD;
+}
+.voting-change-span{
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+@media(max-width: 992px){
+    .voting-rank-list{
+        display: flex !important;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+}
+@media(max-width:500px){
+    .voting-rank-list-item{
+        width: 15rem !important;
+    }
+}
+.ranking-notMultipleOf3{
+    background-color: #fff;
+}
+.ranking-multiplOf3{
+    background-color: #C0C0C0;
+}
+.voting-rank-number{
+    font-size: 2rem;
+    font-weight: 600;
+}
+.voting-rank-name{
+    font-size: 1.5rem;
+    font-weight: 400;
+}
+.fadeIn{
+    animation: 0.5s fadeIn forwards;
+    animation-delay: 0.5s;
+}
+@keyframes fadeIn{
+    to{
+        scale: 1;
+        opacity: 1;
     }
 }
 /* .options-even{

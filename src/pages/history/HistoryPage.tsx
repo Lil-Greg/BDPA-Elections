@@ -1,10 +1,8 @@
 import './HistoryPage.css';
-import './History.css';
 import { NavLink } from "react-router-dom";
 import useElectionHistory from "../../hooks/useElectionHistory";
 import { Container } from 'react-bootstrap';
 import getImageURL from '../../utils/image-util';
-import useInfoApi from "../../hooks/useInfoApi.ts";
 import handlePrev from "../../hooks/useElectionHistory"
 import handleNext from "../../hooks/useElectionHistory"
 const { elections, isLoading, isErroring } = useElectionHistory();
@@ -18,7 +16,6 @@ export default function HistoryPage() {
     console.log(elections?.elections);
     const openElectionNum = useInfoApi();
     const totalElections = openElectionNum ? openElectionNum?.info.openElection + openElectionNum?.info.closedElections + openElectionNum?.info.upcomingElections : 0;
-
     if (isLoading) {
         return <>
             <div className="loadingText">Loading...</div>
@@ -37,16 +34,14 @@ export default function HistoryPage() {
     return (
         <>
             <div className="container">
-                <span className="totalElections">{totalElections}</span>
-                <span className="openElections">{openElectionNum?.info.openElection}</span>
-                <span className="closedElections">{openElectionNum?.info.closedElections}</span>
                 <div className="electionBoxes">
                     {elections && elections.elections.map((election, index) => (
                         <Container className={`election-container container-${(index % 2) === 0 ? 'even' : 'odd'}`}>
                             <NavLink to={`/elections/${election.election_id}`}>
                                 <div
                                     key={election.election_id}
-                                    className='boxes'>
+                                    className='boxes'
+                                >
                                     <h3>{election.title}</h3>
                                     <p>{election.description}</p>
                                     <div className="options">

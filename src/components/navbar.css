@@ -42,6 +42,6 @@
 }
 @media(max-width:991px){
   .pfp{
-    align-self: center;
+    align-self: center !important;
   }
 }
