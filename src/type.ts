@@ -91,3 +91,15 @@ export interface UserContextType {
     setUser: React.Dispatch<React.SetStateAction<User | null>> | null,
     isAuthenticated: boolean
 }
+export type Election = {
+    election_id: string;
+    title: string;
+    type: string;
+    description: string;
+    options: string[];
+    createdAt: number;
+    opensAt: number;
+    closesAt: number;
+    owned: boolean;
+    deleted: boolean;
+};
