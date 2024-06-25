@@ -1,11 +1,7 @@
 import { useEffect, useState } from "react";
-<<<<<<< HEAD
 import { Election, ElectionStatus, ElectionsStatus, GetBallotsResponse } from "../type.ts";
 import CacheFetch from "./useCacheFetch.ts";
 import { useQuery } from "@tanstack/react-query";
-=======
-import { Election, ElectionStatus, ElectionsStatus, GetBallotsResponse, GetSingleBallotType } from "../type.ts";
->>>>>>> 8f847dab80a008aeafa710db665a8cfc0bc77e1d
 const url:string = import.meta.env.VITE_API_URL;
 const APIKey:string = import.meta.env.VITE_API_KEY;
 const options = {
@@ -17,6 +13,14 @@ const options = {
 }
 
 export default function UseElection(){
+    const {data} = useQuery({
+        queryKey: ['allElections'],
+        queryFn: getAllElections
+    }) 
+    return data;
+}
+
+export function fetchAllElections(){
     const {data} = useQuery({
         queryKey: ['allElections'],
         queryFn: getAllElections
@@ -35,6 +39,7 @@ export function getAllElections(){
     }
     return AllElections
 }
+
 
 export function UseSingleElection(id:string){
     const [election, setElection] = useState<Election>();
