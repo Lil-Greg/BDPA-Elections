@@ -15,6 +15,7 @@ import CreateElectionPage from './pages/create-election/CreateElectionPage.tsx';
 import { ConvexProvider, ConvexReactClient } from 'convex/react';
 import VotingPage from './pages/election/VotingPage.tsx';
 import ForgotPassword from './pages/auth/forgotPassword.tsx';
+import HistoryPage from './pages/history/HistoryPage.tsx';
 
 const convex = new ConvexReactClient(import.meta.env.VITE_CONVEX_URL as string);
 
@@ -39,11 +40,14 @@ const router = createBrowserRouter([
     element: <AuthPage />
   }, {
     path: '/register',
-    element: <RegisterPage /> //<ProtectedRoute allowedUserTypes={['administrator', 'super']}><RegisterPage /></ProtectedRoute>
+    element: <RegisterPage />
   }, {
     path: '/forgot',
     element: <ForgotPassword />
-  },
+  }, {
+    path: '/elections-history',
+    element: <ProtectedRoute allowedUserTypes={['reporter', 'moderator', 'administrator', 'super']}><HistoryPage /></ProtectedRoute>
+  }
 ]);
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>

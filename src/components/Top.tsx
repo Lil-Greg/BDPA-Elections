@@ -22,14 +22,21 @@ export default function Top() {
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav style={{ textAlign: 'center', textEmphasis: '300' }} className="me-auto navigation-element-container">
                             <Nav.Link href="/elections">Elections</Nav.Link>
+                            {user?.type === 'administrator' ? (
+                                <Nav.Link href='/elections-history'>History</Nav.Link>
+                            ) : user?.type === 'super' ? (
+                                <Nav.Link href='/elections-history'>History</Nav.Link>
+                            ) : user?.type === 'reporter' && (
+                                <Nav.Link href='/elections-history'>History</Nav.Link>
+                            )}
                             <NavDropdown title="Election Info" id="basic-nav-dropdown">
-                                <NavDropdown.Item href="#action/3.1">
-                                    Total:&nbsp;{(info?.info?.closedElections || 0) + (info?.info?.openElection || 0)}
+                                <NavDropdown.Item>
+                                    Total:&nbsp;{(info?.info?.closedElections || 0) + (info?.info?.openElections || 0)}
                                 </NavDropdown.Item>
-                                <NavDropdown.Item href="#action/3.2">
-                                    Open:&nbsp;{info?.info?.openElection ? info.info.openElection : 0}
+                                <NavDropdown.Item >
+                                    Open:&nbsp;{info?.info?.openElections ? info.info.openElections : 0}
                                 </NavDropdown.Item>
-                                <NavDropdown.Item href="#action/3.3">
+                                <NavDropdown.Item>
                                     Closed:&nbsp;{info?.info?.closedElections}
                                 </NavDropdown.Item>
                             </NavDropdown>

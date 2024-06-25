@@ -4,7 +4,7 @@ export interface ElectionInfo{
     success:boolean,
     info:{
         upcomingElections:number,
-        openElection:number,
+        openElections:number,
         closedElections:number
     }
 }

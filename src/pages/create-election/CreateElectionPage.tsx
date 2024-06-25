@@ -65,9 +65,6 @@ export default function CreateElectionPage() {
                     optionsRef.current.value = '';
                     break;
             }
-            console.log('Option Same Name variable', optionSameName);
-            // console.log("Checking Array Method", optionsArray[optionValue]);
-            console.log('Options Array', optionsArray);
         }
     };
     const handleShow2 = () => {
@@ -90,24 +87,34 @@ export default function CreateElectionPage() {
         const opensAtValue = opensAtRef.current?.value || '';
         const closesAtValue = closesAtRef.current?.value || '';
 
-        console.log('Checking Elections Variable: ', elections);
-        const checkingSameTitle = elections?.elections.filter((oneElection) => oneElection.title.toLowerCase() === titleValue?.toLowerCase());
+        const openingDate = new Date(opensAtValue).setMilliseconds(parseInt(opensAtValue));
+        const closingDate = new Date(closesAtValue).setMilliseconds(parseInt(closesAtValue));
+        const opensAtLessThanOrEqualToCloses = openingDate <= closingDate ? true : false;
 
-        if (titleValue && descriptionValue && optionsArray && opensAtValue && closesAtValue && typeValue && typeValue !== undefined && optionsArray.length !== 0 && checkingSameTitle?.length !== 0 && closesAtValue > opensAtValue) {
+        const checkingSameTitle = elections?.elections.filter((oneElection) => oneElection.title.toLowerCase() === titleValue?.toLowerCase());
+        if (titleValue && descriptionValue && optionsArray && opensAtValue && closesAtValue && typeValue && typeValue !== undefined && optionsArray.length !== 0 && opensAtLessThanOrEqualToCloses === true) {
             setFormValues({
                 title: titleValue,
                 type: typeValue,
                 description: descriptionValue,
                 options: optionsArray,
-                opensAt: new Date(opensAtValue).setMilliseconds(parseInt(opensAtValue)),
-                closesAt: new Date(closesAtValue).setMilliseconds(parseInt(closesAtValue)),
+                opensAt: openingDate,
+                closesAt: closingDate,
             });
             setError(false);
             setNoOptions(false);
         } else if (optionsArray.length === 0) {
             setNoOptions(true);
+            setError(true);
+            setShow(false);
         } else if (checkingSameTitle && checkingSameTitle.length > 0) {
             setTitleSameName(true);
+            setError(true);
+            setShow(false);
+        } else if (opensAtLessThanOrEqualToCloses === false) {
+            alert('Opening value is greater than closing value.');
+            setError(true);
+            setShow(false);
         } else {
             setError(true);
             setShow(false);
@@ -159,7 +166,6 @@ export default function CreateElectionPage() {
                                         onClick={() => {
                                             optionsArray.splice(index, 1);
                                             setOptionsArray(optionsArray);
-                                            console.log(optionsArray);
                                         }}
                                         onMouseOver={() => <IoCloseCircle />} />
                                 </ListGroupItem>

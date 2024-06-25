@@ -1,4 +1,3 @@
-import './AssignPage.css';
 
 export default function AssignPage() {
     return <>

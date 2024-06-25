@@ -33,13 +33,17 @@ export default function MultiElectionsPage() {
         <>
             <div className="container">
                 <div className="electionBoxes">
-                    {user?.type === 'super' || user?.type === 'administrator' && (
+                    {user?.type === "administrator" ? (
+                        <Button onClick={() => navigate('/create-election')}>
+                            Create New Election
+                        </Button>
+                    ) : user?.type === 'super' && (
                         <Button onClick={() => navigate('/create-election')}>
                             Create New Election
                         </Button>
                     )}
                     {elections && elections.elections.map((election, index) => <>
-                        {election.owned === true && election.deleted === false && election.closesAt > election.opensAt && (
+                        {election.owned === true && election.deleted === false && (
                             <Container className={`election-container container-${(index % 2) === 0 ? 'even' : 'odd'}`}>
                                 <NavLink to={`/elections/${election.election_id}`}>
                                     <div
