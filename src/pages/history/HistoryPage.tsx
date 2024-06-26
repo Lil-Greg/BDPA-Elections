@@ -4,10 +4,20 @@ import useElectionHistory from "../../hooks/useElectionHistory";
 import { Container } from 'react-bootstrap';
 import getImageURL from '../../utils/image-util';
 import useInfoApi from "../../hooks/useInfoApi.ts";
+import usePagination from '../../hooks/usePagination.ts';
 
 
 export default function HistoryPage() {
-    const { elections, isLoading, isErroring } = useElectionHistory();
+    // const { elections, isLoading, isErroring } = useElectionHistory();
+    const { elections, 
+        totalPages, 
+        pageHistory, 
+        handleNext, 
+        handlePrev,
+        isLoading,
+        isErroring,
+        currentPage
+    } = usePagination();
     const openElectionNum = useInfoApi();
     const totalElections = openElectionNum ? openElectionNum?.info.openElection + openElectionNum?.info.closedElections + openElectionNum?.info.upcomingElections : 0;
 
@@ -33,7 +43,7 @@ export default function HistoryPage() {
                 <span className="openElections">{openElectionNum?.info.openElection}</span>
                 <span className="closedElections">{openElectionNum?.info.closedElections}</span>
                 <div className="electionBoxes">
-                    {elections && elections.elections.map((election, index) => (
+                    {elections && elections.map((election, index) => (
                         <Container className={`election-container container-${(index % 2) === 0 ? 'even' : 'odd'}`}>
                             <NavLink to={`/history/${election.election_id}`}>
                                 <div
@@ -53,9 +63,12 @@ export default function HistoryPage() {
                             </NavLink>
                         </Container>
                     ))}
-                    <div className="pageButtons">
-                        <button>Prev</button>
-                        <button>Next</button>
+                    <div className="pageNavigate">
+                        <div> pages: {currentPage}/{totalPages}</div>
+                        <div className="pageButtons">
+                            <button onClick={handlePrev}>Prev</button>
+                            <button onClick={handleNext}>Next</button>
+                        </div>
                     </div>
                 </div>
             </div>
