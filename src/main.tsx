@@ -31,7 +31,7 @@ const router = createBrowserRouter([
     element: <ProtectedRoute allowedUserTypes={['voter', 'administrator', 'super']}><MultiElectionsPage /></ProtectedRoute>,
   }, {
     path: '/elections/:electionId',
-    element: <ProtectedRoute allowedUserTypes={['voter', 'administrator', 'reporter', 'super']}><ElectionPage /></ProtectedRoute>
+    element: <ProtectedRoute allowedUserTypes={['voter', 'administrator', 'super']}><ElectionPage /></ProtectedRoute>
   }, {
     path: '/elections/:electionId/:userId',
     element: <ProtectedRoute allowedUserTypes={['voter']}><VotingPage /></ProtectedRoute>
@@ -45,8 +45,8 @@ const router = createBrowserRouter([
     path: '/forgot',
     element: <ForgotPassword />
   }, {
-    path: '/elections-history',
-    element: <ProtectedRoute allowedUserTypes={['reporter', 'moderator', 'administrator', 'super']}><HistoryPage /></ProtectedRoute>
+    path: '/elections/history',
+    element: <ProtectedRoute allowedUserTypes={['reporter', 'moderator', 'administrator', 'super', 'voter']}><HistoryPage /></ProtectedRoute>
   }
 ]);
 ReactDOM.createRoot(document.getElementById('root')!).render(

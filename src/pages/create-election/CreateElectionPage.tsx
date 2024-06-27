@@ -9,7 +9,7 @@ import { IoCloseCircle, IoCloseCircleOutline } from "react-icons/io5";
 import UseElection from '../../hooks/useElection';
 
 export default function CreateElectionPage() {
-    const elections = UseElection();
+    const { electionStatus } = UseElection();
     const navigate = useNavigate();
     const [show, setShow] = useState(false);
     const [error, setError] = useState(false);
@@ -91,7 +91,7 @@ export default function CreateElectionPage() {
         const closingDate = new Date(closesAtValue).setMilliseconds(parseInt(closesAtValue));
         const opensAtLessThanOrEqualToCloses = openingDate <= closingDate ? true : false;
 
-        const checkingSameTitle = elections?.elections.filter((oneElection) => oneElection.title.toLowerCase() === titleValue?.toLowerCase());
+        const checkingSameTitle = electionStatus?.filter((oneElection) => oneElection.title.toLowerCase() === titleValue?.toLowerCase());
         if (titleValue && descriptionValue && optionsArray && opensAtValue && closesAtValue && typeValue && typeValue !== undefined && optionsArray.length !== 0 && opensAtLessThanOrEqualToCloses === true) {
             setFormValues({
                 title: titleValue,
@@ -212,6 +212,7 @@ export default function CreateElectionPage() {
                                 onChange={handleCheckOption}
                                 isInvalid={optionSameName ? optionSameName : noOptions}
                                 placeholder="Options"
+                                spellCheck={true}
                             />
                             <Form.Control.Feedback type='invalid'>
                                 {optionSameName === true ? 'Options Cannot Have The Same Name'

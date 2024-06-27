@@ -11,20 +11,30 @@ const options = {
 }
 
 export default function UseElection(){
-    const [elections, setElections] = useState<ElectionsStatus>();
+    const [electionStatus, setElections] = useState<Election[]>();
+    const getDate = new Date();
+    const dateToString = `${getDate.getMonth()} ${getDate.getFullYear()} ${getDate.getDay()}`;
+    const setMilliseconds = new Date().setMilliseconds(parseInt(dateToString));
+    const [isLoading, setIsLoading] = useState(true);
+    const [isErroring, setIsErroring] = useState(false);
     useEffect(()=>{
         async function fetchData(){
             try{
                 const res = await fetch(url + `elections`, options);
                 const data:ElectionsStatus = await res.json();
-                setElections(data);
+                const filterData = data.elections.filter(election => election.owned === true 
+                    && election.deleted === false
+                    && setMilliseconds < election.closesAt);
+                setElections(filterData);
             } catch(error){
-                console.error(error);
+                setIsErroring(true);
+            }finally{
+                setIsLoading(false);
             }
         }
         fetchData();
     },[]);
-    return elections;
+    return {electionStatus, isLoading, isErroring};
 }
 
 export function UseSingleElection(id:string){

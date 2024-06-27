@@ -1,9 +1,9 @@
 import { useContext, useState } from "react"
 import { useNavigate } from "react-router-dom";
-import UserContext from "../../context/UserContext"
+import UserContext from "../../../context/UserContext"
 import { Button, Card, Col, Container, Modal, Row } from "react-bootstrap";
 import { useMutation } from "convex/react";
-import { api } from "../../../convex/_generated/api";
+import { api } from "../../../../convex/_generated/api";
 
 export default function Settings() {
     const { user } = useContext(UserContext);

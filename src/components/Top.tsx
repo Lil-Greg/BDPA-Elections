@@ -21,36 +21,30 @@ export default function Top() {
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav style={{ textAlign: 'center', textEmphasis: '300' }} className="me-auto navigation-element-container">
-                            <Nav.Link href="/elections">Elections</Nav.Link>
-                            {user?.type === 'administrator' ? (
-                                <Nav.Link href='/elections-history'>History</Nav.Link>
-                            ) : user?.type === 'super' ? (
-                                <Nav.Link href='/elections-history'>History</Nav.Link>
-                            ) : user?.type === 'reporter' && (
-                                <Nav.Link href='/elections-history'>History</Nav.Link>
-                            )}
-                            <NavDropdown title="Election Info" id="basic-nav-dropdown">
-                                <NavDropdown.Item>
-                                    Total:&nbsp;{(info?.info?.closedElections || 0) + (info?.info?.openElections || 0)}
-                                </NavDropdown.Item>
-                                <NavDropdown.Item >
-                                    Open:&nbsp;{info?.info?.openElections ? info.info.openElections : 0}
-                                </NavDropdown.Item>
-                                <NavDropdown.Item>
-                                    Closed:&nbsp;{info?.info?.closedElections}
-                                </NavDropdown.Item>
-                            </NavDropdown>
-                            <Nav>
-                                {isAuthenticated ? (
+                            {isAuthenticated ? (
+                                <>
+                                    <Nav.Link href="/elections">Elections</Nav.Link>
+                                    <Nav.Link href='/elections/history'>History</Nav.Link>
+                                    <NavDropdown title="Election Info" id="basic-nav-dropdown">
+                                        <NavDropdown.Item>
+                                            Total:&nbsp;{(info?.info?.closedElections || 0) + (info?.info?.openElections || 0)}
+                                        </NavDropdown.Item>
+                                        <NavDropdown.Item >
+                                            Open:&nbsp;{info?.info?.openElections ? info.info.openElections : 0}
+                                        </NavDropdown.Item>
+                                        <NavDropdown.Item>
+                                            Closed:&nbsp;{info?.info?.closedElections}
+                                        </NavDropdown.Item>
+                                    </NavDropdown>
                                     <Nav.Link href='/'>
                                         <img src={getImageURL('default-pfp.jpg')} alt={`${user?.username}'s Profile Picture`} className="pfp" />
                                     </Nav.Link>
-                                ) : (
-                                    <Nav.Link href='/login'>
-                                        Login
-                                    </Nav.Link>
-                                )}
-                            </Nav>
+                                </>
+                            ) : (
+                                <Nav.Link href='/login'>
+                                    Login
+                                </Nav.Link>
+                            )}
                         </Nav>
                     </Navbar.Collapse>
                 </Container>

@@ -1,0 +1,14 @@
+.idk{
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+h5{
+    text-decoration: underline;
+}
+.history-odd{
+    background-color: #fff;
+}
+.history-even{
+    background-color: #A9A9A9;
+}

@@ -1,10 +1,10 @@
 import React, { useContext, useRef, useState } from "react";
-import UserContext from "../../context/UserContext";
+import UserContext from "../../../context/UserContext";
 import { Button, Col, Container, Form, InputGroup, ProgressBar, Row } from "react-bootstrap";
 import { TbPencil, TbPencilOff } from "react-icons/tb";
 import { useMutation, useQuery } from "convex/react";
-import { api } from "../../../convex/_generated/api";
-import { User } from "../../type";
+import { api } from "../../../../convex/_generated/api";
+import { User } from "../../../type";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa6";
 
 export default function Profile() {
