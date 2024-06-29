@@ -1,8 +1,8 @@
 import { useContext, useState } from "react";
 import { Button, Modal } from "react-bootstrap";
-import UserContext from "../../context/UserContext";
+import UserContext from "../../../context/UserContext";
 import { useMutation } from "convex/react";
-import { api } from "../../../convex/_generated/api";
+import { api } from "../../../../convex/_generated/api";
 
 type Props = {
     show: boolean

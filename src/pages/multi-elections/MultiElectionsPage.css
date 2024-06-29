@@ -1,0 +1,131 @@
+a{
+    text-decoration: none #000;
+}
+.container{
+    padding: 1rem;
+}
+.electionBoxes{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 1rem;
+}
+.election-container{
+    border-radius: 20px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+}
+.election-container:hover{
+    background-color: rgba(0, 179, 231, 0.5);
+}
+.container-even{
+    background-color: #fff;
+}
+.container-odd{
+    background-color: #f2efef;
+}
+.boxes{
+    color: #000;
+    font-family: "Reddit Mono","Freeman","Jersey 15", monospace;
+    text-align: center;
+}
+.elections-dates{
+    border: #000 1px solid;
+}
+.elections-date-title{
+    text-decoration: underline;
+}
+@media(max-width:992){
+    .elections-dates{
+        border: none !important;
+    }
+    .elections-col-created{
+        border-bottom: 1px solid #000;
+    }
+    .elections-col-opens{
+        border-bottom: 1px solid #000;
+    }
+}
+.options{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.options h5{
+    text-decoration: underline;
+}
+.options-list{
+    list-style-type: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: auto;
+    gap: 1rem;
+}
+@media(max-width:650px){
+    .options-list{
+        grid-template-columns: 1fr 1fr;
+        gap: 0.5rem;
+    }
+}
+@media(max-width:450px){
+    .options-list{
+        padding: 0.1rem !important;
+        gap: 0.1rem !important;
+    }
+}
+.errorCard {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center horizontally */
+    align-items: center;     /* Center vertically */
+    height: 100vh;           /* Full viewport height */
+    text-align: center;      /* Center text inside the card */
+    background-color: #f8d7da; /* Example background color for the error card */
+    color: #721c24;           /* Example text color for the error card */
+    border: 1px solid #f5c6cb; /* Example border color for the error card */
+    padding: 20px;           /* Padding for the card content */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Add some shadow for better visibility */
+    margin: 0 auto; /* Center the error card horizontally in its container */
+  }
+.errorCard p{
+    font-size: 2em;
+    font-weight: bold;
+}
+.errorCard img{
+    height: 300px;
+    width: 300px;
+}
+.errorMessage{
+    padding: 20px;
+    background-color: #fffefe;
+    border-radius: 15px;
+}
+.electionBox{
+    background-color: rgb(138, 179, 255);
+    border-radius: 10px;
+    margin: 12px;
+    padding: 10px;
+}
+.electionTitle{
+    color: white;
+    justify-content: end;
+    font-size: 2em;
+    font-weight: bold;
+}
+.electionBox{
+    background-color: rgb(44, 118, 255);
+    border-radius: 10px;
+    color: white;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5)
+}
+.electionBox:hover{
+    background-color: rgb(103, 156, 255);;
+}
+/* .electionOption{
+    
+} */
+.pageButtons{
+    flex-direction: row;
+    
+}
