@@ -16,8 +16,10 @@ import { ConvexProvider, ConvexReactClient } from 'convex/react';
 import VotingPage from './pages/election/VotingPage.tsx';
 import ForgotPassword from './pages/auth/forgotPassword.tsx';
 import HistoryPage from './pages/history/HistoryPage.tsx';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 const convex = new ConvexReactClient(import.meta.env.VITE_CONVEX_URL as string);
+const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
   {
@@ -51,12 +53,14 @@ const router = createBrowserRouter([
 ]);
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <ConvexProvider client={convex}>
-      <UserContextProvider>
-        <Top />
-        <RouterProvider router={router}></RouterProvider>
-      </UserContextProvider>
-    </ConvexProvider>
+    <QueryClientProvider client={queryClient}>
+      <ConvexProvider client={convex}>
+        <UserContextProvider>
+          <Top />
+          <RouterProvider router={router}></RouterProvider>
+        </UserContextProvider>
+      </ConvexProvider>
+    </QueryClientProvider>
   </React.StrictMode>,
 )
 

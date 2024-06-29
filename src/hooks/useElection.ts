@@ -13,11 +13,12 @@ const options = {
 }
 
 export default function UseElection(){
-    const {data} = useQuery({
+    const {data, isLoading, isError} = useQuery({
         queryKey: ['allElections'],
         queryFn: getAllElections
-    }) 
-    return data;
+    });
+    console.log(data);
+    return {elections: data, isLoading, isErroring:isError};
 }
 
 export function fetchAllElections(){
@@ -27,12 +28,12 @@ export function fetchAllElections(){
     }) 
     return data;
 }
-export function getAllElections(){
+export async function getAllElections(){
     let AllElections: Election[] = [];
     let hasMoreElections = true;
     let after = '';
     while(hasMoreElections){
-        const elections = CacheFetch(url + `elections?after=${after}`, options)
+        const elections = await CacheFetch(url + `elections?after=${after}`, options)
         hasMoreElections = elections?.length == 100;
         AllElections = [...AllElections, ...elections];
         after = elections[elections.length - 1].election_id;

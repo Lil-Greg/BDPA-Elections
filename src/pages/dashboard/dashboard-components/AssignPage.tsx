@@ -10,7 +10,7 @@ export default function AssignPage() {
     const { user } = useContext(UserContext);
     const savedUserData = useQuery(api.users.getSingleUser, { username: user ? user?.username : '' });
     const everyUser = useQuery(api.users.get);
-    const { electionStatus, isLoading, isErroring } = UseElection();
+    const { elections, isLoading, isErroring } = UseElection();
     const newAssignment = useMutation(api.users.assignUserElection);
 
     const assignmentRef = useRef<HTMLInputElement>(null);
@@ -53,7 +53,7 @@ export default function AssignPage() {
         event.preventDefault();
         console.log(assignUser);
         const assignment = assignmentRef.current?.value;
-        const electionCheck = electionStatus?.filter((election) => election.title === assignment);
+        const electionCheck = elections?.filter((election) => election.title === assignment);
         const assignmentIds = electionCheck?.map(election => election.election_id);
 
         if (assignmentRef && electionCheck && electionCheck.length > 0 && user && assignmentIds) {
@@ -112,7 +112,7 @@ export default function AssignPage() {
                         </Form.Control.Feedback>
                     </FloatingLabel>
                     <datalist id="assignmentList">
-                        {electionStatus?.map((election, index) => <option key={index} value={election.title}>
+                        {elections?.map((election, index) => <option key={index} value={election.title}>
                             {election.title}
                         </option>)}
                     </datalist>
