@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
-import { Election, ElectionStatus, ElectionsStatus, GetBallotsResponse, GetSingleBallotType } from "../type.ts";
+import { Election, ElectionStatus, GetBallotsResponse, GetSingleBallotType } from "../type.ts";
+import CacheFetch from "./useCacheFetch.ts";
+import { useQuery } from "@tanstack/react-query";
 const url:string = import.meta.env.VITE_API_URL;
 const APIKey:string = import.meta.env.VITE_API_KEY;
 const options = {
@@ -11,32 +13,33 @@ const options = {
 }
 
 export default function UseElection(){
-    const [electionStatus, setElections] = useState<Election[]>();
-    const getDate = new Date();
-    const dateToString = `${getDate.getMonth()} ${getDate.getFullYear()} ${getDate.getDay()}`;
-    const setMilliseconds = new Date().setMilliseconds(parseInt(dateToString));
-    const [isLoading, setIsLoading] = useState(true);
-    const [isErroring, setIsErroring] = useState(false);
-    useEffect(()=>{
-        async function fetchData(){
-            try{
-                const res = await fetch(url + `elections`, options);
-                const data:ElectionsStatus = await res.json();
-                const filterData = data.elections.filter(election => election.owned === true 
-                    && election.deleted === false
-                    && setMilliseconds < election.closesAt);
-                setElections(filterData);
-            } catch(error){
-                console.warn(error);
-                setIsErroring(true);
-            }finally{
-                setIsLoading(false);
-            }
-        }
-        fetchData();
-    },[]);
-    return {electionStatus, isLoading, isErroring};
+    const {data} = useQuery({
+        queryKey: ['allElections'],
+        queryFn: getAllElections
+    }) 
+    return data;
 }
+
+export function fetchAllElections(){
+    const {data} = useQuery({
+        queryKey: ['allElections'],
+        queryFn: getAllElections
+    }) 
+    return data;
+}
+export function getAllElections(){
+    let AllElections: Election[] = [];
+    let hasMoreElections = true;
+    let after = '';
+    while(hasMoreElections){
+        const elections = CacheFetch(url + `elections?after=${after}`, options)
+        hasMoreElections = elections?.length == 100;
+        AllElections = [...AllElections, ...elections];
+        after = elections[elections.length - 1].election_id;
+    }
+    return AllElections
+}
+
 
 export function UseSingleElection(id:string){
     const [election, setElection] = useState<Election | undefined>(undefined);

@@ -3,11 +3,26 @@ import useElectionHistory from '../../hooks/useElectionHistory';
 import './HistoryPage.css';
 import { useContext } from 'react';
 import UserContext from '../../context/UserContext';
+import { NavLink } from "react-router-dom";
+import useElectionHistory from "../../hooks/useElectionHistory";
+import { Container } from 'react-bootstrap';
+import getImageURL from '../../utils/image-util';
+import handlePrev from "../../hooks/useElectionHistory"
+import handleNext from "../../hooks/useElectionHistory"
+const { elections, isLoading, isErroring } = useElectionHistory();
 
+function sortByAlphabet(){
+    // elections?.elections.sort((a, b) => a.createdAt - b.createdAt);
+}
 export default function HistoryPage() {
     const { user } = useContext(UserContext);
     const { elections, isLoading, isErroring } = useElectionHistory();
     const monthNames = ['January', 'Febuary', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    console.log(elections?.elections);
+    elections?.elections.sort((a, b) => a.createdAt - b.createdAt);
+    console.log(elections?.elections);
+    const openElectionNum = useInfoApi();
+    const totalElections = openElectionNum ? openElectionNum?.info.openElection + openElectionNum?.info.closedElections + openElectionNum?.info.upcomingElections : 0;
     if (isLoading) {
         return <>
             Loading...

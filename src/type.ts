@@ -108,3 +108,16 @@ export type History = {
     next: string | undefined,
     page: number
 };
+
+export type Election = {
+    election_id: string;
+    title: string;
+    type: string;
+    description: string;
+    options: string[];
+    createdAt: number;
+    opensAt: number;
+    closesAt: number;
+    owned: boolean;
+    deleted: boolean;
+};
