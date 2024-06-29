@@ -58,6 +58,7 @@ export interface GetBallotsResponse{
     ballots:Ballots[]
 };
 export interface User{
+    assignedElections?:string[];
     _id: Id<"users">;
     _creationTime: number;
     username: string;

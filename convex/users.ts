@@ -1,6 +1,6 @@
 import { query } from "./_generated/server";
 import { mutation } from "./_generated/server";
-import { v } from "convex/values";
+import { ConvexError, v } from "convex/values";
 
 export const get = query({
   args: {},
@@ -22,6 +22,29 @@ export const getSingleUser = query({
   }
 });
 
+export const assignUserElection = mutation({
+  args:{
+    id: v.id('users'),
+    assignedElection: v.array<string>(
+      v.string()
+    )
+  },
+  handler: async (ctx, args) => {
+    const {id, assignedElection} = args;
+    const beforeChange = await ctx.db.get(id);
+    const afterChange = beforeChange?.assignedElections ? 
+      beforeChange?.assignedElections?.concat(assignedElection):
+      assignedElection
+    ;
+    if(afterChange){
+      return await ctx.db.patch(id, {
+        assignedElections: afterChange
+      });
+    }
+    return;
+  }
+})
+
 export const createUser = mutation(
     {
   args: {
@@ -41,7 +64,7 @@ export const createUser = mutation(
   handler: async (ctx, args) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const userData = await ctx.db.insert("users", { password: args.password, type: args.type, salt: args.salt, key: args.key, email: args.email, username: args.username, city: args.city, state: args.state, address: args.address, zip:args.zip, firstName: args.firstName, lastName: args.lastName });
-    // do something with `taskId`
+    return userData;
   },
 });
 //  PATCH (UPDATE) METHOD
@@ -59,7 +82,6 @@ export const changeUser = mutation({
   handler: async (ctx, args) => {
     const { id, selectedField } = args;
     const beforeChange = await ctx.db.get(id);
-    // Add `tag` and overwrite `status`:
     return await ctx.db.patch(id, 
       {
         password: beforeChange?.password !== selectedField.password ? selectedField.password : beforeChange?.password,

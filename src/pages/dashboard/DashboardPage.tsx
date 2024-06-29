@@ -7,6 +7,7 @@ import getImageURL from '../../utils/image-util';
 import { JSX } from 'react/jsx-runtime';
 import Settings from './dashboard-components/Settings';
 import AdminElections from './dashboard-components/AdminElections';
+import AssignPage from './dashboard-components/AssignPage';
 
 export default function DashboardPage() {
     const { user } = useContext(UserContext);
@@ -35,8 +36,8 @@ export default function DashboardPage() {
                     <Profile />
                 </Tab>
                 {user?.type === 'administrator' ? (
-                    <Tab eventKey="elections" title="Elections">
-                        <AdminElections />
+                    <Tab eventKey="assignment" title="Assignment">
+                        <AssignPage />
                     </Tab>
                 ) : user?.type === 'voter' ? (
                     <Tab eventKey="elections" title="Elections">
