@@ -9,12 +9,13 @@ import UserContextProvider from './context/UserContextProvider.tsx';
 import DashboardPage from './pages/dashboard/DashboardPage.tsx';
 import AuthPage from './pages/auth/AuthPage.tsx';
 import ProtectedRoute from './components/ProtectedRoute.tsx';
-import HistoryPage from './pages/history/HistoryPage.tsx';
+import MultiElectionsPage from './pages/multi-elections/MultiElectionsPage.tsx';
 import RegisterPage from './pages/auth/RegisterPage.tsx';
 import CreateElectionPage from './pages/create-election/CreateElectionPage.tsx';
 import { ConvexProvider, ConvexReactClient } from 'convex/react';
 import VotingPage from './pages/election/VotingPage.tsx';
 import ForgotPassword from './pages/auth/forgotPassword.tsx';
+import HistoryPage from './pages/history/HistoryPage.tsx';
 
 const convex = new ConvexReactClient(import.meta.env.VITE_CONVEX_URL as string);
 
@@ -27,10 +28,10 @@ const router = createBrowserRouter([
     element: <ProtectedRoute allowedUserTypes={['administrator', 'super']}><CreateElectionPage /></ProtectedRoute>
   }, {
     path: '/elections',
-    element: <ProtectedRoute allowedUserTypes={['voter', 'administrator', 'super']}><HistoryPage /></ProtectedRoute>,
+    element: <ProtectedRoute allowedUserTypes={['voter', 'administrator', 'super']}><MultiElectionsPage /></ProtectedRoute>,
   }, {
     path: '/elections/:electionId',
-    element: <ProtectedRoute allowedUserTypes={['voter', 'administrator', 'reporter', 'super']}><ElectionPage /></ProtectedRoute>
+    element: <ProtectedRoute allowedUserTypes={['voter', 'administrator', 'super']}><ElectionPage /></ProtectedRoute>
   }, {
     path: '/elections/:electionId/:userId',
     element: <ProtectedRoute allowedUserTypes={['voter']}><VotingPage /></ProtectedRoute>
@@ -39,11 +40,14 @@ const router = createBrowserRouter([
     element: <AuthPage />
   }, {
     path: '/register',
-    element: <RegisterPage/> //<ProtectedRoute allowedUserTypes={['administrator', 'super']}><RegisterPage /></ProtectedRoute>
-  },{
-    path:'/forgot',
-    element:<ForgotPassword/>
-  },
+    element: <RegisterPage />
+  }, {
+    path: '/forgot',
+    element: <ForgotPassword />
+  }, {
+    path: '/elections/history',
+    element: <ProtectedRoute allowedUserTypes={['reporter', 'moderator', 'administrator', 'super', 'voter']}><HistoryPage /></ProtectedRoute>
+  }
 ]);
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>

@@ -6,8 +6,10 @@ import AdminCreateElection from "../../hooks/useCreateElection";
 import { useNavigate } from "react-router-dom";
 import InputGroupText from 'react-bootstrap/esm/InputGroupText';
 import { IoCloseCircle, IoCloseCircleOutline } from "react-icons/io5";
+import UseElection from '../../hooks/useElection';
 
 export default function CreateElectionPage() {
+    const { electionStatus } = UseElection();
     const navigate = useNavigate();
     const [show, setShow] = useState(false);
     const [error, setError] = useState(false);
@@ -30,6 +32,8 @@ export default function CreateElectionPage() {
 
     const [show2, setShow2] = useState(false);
     const [optionSameName, setOptionSameName] = useState(false);
+    const [noOptions, setNoOptions] = useState(false);
+    const [titleSameName, setTitleSameName] = useState(false);
     const [optionsArray, setOptionsArray] = useState<string[]>([]);
 
     const handleClose = () => { setShow(false); setShow2(false); };
@@ -61,9 +65,6 @@ export default function CreateElectionPage() {
                     optionsRef.current.value = '';
                     break;
             }
-            console.log('Option Same Name variable', optionSameName);
-            // console.log("Checking Array Method", optionsArray[optionValue]);
-            console.log('Options Array', optionsArray);
         }
     };
     const handleShow2 = () => {
@@ -83,21 +84,37 @@ export default function CreateElectionPage() {
         const titleValue = titleRef.current?.value;
         const typeValue = typeRef.current?.value;
         const descriptionValue = descriptionRef.current?.value;
-        const opensAtValue = opensAtRef.current?.value;
-        const closesAtValue = closesAtRef.current?.value;
+        const opensAtValue = opensAtRef.current?.value || '';
+        const closesAtValue = closesAtRef.current?.value || '';
 
-        if (titleValue && descriptionValue && optionsArray && opensAtValue && closesAtValue && typeValue && typeValue !== undefined) {
-            const x = parseInt(opensAtValue);
-            const y = parseInt(closesAtValue);
+        const openingDate = new Date(opensAtValue).setMilliseconds(parseInt(opensAtValue));
+        const closingDate = new Date(closesAtValue).setMilliseconds(parseInt(closesAtValue));
+        const opensAtLessThanOrEqualToCloses = openingDate <= closingDate ? true : false;
+
+        const checkingSameTitle = electionStatus?.filter((oneElection) => oneElection.title.toLowerCase() === titleValue?.toLowerCase());
+        if (titleValue && descriptionValue && optionsArray && opensAtValue && closesAtValue && typeValue && typeValue !== undefined && optionsArray.length !== 0 && opensAtLessThanOrEqualToCloses === true) {
             setFormValues({
                 title: titleValue,
                 type: typeValue,
                 description: descriptionValue,
                 options: optionsArray,
-                opensAt: x,
-                closesAt: y,
+                opensAt: openingDate,
+                closesAt: closingDate,
             });
-            setError(false)
+            setError(false);
+            setNoOptions(false);
+        } else if (optionsArray.length === 0) {
+            setNoOptions(true);
+            setError(true);
+            setShow(false);
+        } else if (checkingSameTitle && checkingSameTitle.length > 0) {
+            setTitleSameName(true);
+            setError(true);
+            setShow(false);
+        } else if (opensAtLessThanOrEqualToCloses === false) {
+            alert('Opening value is greater than closing value.');
+            setError(true);
+            setShow(false);
         } else {
             setError(true);
             setShow(false);
@@ -149,7 +166,6 @@ export default function CreateElectionPage() {
                                         onClick={() => {
                                             optionsArray.splice(index, 1);
                                             setOptionsArray(optionsArray);
-                                            console.log(optionsArray);
                                         }}
                                         onMouseOver={() => <IoCloseCircle />} />
                                 </ListGroupItem>
@@ -173,7 +189,8 @@ export default function CreateElectionPage() {
                         label="Title"
                         className='mb-3 w-50'
                     >
-                        <Form.Control autoComplete="off" type="text" ref={titleRef} placeholder="Title" />
+                        <Form.Control autoComplete="off" type="text" ref={titleRef} placeholder="Title" isInvalid={titleSameName} />
+                        <Form.Control.Feedback type='invalid'>Already an Election with the Same Name</Form.Control.Feedback>
                     </FloatingLabel>
                     <FloatingLabel
                         controlId="floatingInput"
@@ -187,10 +204,22 @@ export default function CreateElectionPage() {
                             controlId="floatingInputOptions"
                             label="Options"
                         >
-                            <Form.Control className='create-election-options-input' autoComplete="off" type="text" ref={optionsRef} onChange={handleCheckOption} isInvalid={optionSameName} placeholder="Options" />
-                            <Form.Control.Feedback type='invalid'>Options Cannot Have The Same Name</Form.Control.Feedback>
+                            <Form.Control
+                                className='create-election-options-input'
+                                autoComplete="off"
+                                type="text"
+                                ref={optionsRef}
+                                onChange={handleCheckOption}
+                                isInvalid={optionSameName ? optionSameName : noOptions}
+                                placeholder="Options"
+                                spellCheck={true}
+                            />
+                            <Form.Control.Feedback type='invalid'>
+                                {optionSameName === true ? 'Options Cannot Have The Same Name'
+                                    : noOptions === true && 'There Are No Options to Submit'}
+                            </Form.Control.Feedback>
                         </FloatingLabel>
-                        {optionSameName === false && (<InputGroupText onClick={handleAddNewOption} className='create-election-option-input-group-text'>+</InputGroupText>)}
+                        {optionSameName === false && noOptions === false && (<InputGroupText onClick={handleAddNewOption} className='create-election-option-input-group-text'>+</InputGroupText>)}
                     </InputGroup>
                     <Button className='mb-2' variant={optionSameName ? 'danger' : 'success'} onClick={handleShow2}>See Options</Button>
                     <Form.Select defaultValue='none' className='mb-3 w-50 create-election-type-selection' ref={typeRef}>

@@ -7,7 +7,7 @@ export default function usePagination(){
     
     const { elections, setUrl } = useElectionHistory();
     const resultsPerPage = 10;
-    const totalPages = info ? Math.ceil(info?.closedElections / resultsPerPage): 0;
+    const totalPages = info ? Math.ceil(info?.info.closedElections / resultsPerPage): 0;
     const [pageHistory, setPageHistory] = useState<{previous: string | undefined, next: string | undefined, page: number}[]>([]);
     /*const [nextAfter, setNextAfter] = useState(elections && elections.elections.length > 0 ? elections.elections[elections.elections.length - 1].election_id: undefined);
     const [previousAfter, setPreviousAfter] = useState(undefined);
@@ -26,7 +26,7 @@ export default function usePagination(){
                 return[
                 ...previousHistory,
                 {previous: nextAfter,
-                next: elections?.elections[elections.elections.length - 1].election_id,
+                next: elections?.[elections.length - 1].election_id,
                 page: ++pageHistory.length}
             ]})
         }

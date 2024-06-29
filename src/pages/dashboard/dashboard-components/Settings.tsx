@@ -1,9 +1,9 @@
 import { useContext, useState } from "react"
 import { useNavigate } from "react-router-dom";
-import UserContext from "../../context/UserContext"
+import UserContext from "../../../context/UserContext"
 import { Button, Card, Col, Container, Modal, Row } from "react-bootstrap";
 import { useMutation } from "convex/react";
-import { api } from "../../../convex/_generated/api";
+import { api } from "../../../../convex/_generated/api";
 
 export default function Settings() {
     const { user } = useContext(UserContext);
@@ -63,10 +63,21 @@ export default function Settings() {
                 </Modal.Footer>
             </Modal>
             {/* CARD */}
-            <Container className={user?.type === 'administrator' ? "settings-card-container" : ''}>
-                {user?.type === 'administrator' && (
+            <Container className={user?.type === 'administrator' || user?.type === 'super' ? "settings-card-container" : ''}>
+                {user?.type === 'administrator' ? (
                     <Card className="settings-card-register mb-2 settings-card">
-                        <Card.Title className="settings-card-title">Create A User</Card.Title>
+                        <Card.Title className="settings-card-title">
+                            Create A Moderator
+                        </Card.Title>
+                        <Card.Body className="settings-card-body">
+                            <Button onClick={() => navigate('/register')} className="settings-register-button">Register</Button>
+                        </Card.Body>
+                    </Card>
+                ) : user?.type === 'super' && (
+                    <Card className="settings-card-register mb-2 settings-card">
+                        <Card.Title className="settings-card-title">
+                            Create An Administrator
+                        </Card.Title>
                         <Card.Body className="settings-card-body">
                             <Button onClick={() => navigate('/register')} className="settings-register-button">Register</Button>
                         </Card.Body>

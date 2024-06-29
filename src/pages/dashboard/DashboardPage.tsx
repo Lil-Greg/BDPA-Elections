@@ -2,11 +2,12 @@ import './DashboardPage.css';
 import { RefAttributes, useContext } from "react";
 import UserContext from '../../context/UserContext';
 import { Container, OverlayTrigger, Row, Tab, Tabs, Tooltip, TooltipProps } from "react-bootstrap";
-import Profile from './Profile';
+import Profile from './dashboard-components/Profile';
 import getImageURL from '../../utils/image-util';
 import { JSX } from 'react/jsx-runtime';
-import Settings from './Settings';
-import AdminElections from './AdminElections';
+import Settings from './dashboard-components/Settings';
+import AdminElections from './dashboard-components/AdminElections';
+import AssignPage from './dashboard-components/AssignPage';
 
 export default function DashboardPage() {
     const { user } = useContext(UserContext);
@@ -34,7 +35,23 @@ export default function DashboardPage() {
                 <Tab eventKey="profile" title='Profile'>
                     <Profile />
                 </Tab>
-                {user?.type === 'administrator' && (
+                {user?.type === 'administrator' ? (
+                    <Tab eventKey="assignment" title="Assignment">
+                        <AssignPage />
+                    </Tab>
+                ) : user?.type === 'voter' ? (
+                    <Tab eventKey="elections" title="Elections">
+                        <AdminElections />
+                    </Tab>
+                ) : user?.type === 'moderator' ? (
+                    <Tab eventKey="elections" title="Elections">
+                        <AdminElections />
+                    </Tab>
+                ) : user?.type === 'super' ? (
+                    <Tab eventKey="elections" title="Elections">
+                        <AdminElections />
+                    </Tab>
+                ) : user?.type === 'reporter' && (
                     <Tab eventKey="elections" title="Elections">
                         <AdminElections />
                     </Tab>

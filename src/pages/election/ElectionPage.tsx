@@ -15,6 +15,7 @@ export default function ElectionPage() {
     const navigate = useNavigate();
     const [winner, setWinner] = useState<string>('');
     const [ballot, setBallot] = useState<GetSingleBallotType | undefined>();
+    const monthNames = ['January', 'Febuary', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
     useEffect(() => {
         async function fetchData() {
@@ -49,10 +50,18 @@ export default function ElectionPage() {
                     <h5 className="electionPage-description">{election?.description}</h5>
                     <Row>
                         <Col>
-                            <p className='electionPage-openingDate electionPage-Dates'>{election?.opensAt && new Date(election.opensAt).toString()}</p>
+                            <p className='electionPage-openingDate electionPage-Dates'>
+                                {election && monthNames[(new Date(election.opensAt).getUTCMonth())]}&nbsp;
+                                {election && new Date(election.opensAt).getDay().toString()},&nbsp;
+                                {election && new Date(election.opensAt).getFullYear().toString()}
+                            </p>
                         </Col>
                         <Col>
-                            <p className='electionPage-closingDate electionPage-Dates'>{election?.closesAt && new Date(election.closesAt).toString()}</p>
+                            <p className='electionPage-closingDate electionPage-Dates'>
+                                {election && monthNames[(new Date(election.opensAt).getUTCMonth())]}&nbsp;
+                                {election && new Date(election.opensAt).getDay().toString()},&nbsp;
+                                {election && new Date(election.opensAt).getFullYear().toString()}
+                            </p>
                         </Col>
                     </Row>
                 </Card>
@@ -60,22 +69,20 @@ export default function ElectionPage() {
                     {election?.options.map((option) => {
                         return (
                             <>
-                                <p className={`every-option option-${winner === option ? 'winner' : 'regular'}`}>{option}</p>&nbsp;&nbsp;
+                                <p className={`every-option option-${user?.type !== 'voter' || ballot?.success === true ? winner === option ? 'winner' : 'regular' : ''}`}>{option}</p>&nbsp;&nbsp;
                             </>
                         )
                     })}
                 </div>
-                {user?.type === 'voter' && ballot?.success === true ? (
-                    <Row className='election-vote-btn'>
+                <Row className='election-vote-btn'>
+                    {user?.type === 'voter' && ballot?.success === true ? (
                         <Button variant='danger'>
                             Already Voted, Want to Go Back?
                         </Button>
-                    </Row>
-                ) : (
-                    <Row className='election-vote-btn'>
+                    ) : user?.type === 'voter' && (
                         <Button onClick={handleVoteClick} variant='success'>Want to Vote?</Button>
-                    </Row>
-                )}
+                    )}
+                </Row>
             </Container>
         </>
     )

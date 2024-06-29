@@ -1,14 +1,15 @@
 import React, { useContext, useRef, useState } from "react";
-import UserContext from "../../context/UserContext";
+import UserContext from "../../../context/UserContext";
 import { Button, Col, Container, Form, InputGroup, ProgressBar, Row } from "react-bootstrap";
 import { TbPencil, TbPencilOff } from "react-icons/tb";
-import { useMutation } from "convex/react";
-import { api } from "../../../convex/_generated/api";
-import { User } from "../../type";
+import { useMutation, useQuery } from "convex/react";
+import { api } from "../../../../convex/_generated/api";
+import { User } from "../../../type";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa6";
 
 export default function Profile() {
     const { user, setUser } = useContext(UserContext);
+    const getAllUsers = useQuery(api.users.get);
     const changeUser = useMutation(api.users.changeUser);
 
     const [noValue, setNoValue] = useState<boolean>(true);
@@ -23,6 +24,7 @@ export default function Profile() {
     const [passwordShow, setPasswordShow] = useState(false);
     const [invalidUsername, setInvalidUsername] = useState(false);
     const [progress, setProgress] = useState<number>(0);
+    const [sameUsername, setSameUsername] = useState(false);
 
     const handleEditMode = () => {
         setEditState(!editState);
@@ -84,6 +86,8 @@ export default function Profile() {
     }
     const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const username = usernameRef.current?.value;
+        const checkForSameUsername = getAllUsers?.filter(userData => userData.username === username && userData._id !== user?._id);
+        checkForSameUsername?.length === 0 ? setSameUsername(false) : setSameUsername(true);
         setInvalidUsername((/[^0-9a-zA-Z]+/ig).test(username || ''));
         e.currentTarget.value !== e.currentTarget.defaultValue ? setNoValue(false) : setNoValue(true)
     }
@@ -126,8 +130,18 @@ export default function Profile() {
                                     controlId="username"
                                     label='Username'
                                 >
-                                    <Form.Control type="text" defaultValue={user?.username} autoComplete="off" placeholder="Username" onChange={handleUsernameChange} isInvalid={invalidUsername} ref={usernameRef} />
-                                    <Form.Control.Feedback type='invalid'>Must Be Alpha-Numeric</Form.Control.Feedback>
+                                    <Form.Control
+                                        type="text"
+                                        defaultValue={user?.username}
+                                        autoComplete="off"
+                                        placeholder="Username"
+                                        onChange={handleUsernameChange}
+                                        isInvalid={invalidUsername === true ? invalidUsername : sameUsername}
+                                        ref={usernameRef}
+                                    />
+                                    <Form.Control.Feedback type='invalid'>
+                                        {invalidUsername === true ? 'Must Be Alpha-Numeric' : sameUsername === true && 'Already A User With This Username'}
+                                    </Form.Control.Feedback>
                                 </Form.FloatingLabel>
                             </Col>
                             <Col>

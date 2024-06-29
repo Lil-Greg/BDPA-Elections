@@ -1,11 +1,16 @@
-import { useEffect, useState } from "react";
-import { ElectionsStatus } from "../type";
+import { useContext, useEffect, useState } from "react";
+import { Election, ElectionsStatus } from "../type";
+import UserContext from "../context/UserContext";
 const url = import.meta.env.VITE_API_URL;
 const APIKey = import.meta.env.VITE_API_KEY;
 
 export default function useElectionHistory(){
-    const [elections, setElections] = useState<ElectionsStatus | null>(null);
-    const [isLoading, setIsLoading] = useState(false);
+    const {user} = useContext(UserContext);
+    const getDate = new Date();
+    const dateToString = `${getDate.getMonth()} ${getDate.getFullYear()} ${getDate.getDay()}`;
+    const setMilliseconds = new Date().setMilliseconds(parseInt(dateToString));
+    const [elections, setElections] = useState<Election[]>();
+    const [isLoading, setIsLoading] = useState(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const options = {
         method:'GET',
@@ -22,7 +27,13 @@ export default function useElectionHistory(){
                 setIsLoading(true);
                 const res = await fetch(`${url}elections`, options);
                 const data = await res.json() as ElectionsStatus;
-                setElections(data);
+                const filteredData = data.elections.filter(election => {
+                    if(user?.type === 'administrator' || user?.type === 'super'){
+                        return setMilliseconds > election.closesAt && election.deleted === false || election.deleted === true;
+                    }
+                    return setMilliseconds > election.closesAt && election.deleted === false;
+                });
+                setElections(filteredData);
             }
             catch(error){
                 setIsErorring(true);
