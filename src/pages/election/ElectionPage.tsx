@@ -1,7 +1,7 @@
 import './ElectionPage.css';
 import { useNavigate, useParams } from "react-router-dom";
 import { GetBallots, UseSingleElection, GetSingleBallot } from "../../hooks/useElection"
-import { Election, GetBallotsResponse, GetSingleBallotType } from "../../type";
+import { GetBallotsResponse, GetSingleBallotType } from "../../type";
 import IRVElections from "../../algo/IRV-Elections";
 import { Button, Card, Col, Container, Row } from "react-bootstrap";
 import { useContext, useEffect, useState } from 'react';
@@ -11,12 +11,22 @@ import CPLElections from '../../algo/CPL-Elections';
 export default function ElectionPage() {
     const { electionId } = useParams<string>() || '';
     const { user } = useContext(UserContext);
-    const election: Election | undefined = UseSingleElection(electionId || '');
+    const election = UseSingleElection(electionId || '');
     const navigate = useNavigate();
     const [winner, setWinner] = useState<string>('');
     const [ballot, setBallot] = useState<GetSingleBallotType | undefined>();
     const monthNames = ['January', 'Febuary', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
+    // if (isLoading) {
+    //     return <>
+    //         Loading...
+    //     </>
+    // };
+    // if (isErroring) {
+    //     return <>
+    //         Something Went Wrong!
+    //     </>
+    // }
     useEffect(() => {
         async function fetchData() {
             const ballotCall = await GetSingleBallot(electionId || '', user?.username || '');

@@ -40,19 +40,19 @@ export default function DashboardPage() {
                         <AssignPage />
                     </Tab>
                 ) : user?.type === 'voter' ? (
-                    <Tab eventKey="elections" title="Elections">
+                    <Tab eventKey="elections" title="Allowed Elections">
                         <AdminElections />
                     </Tab>
                 ) : user?.type === 'moderator' ? (
-                    <Tab eventKey="elections" title="Elections">
-                        <AdminElections />
+                    <Tab eventKey="assignment" title="Assignment">
+                        <AssignPage />
                     </Tab>
                 ) : user?.type === 'super' ? (
-                    <Tab eventKey="elections" title="Elections">
-                        <AdminElections />
+                    <Tab eventKey="assignment" title="Assignment">
+                        <AssignPage />
                     </Tab>
                 ) : user?.type === 'reporter' && (
-                    <Tab eventKey="elections" title="Elections">
+                    <Tab eventKey="elections" title="Allowed Elections">
                         <AdminElections />
                     </Tab>
                 )}

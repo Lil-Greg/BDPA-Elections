@@ -27,6 +27,7 @@ export default function UseElection(){
                     && setMilliseconds < election.closesAt);
                 setElections(filterData);
             } catch(error){
+                console.warn(error);
                 setIsErroring(true);
             }finally{
                 setIsLoading(false);
@@ -38,7 +39,7 @@ export default function UseElection(){
 }
 
 export function UseSingleElection(id:string){
-    const [election, setElection] = useState<Election>();
+    const [election, setElection] = useState<Election | undefined>(undefined);
 
     useEffect(()=>{
         async function fetchData(){
@@ -47,7 +48,7 @@ export function UseSingleElection(id:string){
                 const res:ElectionStatus = await data.json();
                 setElection(res.election);
             }catch(error){
-                console.error(error);
+                console.warn(error);
             }
         }
         fetchData();
