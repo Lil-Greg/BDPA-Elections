@@ -4,7 +4,7 @@ import { FaRegEye } from "react-icons/fa6";
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Form from 'react-bootstrap/Form';
 import { useContext, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import UserContext from "../../context/UserContext";
 import useAuth from "../../hooks/useAuth";
 import { Button, Col, Container, InputGroup, Row } from 'react-bootstrap';
@@ -81,6 +81,9 @@ export default function AuthPage() {
                 <Row>
 
                     <a className="m-1" style={{ textDecoration: 'none' }} href="/login/forgot"><h5>Forgot Password?</h5></a>
+                </Row>
+                <Row>
+                    <NavLink to={'/register'}><h5>Sign Up</h5></NavLink>
                 </Row>
                 <Row className="mt-2 mb-4">
                     <Col xs="auto">
