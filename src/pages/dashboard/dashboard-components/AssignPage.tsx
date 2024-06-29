@@ -59,6 +59,7 @@ export default function AssignPage() {
         if (assignmentRef && electionCheck && electionCheck.length > 0 && user && assignmentIds) {
             console.log(electionCheck);
             console.log("Assigned Elections Ids", assignmentIds);
+            savedUserData
             await newAssignment({ id: user._id, assignedElection: assignmentIds });
         } else if (electionCheck?.length === 0) {
             setError(0);
@@ -98,11 +99,11 @@ export default function AssignPage() {
                 >
                     <FloatingLabel
                         controlId="floatingInputAssignment"
-                        label="Assign A User"
+                        label="Assign To Election"
                     >
                         <Form.Control
                             ref={assignmentRef}
-                            placeholder="Assign A User"
+                            placeholder="Assign To Election"
                             list="assignmentList"
                             isInvalid={error !== false ? true : false}
                         />
@@ -111,12 +112,14 @@ export default function AssignPage() {
                         </Form.Control.Feedback>
                     </FloatingLabel>
                     <datalist id="assignmentList">
-                        {electionStatus?.map((election, index) => <>
-                            <option key={index} value={election.title}>{election.title}</option>
-                        </>)}
+                        {electionStatus?.map((election, index) => <option key={index} value={election.title}>
+                            {election.title}
+                        </option>)}
                     </datalist>
                 </InputGroup>
-                <Button type="submit">Assign</Button>
+                <Button type="submit" variant={
+                    error ? 'danger' : userError ? 'danger' : ''
+                }>Assign</Button>
             </Form>
         </>
     )
