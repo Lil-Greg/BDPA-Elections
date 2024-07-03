@@ -1,4 +1,3 @@
-<<<<<<< Updated upstream
 import { useQuery } from "@tanstack/react-query";
 import { Election } from "../../type";
 import { getElectionWinner } from "../../hooks/useElection";
@@ -21,33 +20,4 @@ export default function Options({ election }: { election: Election }) {
         )
         )}
     </div >
-=======
-import { useQuery } from "@tanstack/react-query"
-import { Election } from "../../type"
-import CacheFetch from "../../hooks/useCacheFetch"
-import { cacheBallots } from "../../hooks/useElection"
-import IRVElections from "../../algo/IRV-Elections"
-import CPLElections from "../../algo/CPL-Elections"
-
-export default function options (props: {election: Election}){
-    const election= props.election
-        const {data, isLoading, isError}= useQuery({
-            queryKey:["ballots"],
-            queryFn: cacheBallots(election.election_id)
-        })
-        switch(election.type){
-            case "irv": 
-             console.log(IRVElections(data.ballots))
-             break;
-             case "cpl":
-                console.log(CPLElections(data.ballots))
-                break;
-                default: break;
-        }
-
-    return<>
-    
-    </>
-
->>>>>>> Stashed changes
 }
