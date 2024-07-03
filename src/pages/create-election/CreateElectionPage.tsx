@@ -9,7 +9,7 @@ import { IoCloseCircle, IoCloseCircleOutline } from "react-icons/io5";
 import UseElection from '../../hooks/useElection';
 
 export default function CreateElectionPage() {
-    const { electionStatus } = UseElection();
+    const { elections } = UseElection();
     const navigate = useNavigate();
     const [show, setShow] = useState(false);
     const [error, setError] = useState(false);
@@ -91,7 +91,7 @@ export default function CreateElectionPage() {
         const closingDate = new Date(closesAtValue).setMilliseconds(parseInt(closesAtValue));
         const opensAtLessThanOrEqualToCloses = openingDate <= closingDate ? true : false;
 
-        const checkingSameTitle = electionStatus?.filter((oneElection) => oneElection.title.toLowerCase() === titleValue?.toLowerCase());
+        const checkingSameTitle = elections?.filter((oneElection) => oneElection.title.toLowerCase() === titleValue?.toLowerCase());
         if (titleValue && descriptionValue && optionsArray && opensAtValue && closesAtValue && typeValue && typeValue !== undefined && optionsArray.length !== 0 && opensAtLessThanOrEqualToCloses === true) {
             setFormValues({
                 title: titleValue,

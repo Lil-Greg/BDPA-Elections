@@ -14,13 +14,12 @@ const options = {
 export async function getAllElections(): Promise<Election[]>{
     const data: ElectionsStatus = await CacheFetch(url + `elections`, options, 'getAllElections');
     console.log("Checking data in the getAllElections function", data);
-    // const elections = data.elections.filter(electionD => 
-    //     electionD.owned === true &&
-    //     electionD.closesAt > Date.now() &&
-    //     electionD.deleted === false
-    // );
-    // return elections;
-    return data.elections;
+    const elections = data.elections.filter(electionD => 
+        electionD.owned === true &&
+        electionD.closesAt > Date.now() &&
+        electionD.deleted === false
+    );
+    return elections;
 };
 export default function UseElection(){ // useEffect on elections data
     const {data, isLoading, isError, error} = useQuery({
@@ -55,11 +54,7 @@ export async function GetBallots(election_id:string):Promise<GetBallotsResponse 
 export async function GetSingleBallot(election_id:string, user_id:string): Promise<GetSingleBallotType | undefined>{
     try{
         const data: GetSingleBallotType = await fetch(`${url}elections/${election_id}/ballots/${user_id}`, options).then(res => res.json());
-        if(data.success === true){
-            return data;
-        }else{
-            throw Error;
-        };
+        return data;
     }catch(error){
         console.warn("", error)
     };

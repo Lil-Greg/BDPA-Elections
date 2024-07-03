@@ -9,9 +9,12 @@ import UserContext from '../../context/UserContext';
 import CPLElections from '../../algo/CPL-Elections';
 
 export default function ElectionPage() {
-    const { electionId } = useParams<string>() || '';
+    const { electionId } = useParams<string>();
     const { user } = useContext(UserContext);
-    const election = UseSingleElection(electionId || '');
+    if (!electionId) {
+        throw Error('Missing election_id');
+    }
+    const election = UseSingleElection(electionId);
     const navigate = useNavigate();
     const [winner, setWinner] = useState<string>('');
     const [ballot, setBallot] = useState<GetSingleBallotType | undefined>();
@@ -29,9 +32,15 @@ export default function ElectionPage() {
     // }
     useEffect(() => {
         async function fetchData() {
-            const ballotCall = await GetSingleBallot(electionId || '', user?.username || '');
+            if (!election) {
+                return;
+            }
+            if (!user) {
+                return;
+            }
+            const ballotCall = await GetSingleBallot(election.election_id, user.username);
             setBallot(ballotCall);
-            const optionsResponse: GetBallotsResponse | undefined = await GetBallots(election?.election_id || '');
+            const optionsResponse: GetBallotsResponse | undefined = await GetBallots(election.election_id);
             const ballotsConverted = optionsResponse?.ballots.map((ballots) => {
                 return Object.keys(ballots.ranking);
             }) || [];
@@ -76,13 +85,7 @@ export default function ElectionPage() {
                     </Row>
                 </Card>
                 <div className='options-overlap-div'>
-                    {election?.options.map((option) => {
-                        return (
-                            <>
-                                <p className={`every-option option-${user?.type !== 'voter' || ballot?.success === true ? winner === option ? 'winner' : 'regular' : ''}`}>{option}</p>&nbsp;&nbsp;
-                            </>
-                        )
-                    })}
+                    {election?.options.map(option => <p key={option} className={`me-2 every-option option-${user?.type !== 'voter' || ballot?.success === true ? winner === option ? 'winner' : 'regular' : ''}`}>{option}</p>)}
                 </div>
                 <Row className='election-vote-btn'>
                     {user?.type === 'voter' && ballot?.success === true ? (
