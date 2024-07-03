@@ -1,14 +1,24 @@
 import './MultiElectionsPage.css';
 import { NavLink, useNavigate } from "react-router-dom";
-import { Button, Col, Container, Row } from 'react-bootstrap';
+import { Button, Card, Col, Container, Row } from 'react-bootstrap';
 import getImageURL from '../../utils/image-util';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import UserContext from '../../context/UserContext';
 import UseElection from '../../hooks/useElection';
 
 export default function MultiElectionsPage() {
-    const { elections, isLoading, isErroring } = UseElection();
-    const monthNames = ['January', 'Febuary', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    const [after, setAfter] = useState(10);
+
+    const handleNext = () => {
+        setAfter(after + 10);
+    };
+    const handlePrev = () => {
+        setAfter(after > 10 ? after - 10 : Infinity); // Random Code
+    };
+
+    const { elections, isLoading, isErroring, electionsError } = UseElection();
+    console.log("Checking Elections variable for undefined", elections);
+    const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     const navigate = useNavigate();
     const { user } = useContext(UserContext);
 
@@ -22,7 +32,13 @@ export default function MultiElectionsPage() {
             <div className="errorCard">
                 <div className="errorMessage">
                     <img src={getImageURL('errorMagnifier.svg')} alt="Error Magnifier" />
-                    <p>Something went wrong!</p>
+                    <h1>Something went wrong!</h1>
+                    <hr />
+                    <code>
+                        Error Information (Broad): {electionsError?.stack}
+                        <p>{electionsError?.name}</p>
+                        {electionsError?.message}
+                    </code>
                 </div>
             </div>
         </>
@@ -40,7 +56,7 @@ export default function MultiElectionsPage() {
                             Create New Election
                         </Button>
                     )}
-                    {elections && elections.map((election, index) => {
+                    {Array.isArray(elections) ? elections.map((election, index) => {
                         return <>
                             <Container className={`election-container container-${(index % 2) === 0 ? 'even' : 'odd'}`}>
                                 <NavLink to={`/elections/${election.election_id}`}>
@@ -55,7 +71,7 @@ export default function MultiElectionsPage() {
                                             <Col className='elections-col-created elections-dates'>
                                                 <h6 className='elections-date-title'>Created At</h6>
                                                 <p>
-                                                    {monthNames[(new Date(election.createdAt).getUTCMonth())]}&nbsp;
+                                                    {monthNames[(new Date(election.createdAt).getMonth())]}&nbsp;
                                                     {new Date(election.createdAt).getDay().toString()},&nbsp;
                                                     {new Date(election.createdAt).getFullYear().toString()}
                                                 </p>
@@ -63,7 +79,7 @@ export default function MultiElectionsPage() {
                                             <Col className='elections-col-opened elections-dates'>
                                                 <h6 className='elections-date-title'>Opens At</h6>
                                                 <p>
-                                                    {monthNames[(new Date(election.opensAt).getUTCMonth())]}&nbsp;
+                                                    {monthNames[(new Date(election.opensAt).getMonth())]}&nbsp;
                                                     {new Date(election.opensAt).getDay().toString()},&nbsp;
                                                     {new Date(election.opensAt).getFullYear().toString()}
                                                 </p>
@@ -71,7 +87,7 @@ export default function MultiElectionsPage() {
                                             <Col className='elections-col-closes elections-dates'>
                                                 <h6 className='elections-date-title'>Closes At</h6>
                                                 <p>
-                                                    {monthNames[(new Date(election.closesAt).getUTCMonth())]}&nbsp;
+                                                    {monthNames[(new Date(election.closesAt).getMonth())]}&nbsp;
                                                     {new Date(election.closesAt).getDay().toString()},&nbsp;
                                                     {new Date(election.closesAt).getFullYear().toString()}
                                                 </p>
@@ -97,7 +113,28 @@ export default function MultiElectionsPage() {
                             </Container>
                         </>
                     }
+                    ) : (
+                        <>
+                            <Card className='election-container p-3'>
+                                <Card.Title><h1>Something is wrong with Elections</h1></Card.Title>
+                                <hr />
+                                <Card.Body style={{ textAlign: 'center' }}>
+                                    <h4 style={{ textDecoration: 'underline' }}>Elections Type: {typeof (elections)}</h4>
+                                    <code>{JSON.stringify(elections)}</code>
+                                </Card.Body>
+                            </Card>
+                        </>
                     )}
+                    <Row>
+                        <Col>
+                            <Button onClick={handleNext}>Next</Button>
+                        </Col>
+                        {after >= 10 && (
+                            <Col>
+                                <Button onClick={handlePrev}>Previous</Button>
+                            </Col>
+                        )}
+                    </Row>
                 </div>
             </div>
         </>

@@ -53,14 +53,14 @@ const router = createBrowserRouter([
 ]);
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <ConvexProvider client={convex}>
+    <ConvexProvider client={convex}>
+      <QueryClientProvider client={queryClient}>
         <UserContextProvider>
           <Top />
           <RouterProvider router={router}></RouterProvider>
         </UserContextProvider>
-      </ConvexProvider>
-    </QueryClientProvider>
+      </QueryClientProvider>
+    </ConvexProvider>
   </React.StrictMode>,
 )
 
