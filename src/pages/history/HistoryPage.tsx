@@ -1,13 +1,17 @@
 import { Accordion } from 'react-bootstrap';
 import './HistoryPage.css';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import UserContext from '../../context/UserContext';
 import useElectionHistory from "../../hooks/useElectionHistory";
+import Options from './options';
+
 
 export default function HistoryPage() {
     const { user } = useContext(UserContext);
     const { elections, isLoading, isErroring } = useElectionHistory();
-    const monthNames = ['January', 'Febuary', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+     const [activeKey, setActiveKey] = useState(null);
+    const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+   
     if (isLoading) {
         return <>
             Loading...
@@ -19,11 +23,9 @@ export default function HistoryPage() {
         </>
     };
     return <>
-        <Accordion>
-            {elections && elections.map((electionInfo, index) => {
-                const evenOrOdd = index % 2 === 0 ? 'even' : 'odd';
-                return <>
-                    <Accordion.Item eventKey={`${index}`} className={`history-${evenOrOdd}`}>
+        <Accordion activeKey={activeKey} onSelect={(key) => setActiveKey(key)}>
+            {elections && elections.map((electionInfo, index) => (
+                    <Accordion.Item eventKey={`${index}`} key={`${index}`} className={`history-${index % 2 === 0 ? 'even' : 'odd'}`}>
                         <Accordion.Header>
                             <div className="idk">
                                 <h5>{electionInfo.title}</h5>
@@ -71,11 +73,12 @@ export default function HistoryPage() {
                             </div>
                         </Accordion.Header>
                         <Accordion.Body>
-
+                                { activeKey===`${index}` 
+                                && <Options election={electionInfo}/>}
                         </Accordion.Body>
                     </Accordion.Item>
-                </>
-            })}
+         
+            ))}
         </Accordion>
     </>
 }

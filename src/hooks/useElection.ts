@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import { Election, ElectionStatus, GetBallotsResponse, GetSingleBallotType } from "../type.ts";
 import CacheFetch from "./useCacheFetch.ts";
 import { useQuery } from "@tanstack/react-query";
+import IRVElections from "../algo/IRV-Elections.ts";
+import { convertBallots } from "../utils/utils.ts";
+import CPLElections from "../algo/CPL-Elections.ts";
 const url:string = import.meta.env.VITE_API_URL;
 const APIKey:string = import.meta.env.VITE_API_KEY;
 const options = {
@@ -94,4 +97,11 @@ export async function MakeVote(election_id:string, voter_id:string, ranking:obje
     }catch(error){
         console.warn("Error with making vote", error);
     }
+}
+export async function getElectionWinner(election: Election){
+    const ballot = await CacheFetch(`${url}elections/${election.election_id}/ballots`, options) 
+    const convertedBallots= convertBallots(ballot.ballots)
+    const winner= (election.type==="irv")? IRVElections(convertedBallots): CPLElections(convertedBallots, election.options).CPL
+    console.log(winner)
+    return winner
 }
