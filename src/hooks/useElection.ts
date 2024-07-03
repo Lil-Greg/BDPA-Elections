@@ -13,7 +13,6 @@ const options = {
 };
 export async function getAllElections(): Promise<Election[]>{
     const data: ElectionsStatus = await CacheFetch(url + `elections`, options, 'getAllElections');
-    console.log("Checking data in the getAllElections function", data);
     const elections = data.elections.filter(electionD => 
         electionD.owned === true &&
         electionD.closesAt > Date.now() &&

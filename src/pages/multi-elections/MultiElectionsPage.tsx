@@ -8,7 +8,6 @@ import UseElection from '../../hooks/useElection';
 
 export default function MultiElectionsPage() {
     const { elections, isLoading, isErroring, electionsError } = UseElection();
-    console.log("Checking Elections variable for undefined", elections);
     const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     const navigate = useNavigate();
     const { user } = useContext(UserContext);

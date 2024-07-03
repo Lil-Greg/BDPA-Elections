@@ -57,9 +57,7 @@ export default function AssignPage() {
         const assignmentIds = electionCheck?.map(election => election.election_id);
 
         if (assignmentRef && electionCheck && electionCheck.length > 0 && user && assignmentIds) {
-            console.log(electionCheck);
-            console.log("Assigned Elections Ids", assignmentIds);
-            savedUserData
+            savedUserData;
             await newAssignment({ id: user._id, assignedElection: assignmentIds });
         } else if (electionCheck?.length === 0) {
             setError(0);
