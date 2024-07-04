@@ -10,6 +10,7 @@ import useAuth from "../../hooks/useAuth";
 import { Button, Col, Container, InputGroup, Row } from 'react-bootstrap';
 import { useQuery } from 'convex/react';
 import { api } from '../../../convex/_generated/api';
+import { attempt } from 'lodash';
 
 export default function AuthPage() {
     const getAllUsers = useQuery(api.users.get);
@@ -20,6 +21,8 @@ export default function AuthPage() {
     const [passwordShow, setPasswordShow] = useState(false);
     const [invalidUser, setInvalidUser] = useState(false);
     const { success, setParams, user } = useAuth();
+    const [loginAttemptsRemaining, setLoginAttemptRemaining]= useState(3);
+    
 
     const handleSubmit = (event: React.FormEvent) => {
         // event.preventDeault will prevent the page to refresh after the alert
@@ -30,7 +33,7 @@ export default function AuthPage() {
         const checkUsername = getAllUsers?.filter(userData => userData.username === username);
         const checkPassword = getAllUsers?.filter(userData => userData.password === password);
 
-        if (username && password) {
+        if (username && password && loginAttemptsRemaining>0) {
             setParams({
                 username: username,
                 password: password
@@ -40,8 +43,9 @@ export default function AuthPage() {
                 setUser && setUser(user); // Set Types
                 window.localStorage.setItem('election-user', JSON.stringify(user));
                 navigate('/', { replace: true });
-            } else if (success === false && checkUsername?.length === 0 || checkPassword?.length === 0) {
+            } else if (checkUsername?.length === 0 || checkPassword?.length === 0) {
                 setInvalidUser(true);
+                setLoginAttemptRemaining(loginAttemptsRemaining-1)
             }
         } else {
             alert(`Please insert value`)
@@ -56,10 +60,13 @@ export default function AuthPage() {
             {invalidUser && (
                 <p style={{ color: '#dc3545', display: 'inline' }}>User Does Not Exist</p>
             )}
+             {loginAttemptsRemaining<=0 && (
+                <p style={{ color: '#dc3545', display: 'inline' }}> You Have Been Locked Out For 1 Hour</p>
+            )}
             <Form
                 style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
                 onSubmit={handleSubmit}
-                className={invalidUser ? 'login-user-invalid' : ''}
+                className={invalidUser || loginAttemptsRemaining<=0 ? 'login-user-invalid' : ''}
             >
                 <FloatingLabel
                     controlId="floatingInputUsername"
@@ -86,6 +93,10 @@ export default function AuthPage() {
                     <NavLink to={'/register'}><h5>Sign Up</h5></NavLink>
                 </Row>
                 <Row className="mt-2 mb-4">
+                    <Col xs="auto">
+                    {loginAttemptsRemaining} Login Attempts Remaining
+
+                    </Col>
                     <Col xs="auto">
                         <Button variant="primary" type="submit">
                             Submit

@@ -4,6 +4,8 @@ export default function IRVElections(ballotsConverted:string[][]){
     // Find candidate with fewest votes within first places
     // Eliminate candidate
     // Add the vote to the 2nd placer
+    if(ballotsConverted.length<=0)
+        return ""
 
     const countFirstPlacers = () => {
         const firstPlaceCount: { [x: string]: number; } = {};
