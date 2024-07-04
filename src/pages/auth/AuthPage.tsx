@@ -8,11 +8,15 @@ import { NavLink, useNavigate } from "react-router-dom";
 import UserContext from "../../context/UserContext";
 import useAuth from "../../hooks/useAuth";
 import { Button, Col, Container, InputGroup, Row } from 'react-bootstrap';
-import { useQuery } from 'convex/react';
+import { useMutation, useQuery } from 'convex/react';
 import { api } from '../../../convex/_generated/api';
+import GetIp from '../../hooks/getIp';
 
 export default function AuthPage() {
     const getAllUsers = useQuery(api.users.get);
+    const { userIp } = GetIp();
+    const setIpAndLogin = useMutation(api.users.setIpAndRecentLogin);
+    const changeIpAndLogin = useMutation(api.users.changeUser);
     const { setUser } = useContext(UserContext);
     const navigate = useNavigate();
     const usernameRef = useRef<HTMLInputElement>(null);
@@ -30,6 +34,16 @@ export default function AuthPage() {
         const checkUsername = getAllUsers?.filter(userData => userData.username === username);
         const checkPassword = getAllUsers?.filter(userData => userData.password === password);
 
+        if (!userIp) {
+            throw Error("User's IP is Undefined");
+        };
+        if (checkUsername) {
+            if (!checkUsername[0].ip) {
+                setIpAndLogin({ id: checkUsername[0]._id, ip: userIp });
+            } else {
+                changeIpAndLogin({ id: checkUsername[0]._id, selectedField: { ip: userIp, pastLogin: Date.now() } });
+            }
+        };
         if (username && password) {
             setParams({
                 username: username,
@@ -44,7 +58,7 @@ export default function AuthPage() {
                 setInvalidUser(true);
             }
         } else {
-            alert(`Please insert value`)
+            alert(`Please insert value`);
         }
     }
     const togglePasswordShow = () => {

@@ -1,6 +1,6 @@
 import { query } from "./_generated/server";
 import { mutation } from "./_generated/server";
-import { ConvexError, v } from "convex/values";
+import { v } from "convex/values";
 
 export const get = query({
   args: {},
@@ -43,7 +43,7 @@ export const assignUserElection = mutation({
     }
     return;
   }
-})
+});
 
 export const createUser = mutation(
     {
@@ -67,11 +67,22 @@ export const createUser = mutation(
     return userData;
   },
 });
+export const setIpAndRecentLogin = mutation({
+  args:{
+    id: v.id("users"),
+    ip: v.string()
+  },
+  handler: async (ctx, args) => {
+    return ctx.db.patch(args.id, {ip: args.ip, pastLogin: Date.now()});
+  }
+});
 //  PATCH (UPDATE) METHOD
 export const changeUser = mutation({
   args: { 
     id: v.id("users"),
     selectedField: v.object({
+      ip:v.optional(v.string()),
+      pastLogin:v.optional(v.number()),
       username:v.optional(v.string()),
       password:v.optional(v.string()),
       lastName:v.optional(v.string()),
@@ -88,7 +99,9 @@ export const changeUser = mutation({
         email: beforeChange?.email !== selectedField.email ? selectedField.email : beforeChange?.email,
         username: beforeChange?.username !== selectedField.username ? selectedField.username : beforeChange?.username,
         firstName: beforeChange?.firstName !== selectedField.firstName ? selectedField.firstName : beforeChange?.firstName,
-        lastName: beforeChange?.lastName !== selectedField.lastName ? selectedField.lastName : beforeChange?.lastName
+        lastName: beforeChange?.lastName !== selectedField.lastName ? selectedField.lastName : beforeChange?.lastName,
+        ip: beforeChange?.ip !== selectedField.ip ? selectedField.ip : beforeChange?.ip,
+        pastLogin: beforeChange?.pastLogin !== selectedField.pastLogin ? selectedField.pastLogin : beforeChange?.pastLogin,
       }
     );
   },

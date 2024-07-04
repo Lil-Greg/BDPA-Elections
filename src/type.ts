@@ -1,5 +1,55 @@
 import { Id } from "../convex/_generated/dataModel";
 
+export interface User {
+    assignedElections?: string[];
+    pastLogin: number;
+    ip: string;
+    _id: Id<"users">;
+    _creationTime: number;
+    username: string;
+    password: string;
+    type: string | 'voter' | 'administrator' | 'reporter' | 'moderator' | 'super';
+    salt: string;
+    key: string;
+    email: string;
+    city: string;
+    state: string;
+    zip: string;
+    address: string;
+    firstName: string;
+    lastName: string;
+};
+
+export interface UserToCreate {
+    username: string;
+    password: string;
+    type: string | 'voter' | 'administrator' | 'reporter' | 'moderator' | 'super';
+    salt: string;
+    key: string;
+    email: string;
+    city: string;
+    state: string;
+    zip: string;
+    address: string;
+    firstName: string;
+    lastName: string;
+};
+
+export interface UserApi {
+    success: boolean,
+    users: User[]
+};
+
+export interface UserAuth {
+    success: boolean
+};
+
+export interface UserContextType {
+    user: User | null,
+    setUser: React.Dispatch<React.SetStateAction<User | null>> | null,
+    isAuthenticated: boolean
+};
+
 export interface ElectionInfo {
     success: boolean,
     info: {
@@ -64,54 +114,6 @@ export interface GetSingleBallotType {
 export interface GetBallotsResponse {
     success: boolean,
     ballots: Ballots[]
-};
-
-export interface User {
-    assignedElections?: string[];
-    _id: Id<"users">;
-    _creationTime: number;
-    username: string;
-    password: string;
-    type: string | 'voter' | 'administrator' | 'reporter' | 'moderator' | 'super';
-    salt: string;
-    key: string;
-    email: string;
-    city: string;
-    state: string;
-    zip: string;
-    address: string;
-    firstName: string;
-    lastName: string;
-};
-
-export interface UserToCreate {
-    username: string;
-    password: string;
-    type: string | 'voter' | 'administrator' | 'reporter' | 'moderator' | 'super';
-    salt: string;
-    key: string;
-    email: string;
-    city: string;
-    state: string;
-    zip: string;
-    address: string;
-    firstName: string;
-    lastName: string;
-};
-
-export interface UserApi {
-    success: boolean,
-    users: User[]
-};
-
-export interface UserAuth {
-    success: boolean
-};
-
-export interface UserContextType {
-    user: User | null,
-    setUser: React.Dispatch<React.SetStateAction<User | null>> | null,
-    isAuthenticated: boolean
 };
 
 export type Direction = "prev" | "next";

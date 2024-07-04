@@ -11,7 +11,7 @@ const options = {
         'content-type':'application/json'
     }
 };
-export async function getAllElections(): Promise<Election[]>{
+async function getAllElections(): Promise<Election[]>{
     const data: ElectionsStatus = await CacheFetch(url + `elections`, options, 'getAllElections');
     const elections = data.elections.filter(electionD => 
         electionD.owned === true &&
