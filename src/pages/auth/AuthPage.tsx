@@ -21,8 +21,7 @@ export default function AuthPage() {
     const [passwordShow, setPasswordShow] = useState(false);
     const [invalidUser, setInvalidUser] = useState(false);
     const { success, setParams, user } = useAuth();
-    const [loginAttemptsRemaining, setLoginAttemptRemaining]= useState(3);
-    
+    const [loginAttemptsRemaining, setLoginAttemptRemaining] = useState(3);
 
     const handleSubmit = (event: React.FormEvent) => {
         // event.preventDeault will prevent the page to refresh after the alert
@@ -33,7 +32,7 @@ export default function AuthPage() {
         const checkUsername = getAllUsers?.filter(userData => userData.username === username);
         const checkPassword = getAllUsers?.filter(userData => userData.password === password);
 
-        if (username && password && loginAttemptsRemaining>0) {
+        if (username && password && loginAttemptsRemaining > 0) {
             setParams({
                 username: username,
                 password: password
@@ -45,7 +44,7 @@ export default function AuthPage() {
                 navigate('/', { replace: true });
             } else if (checkUsername?.length === 0 || checkPassword?.length === 0) {
                 setInvalidUser(true);
-                setLoginAttemptRemaining(loginAttemptsRemaining-1)
+                setLoginAttemptRemaining(loginAttemptsRemaining - 1)
             }
         } else {
             alert(`Please insert value`)
@@ -60,13 +59,13 @@ export default function AuthPage() {
             {invalidUser && (
                 <p style={{ color: '#dc3545', display: 'inline' }}>User Does Not Exist</p>
             )}
-             {loginAttemptsRemaining<=0 && (
+            {loginAttemptsRemaining <= 0 && (
                 <p style={{ color: '#dc3545', display: 'inline' }}> You Have Been Locked Out For 1 Hour</p>
             )}
             <Form
                 style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
                 onSubmit={handleSubmit}
-                className={invalidUser || loginAttemptsRemaining<=0 ? 'login-user-invalid' : ''}
+                className={invalidUser || loginAttemptsRemaining <= 0 ? 'login-user-invalid' : ''}
             >
                 <FloatingLabel
                     controlId="floatingInputUsername"
@@ -86,7 +85,7 @@ export default function AuthPage() {
                     <InputGroup.Text onClick={togglePasswordShow}>{passwordShow ? <FaRegEyeSlash /> : <FaRegEye />}</InputGroup.Text>
                 </InputGroup>
                 <Row>
-                    
+
                     <a className="m-1" style={{ textDecoration: 'none' }} href="/login/forgot"><h5>Forgot Password?</h5></a>
                 </Row>
                 <Row>
@@ -94,7 +93,7 @@ export default function AuthPage() {
                 </Row>
                 <Row className="mt-2 mb-4">
                     <Col xs="auto">
-                    {loginAttemptsRemaining} Login Attempts Remaining
+                        {loginAttemptsRemaining} Login Attempts Remaining
 
                     </Col>
                     <Col xs="auto">

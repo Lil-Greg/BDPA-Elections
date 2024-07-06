@@ -5,37 +5,37 @@ import { useQuery } from "@tanstack/react-query";
 import IRVElections from "../algo/IRV-Elections.ts";
 import { convertBallots } from "../utils/utils.ts";
 import CPLElections from "../algo/CPL-Elections.ts";
-const url:string = import.meta.env.VITE_API_URL;
-const APIKey:string = import.meta.env.VITE_API_KEY;
+const url: string = import.meta.env.VITE_API_URL;
+const APIKey: string = import.meta.env.VITE_API_KEY;
 const options = {
-    method:"GET",
-    headers:{
+    method: "GET",
+    headers: {
         'Authorization': APIKey,
-        'content-type':'application/json'
+        'content-type': 'application/json'
     }
 }
 
-export default function UseElection(){
-    const {data, isLoading, isError} = useQuery({
+export default function UseElection() {
+    const { data, isLoading, isError } = useQuery({
         queryKey: ['allElections'],
         queryFn: getAllElections
     });
     console.log(data);
-    return {elections: data, isLoading, isErroring:isError};
+    return { elections: data, isLoading, isErroring: isError };
 }
 
-export function fetchAllElections(){
-    const {data} = useQuery({
+export function fetchAllElections() {
+    const { data } = useQuery({
         queryKey: ['allElections'],
         queryFn: getAllElections
-    }) 
+    })
     return data;
 }
-export async function getAllElections(){
+export async function getAllElections() {
     let AllElections: Election[] = [];
     let hasMoreElections = true;
     let after = '';
-    while(hasMoreElections){
+    while (hasMoreElections) {
         const elections = await CacheFetch(url + `elections?after=${after}`, options)
         hasMoreElections = elections?.length == 100;
         AllElections = [...AllElections, ...elections];
@@ -45,63 +45,63 @@ export async function getAllElections(){
 }
 
 
-export function UseSingleElection(id:string){
+export function UseSingleElection(id: string) {
     const [election, setElection] = useState<Election | undefined>(undefined);
 
-    useEffect(()=>{
-        async function fetchData(){
-            try{
+    useEffect(() => {
+        async function fetchData() {
+            try {
                 const data = await fetch(url + `elections/${id}`, options);
-                const res:ElectionStatus = await data.json();
+                const res: ElectionStatus = await data.json();
                 setElection(res.election);
-            }catch(error){
+            } catch (error) {
                 console.warn(error);
             }
         }
         fetchData();
-    },[id]);
+    }, [id]);
     return election;
 }
 
-export async function GetBallots(election_id:string):Promise<GetBallotsResponse | undefined>{
-    try{
+export async function GetBallots(election_id: string): Promise<GetBallotsResponse | undefined> {
+    try {
         return await fetch(`${url}elections/${election_id}/ballots`, options).then(res => res.json());
-    } catch(error){
-        console.error("Error With GetBallots ",error);
+    } catch (error) {
+        console.error("Error With GetBallots ", error);
     }
 }
-export async function GetSingleBallot(election_id:string, user_id:string): Promise<GetSingleBallotType | undefined>{
-    try{
+export async function GetSingleBallot(election_id: string, user_id: string): Promise<GetSingleBallotType | undefined> {
+    try {
         const data: GetSingleBallotType = await fetch(`${url}elections/${election_id}/ballots/${user_id}`, options).then(res => res.json());
-        if(data.success === true){
+        if (data.success === true) {
             return data;
-        }else{
+        } else {
             throw Error;
         };
-    }catch(error){
+    } catch (error) {
         console.warn("", error)
     };
 }
-export async function MakeVote(election_id:string, voter_id:string, ranking:object){
-    const puttingRankingInObject = {ranking};
+export async function MakeVote(election_id: string, voter_id: string, ranking: object) {
+    const puttingRankingInObject = { ranking };
     const optionsMakeVote = {
-        method:"PUT",
-        headers:{
+        method: "PUT",
+        headers: {
             "Authorization": APIKey,
-            "content-type":"application/json"
+            "content-type": "application/json"
         },
-        body:JSON.stringify(puttingRankingInObject)
+        body: JSON.stringify(puttingRankingInObject)
     };
-    try{
+    try {
         return await fetch(`${url}elections/${election_id}/ballots/${voter_id}`, optionsMakeVote);
-    }catch(error){
+    } catch (error) {
         console.warn("Error with making vote", error);
     }
 }
-export async function getElectionWinner(election: Election){
-    const ballot = await CacheFetch(`${url}elections/${election.election_id}/ballots`, options) 
-    const convertedBallots= convertBallots(ballot.ballots)
-    const winner= (election.type==="irv")? IRVElections(convertedBallots): CPLElections(convertedBallots, election.options).CPL
+export async function getElectionWinner(election: Election) {
+    const ballot = await CacheFetch(`${url}elections/${election.election_id}/ballots`, options)
+    const convertedBallots = convertBallots(ballot.ballots)
+    const winner = (election.type === "irv") ? IRVElections(convertedBallots) : CPLElections(convertedBallots, election.options).CPL
     console.log(winner)
     return winner
 }
