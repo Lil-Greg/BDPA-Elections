@@ -39,15 +39,10 @@ export default function AuthPage() {
             setIpAndLogin({ id: checkUsername[0]._id, ip: userIp });
         };
         if (username && password) {
-            if (checkPassword && checkPassword.length>0) {
+            if (checkPassword && checkPassword.length > 0) {
                 setInvalidUser(false);
-<<<<<<< HEAD
                 setUser && setUser(checkPassword[0]); // Set Types
                 window.localStorage.setItem('election-user', JSON.stringify(checkPassword[0]));
-=======
-                setUser && setUser(user);
-                window.localStorage.setItem('election-user', JSON.stringify(user));
->>>>>>> Elections-And-History
                 navigate('/', { replace: true });
             } else if (checkUsername?.length === 0 || checkPassword?.length === 0) {
                 setInvalidUser(true);
