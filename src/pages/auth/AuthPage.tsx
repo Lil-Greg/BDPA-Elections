@@ -16,7 +16,6 @@ export default function AuthPage() {
     const getAllUsers = useQuery(api.users.get);
     const { userIp } = GetIp();
     const setIpAndLogin = useMutation(api.users.setIpAndRecentLogin);
-    const changeIpAndLogin = useMutation(api.users.changeUser);
     const { setUser } = useContext(UserContext);
     const navigate = useNavigate();
     const usernameRef = useRef<HTMLInputElement>(null);
@@ -38,11 +37,7 @@ export default function AuthPage() {
             throw Error("User's IP is Undefined");
         };
         if (checkUsername) {
-            if (!checkUsername[0].ip) {
-                setIpAndLogin({ id: checkUsername[0]._id, ip: userIp });
-            } else {
-                changeIpAndLogin({ id: checkUsername[0]._id, selectedField: { ip: userIp, pastLogin: Date.now() } });
-            }
+            setIpAndLogin({ id: checkUsername[0]._id, ip: userIp });
         };
         if (username && password) {
             setParams({
@@ -51,7 +46,7 @@ export default function AuthPage() {
             });
             if (success) {
                 setInvalidUser(false);
-                setUser && setUser(user); // Set Types
+                setUser && setUser(user);
                 window.localStorage.setItem('election-user', JSON.stringify(user));
                 navigate('/', { replace: true });
             } else if (success === false && checkUsername?.length === 0 || checkPassword?.length === 0) {
@@ -94,7 +89,7 @@ export default function AuthPage() {
                 </InputGroup>
                 <Row>
 
-                    <a className="m-1" style={{ textDecoration: 'none' }} href="/login/forgot"><h5>Forgot Password?</h5></a>
+                    <a className="m-1" style={{ textDecoration: 'none' }} href="/forgot"><h5>Forgot Password?</h5></a>
                 </Row>
                 <Row>
                     <NavLink to={'/register'}><h5>Sign Up</h5></NavLink>

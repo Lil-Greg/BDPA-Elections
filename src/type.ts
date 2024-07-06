@@ -2,8 +2,8 @@ import { Id } from "../convex/_generated/dataModel";
 
 export interface User {
     assignedElections?: string[];
-    pastLogin: number;
-    ip: string;
+    pastLogin?: number;
+    ip?: string;
     _id: Id<"users">;
     _creationTime: number;
     username: string;

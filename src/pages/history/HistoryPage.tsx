@@ -7,7 +7,7 @@ import getImageURL from '../../utils/image-util';
 
 export default function HistoryPage() {
   const { user } = useContext(UserContext)
-  const { elections, isLoading, isErroring } = useElectionHistory();
+  const { electionsH, isLoading, isErroring } = useElectionHistory();
   const [currentPage, setCurrentPage] = useState<number>(1);
   const itemsPerPage = 5; // Number of elections per page
 
@@ -36,16 +36,16 @@ export default function HistoryPage() {
       </div>
     </>
   }
-  if (!elections) {
+  if (!electionsH) {
     throw new Error
   }
 
   // Calculate which elections to display based on pagination
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentElections = elections.slice(indexOfFirstItem, indexOfLastItem);
+  const currentElections = electionsH.slice(indexOfFirstItem, indexOfLastItem);
 
-  const totalPages = Math.ceil(elections.length / itemsPerPage);
+  const totalPages = Math.ceil(electionsH.length / itemsPerPage);
 
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 

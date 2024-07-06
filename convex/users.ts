@@ -1,6 +1,6 @@
 import { query } from "./_generated/server";
 import { mutation } from "./_generated/server";
-import { v } from "convex/values";
+import { ConvexError, v } from "convex/values";
 
 export const get = query({
   args: {},
@@ -34,14 +34,20 @@ export const assignUserElection = mutation({
     const beforeChange = await ctx.db.get(id);
     const afterChange = beforeChange?.assignedElections ? 
       beforeChange?.assignedElections?.concat(assignedElection):
-      assignedElection
-    ;
-    if(afterChange){
-      return await ctx.db.patch(id, {
-        assignedElections: afterChange
-      });
-    }
-    return;
+      assignedElection;
+    return await ctx.db.patch(id, {
+      assignedElections: afterChange
+    });
+  }
+});
+
+export const changeType = mutation({
+  args:{
+    id: v.id("users"),
+    type: v.string(),
+  },
+  handler:(ctx, args) => {
+    return ctx.db.patch(args.id, {type: args.type});
   }
 });
 
@@ -67,6 +73,7 @@ export const createUser = mutation(
     return userData;
   },
 });
+
 export const setIpAndRecentLogin = mutation({
   args:{
     id: v.id("users"),
@@ -77,12 +84,10 @@ export const setIpAndRecentLogin = mutation({
   }
 });
 //  PATCH (UPDATE) METHOD
-export const changeUser = mutation({
+export const changeUserInProfile = mutation({
   args: { 
     id: v.id("users"),
     selectedField: v.object({
-      ip:v.optional(v.string()),
-      pastLogin:v.optional(v.number()),
       username:v.optional(v.string()),
       password:v.optional(v.string()),
       lastName:v.optional(v.string()),
@@ -100,8 +105,6 @@ export const changeUser = mutation({
         username: beforeChange?.username !== selectedField.username ? selectedField.username : beforeChange?.username,
         firstName: beforeChange?.firstName !== selectedField.firstName ? selectedField.firstName : beforeChange?.firstName,
         lastName: beforeChange?.lastName !== selectedField.lastName ? selectedField.lastName : beforeChange?.lastName,
-        ip: beforeChange?.ip !== selectedField.ip ? selectedField.ip : beforeChange?.ip,
-        pastLogin: beforeChange?.pastLogin !== selectedField.pastLogin ? selectedField.pastLogin : beforeChange?.pastLogin,
       }
     );
   },
