@@ -19,7 +19,6 @@ export default function AuthPage() {
     const passwordRef = useRef<HTMLInputElement>(null);
     const [passwordShow, setPasswordShow] = useState(false);
     const [invalidUser, setInvalidUser] = useState(false);
-    const { success, setParams, user } = useAuth();
 
     const handleSubmit = (event: React.FormEvent) => {
         // event.preventDeault will prevent the page to refresh after the alert
@@ -31,16 +30,12 @@ export default function AuthPage() {
         const checkPassword = getAllUsers?.filter(userData => userData.password === password);
 
         if (username && password) {
-            setParams({
-                username: username,
-                password: password
-            });
-            if (success) {
+            if (checkPassword && checkPassword.length>0) {
                 setInvalidUser(false);
-                setUser && setUser(user); // Set Types
-                window.localStorage.setItem('election-user', JSON.stringify(user));
+                setUser && setUser(checkPassword[0]); // Set Types
+                window.localStorage.setItem('election-user', JSON.stringify(checkPassword[0]));
                 navigate('/', { replace: true });
-            } else if (success === false && checkUsername?.length === 0 || checkPassword?.length === 0) {
+            } else if (checkUsername?.length === 0 || checkPassword?.length === 0) {
                 setInvalidUser(true);
             }
         } else {

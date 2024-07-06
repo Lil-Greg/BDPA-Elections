@@ -8,6 +8,7 @@ import { JSX } from 'react/jsx-runtime';
 import Settings from './dashboard-components/Settings';
 import AdminElections from './dashboard-components/AdminElections';
 import AssignPage from './dashboard-components/AssignPage';
+import AssignedElections from './dashboard-components/AssignedElections';
 
 export default function DashboardPage() {
     const { user } = useContext(UserContext);
@@ -41,7 +42,7 @@ export default function DashboardPage() {
                     </Tab>
                 ) : user?.type === 'voter' ? (
                     <Tab eventKey="elections" title="Allowed Elections">
-                        <AdminElections />
+                        <AssignedElections />
                     </Tab>
                 ) : user?.type === 'moderator' ? (
                     <Tab eventKey="assignment" title="Assignment">
@@ -53,9 +54,12 @@ export default function DashboardPage() {
                     </Tab>
                 ) : user?.type === 'reporter' && (
                     <Tab eventKey="elections" title="Allowed Elections">
-                        <AdminElections />
+                        <AssignedElections />
                     </Tab>
                 )}
+                {user.type === "administrator" && <Tab eventKey="elections" title="Elections">
+                    <AdminElections />
+                </Tab>}
                 <Tab eventKey="settings" title="Settings">
                     <Settings />
                 </Tab>
