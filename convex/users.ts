@@ -34,16 +34,22 @@ export const assignUserElection = mutation({
     const beforeChange = await ctx.db.get(id);
     const afterChange = beforeChange?.assignedElections ? 
       beforeChange?.assignedElections?.concat(assignedElection):
-      assignedElection
-    ;
-    if(afterChange){
-      return await ctx.db.patch(id, {
-        assignedElections: afterChange
-      });
-    }
-    return;
+      assignedElection;
+    return await ctx.db.patch(id, {
+      assignedElections: afterChange
+    });
   }
-})
+});
+
+export const changeType = mutation({
+  args:{
+    id: v.id("users"),
+    type: v.string(),
+  },
+  handler:(ctx, args) => {
+    return ctx.db.patch(args.id, {type: args.type});
+  }
+});
 
 export const createUser = mutation(
     {
@@ -67,8 +73,18 @@ export const createUser = mutation(
     return userData;
   },
 });
+
+export const setIpAndRecentLogin = mutation({
+  args:{
+    id: v.id("users"),
+    ip: v.string()
+  },
+  handler: async (ctx, args) => {
+    return ctx.db.patch(args.id, {ip: args.ip, pastLogin: Date.now()});
+  }
+});
 //  PATCH (UPDATE) METHOD
-export const changeUser = mutation({
+export const changeUserInProfile = mutation({
   args: { 
     id: v.id("users"),
     selectedField: v.object({
@@ -88,7 +104,7 @@ export const changeUser = mutation({
         email: beforeChange?.email !== selectedField.email ? selectedField.email : beforeChange?.email,
         username: beforeChange?.username !== selectedField.username ? selectedField.username : beforeChange?.username,
         firstName: beforeChange?.firstName !== selectedField.firstName ? selectedField.firstName : beforeChange?.firstName,
-        lastName: beforeChange?.lastName !== selectedField.lastName ? selectedField.lastName : beforeChange?.lastName
+        lastName: beforeChange?.lastName !== selectedField.lastName ? selectedField.lastName : beforeChange?.lastName,
       }
     );
   },

@@ -8,11 +8,14 @@ import { NavLink, useNavigate } from "react-router-dom";
 import UserContext from "../../context/UserContext";
 import useAuth from "../../hooks/useAuth";
 import { Button, Col, Container, InputGroup, Row } from 'react-bootstrap';
-import { useQuery } from 'convex/react';
+import { useMutation, useQuery } from 'convex/react';
 import { api } from '../../../convex/_generated/api';
+import GetIp from '../../hooks/getIp';
 
 export default function AuthPage() {
     const getAllUsers = useQuery(api.users.get);
+    const { userIp } = GetIp();
+    const setIpAndLogin = useMutation(api.users.setIpAndRecentLogin);
     const { setUser } = useContext(UserContext);
     const navigate = useNavigate();
     const usernameRef = useRef<HTMLInputElement>(null);
@@ -29,17 +32,28 @@ export default function AuthPage() {
         const checkUsername = getAllUsers?.filter(userData => userData.username === username);
         const checkPassword = getAllUsers?.filter(userData => userData.password === password);
 
+        if (!userIp) {
+            throw Error("User's IP is Undefined");
+        };
+        if (checkUsername) {
+            setIpAndLogin({ id: checkUsername[0]._id, ip: userIp });
+        };
         if (username && password) {
             if (checkPassword && checkPassword.length>0) {
                 setInvalidUser(false);
+<<<<<<< HEAD
                 setUser && setUser(checkPassword[0]); // Set Types
                 window.localStorage.setItem('election-user', JSON.stringify(checkPassword[0]));
+=======
+                setUser && setUser(user);
+                window.localStorage.setItem('election-user', JSON.stringify(user));
+>>>>>>> Elections-And-History
                 navigate('/', { replace: true });
             } else if (checkUsername?.length === 0 || checkPassword?.length === 0) {
                 setInvalidUser(true);
             }
         } else {
-            alert(`Please insert value`)
+            alert(`Please insert value`);
         }
     }
     const togglePasswordShow = () => {
@@ -75,7 +89,7 @@ export default function AuthPage() {
                 </InputGroup>
                 <Row>
 
-                    <a className="m-1" style={{ textDecoration: 'none' }} href="/login/forgot"><h5>Forgot Password?</h5></a>
+                    <a className="m-1" style={{ textDecoration: 'none' }} href="/forgot"><h5>Forgot Password?</h5></a>
                 </Row>
                 <Row>
                     <NavLink to={'/register'}><h5>Sign Up</h5></NavLink>

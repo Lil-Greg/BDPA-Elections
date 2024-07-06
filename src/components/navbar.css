@@ -39,6 +39,9 @@
     order: 1000;
     align-self: flex-end;
   }
+  .nav-links{
+    display: flex;
+  }
 }
 @media(max-width:991px){
   .pfp{

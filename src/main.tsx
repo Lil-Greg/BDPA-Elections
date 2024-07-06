@@ -30,7 +30,7 @@ const router = createBrowserRouter([
     element: <ProtectedRoute allowedUserTypes={['administrator', 'super']}><CreateElectionPage /></ProtectedRoute>
   }, {
     path: '/elections',
-    element: <ProtectedRoute allowedUserTypes={['voter', 'administrator', 'super']}><MultiElectionsPage /></ProtectedRoute>,
+    element: <ProtectedRoute allowedUserTypes={['voter', 'administrator', 'super', "moderator"]}><MultiElectionsPage /></ProtectedRoute>,
   }, {
     path: '/elections/:electionId',
     element: <ProtectedRoute allowedUserTypes={['voter', 'administrator', 'super']}><ElectionPage /></ProtectedRoute>
@@ -53,14 +53,14 @@ const router = createBrowserRouter([
 ]);
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <ConvexProvider client={convex}>
+    <ConvexProvider client={convex}>
+      <QueryClientProvider client={queryClient}>
         <UserContextProvider>
           <Top />
           <RouterProvider router={router}></RouterProvider>
         </UserContextProvider>
-      </ConvexProvider>
-    </QueryClientProvider>
+      </QueryClientProvider>
+    </ConvexProvider>
   </React.StrictMode>,
 )
 

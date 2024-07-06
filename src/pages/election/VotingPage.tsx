@@ -44,7 +44,6 @@ export default function VotingPage() {
 
     useEffect(() => {
         const inputValue = inputRef.current?.value || inputChangeValue;
-        console.log(inputValue)
         if (inputValue === undefined) {
             setRankingError(true);
             setRankingErrorMessage(1);
@@ -91,7 +90,6 @@ export default function VotingPage() {
     };
     const deleteRanking = (index: number) => {
         const updatedRankings = rankings.filter((_, i) => i !== index);
-        console.log(updatedRankings);
         setRankings(updatedRankings);
     };
     const moveRankingUp = (index: number) => {
@@ -137,7 +135,6 @@ export default function VotingPage() {
             acc[option] = index + 1;
             return acc;
         }, {});
-        console.log("Regular Variable of Rankings Reduced", rankingsReduced);
         navigate(`/elections/${electionId}`, { replace: true });
         await MakeVote(electionId || '', user?.username || '', rankingsReduced);
         sessionStorage.removeItem('election-rankings');
