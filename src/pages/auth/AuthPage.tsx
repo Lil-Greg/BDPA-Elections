@@ -86,7 +86,7 @@ export default function AuthPage() {
                 </InputGroup>
                 <Row>
 
-                    <a className="m-1" style={{ textDecoration: 'none' }} href="/login/forgot"><h5>Forgot Password?</h5></a>
+                    <a className="m-1" style={{ textDecoration: 'none' }} href="/forgot"><h5>Forgot Password?</h5></a>
                 </Row>
                 <Row>
                     <NavLink to={'/register'}><h5>Sign Up</h5></NavLink>
