@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-// import Top from './components/Top.tsx';
+import Top from './components/Top.tsx';
 import ElectionPage from './pages/election/ElectionPage.tsx';
 import UserContextProvider from './context/UserContextProvider.tsx';
 import DashboardPage from './pages/dashboard/DashboardPage.tsx';
@@ -17,7 +17,7 @@ import VotingPage from './pages/election/VotingPage.tsx';
 import ForgotPassword from './pages/auth/forgotPassword.tsx';
 import HistoryPage from './pages/history/HistoryPage.tsx';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import TopSec from './components/TopSec.tsx';
+// import TopSec from './components/TopSec.tsx';
 
 const convex = new ConvexReactClient(import.meta.env.VITE_CONVEX_URL as string);
 const queryClient = new QueryClient();
@@ -57,7 +57,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     <ConvexProvider client={convex}>
       <QueryClientProvider client={queryClient}>
         <UserContextProvider>
-          <TopSec />
+          <Top />
           <RouterProvider router={router}></RouterProvider>
         </UserContextProvider>
       </QueryClientProvider>

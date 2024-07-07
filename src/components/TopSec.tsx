@@ -1,5 +1,4 @@
 import './TopSec.css';
-import { Nav, Navbar } from "react-bootstrap";
 import { NavLink, Outlet } from "react-router-dom";
 import getImageURL from "../utils/image-util";
 import { useContext } from 'react';
@@ -8,31 +7,22 @@ import useInfoApi from '../hooks/useInfoApi';
 import { FaCaretDown } from 'react-icons/fa';
 
 export default function TopSec() {
-  const context = useContext(UserContext);
-
-  if (!context) {
-    return null;
-  }
-
-
-  const { user, isAuthenticated } = context;
+  const { user, isAuthenticated } = useContext(UserContext);
   const info = useInfoApi();
 
   return (
     <>
-      <Navbar className="topnav">
-        <Nav>
-          <NavLink to="/" className={({ isActive }) => "nav-link responsive" + (isActive ? " active" : "")} end>
-            <img src={getImageURL("dc.png")} alt="DC Picture" className="navHome" />&nbsp;
-            <span className='navHome-Title'>DC Elections</span>
-          </NavLink>
-        </Nav>
+      <div className="topnav">
+        <NavLink to={"/"} className={({ isActive }) => "nav-link responsive" + (isActive ? " active" : "")} end>
+          <img src={getImageURL("dc.png")} alt="DC Picture" className="navHome" />&nbsp;
+          <span className='navHome-Title'>DC Elections</span>
+        </NavLink>
         {isAuthenticated && (
           <>
-            <NavLink to="/elections" className={({ isActive }) => "nav-link responsive" + (isActive ? " active" : "")} end>
+            <NavLink to={"/elections"} className={({ isActive }) => "nav-link responsive" + (isActive ? " active" : "")} end>
               Elections
             </NavLink>
-            <NavLink to="/history" className={({ isActive }) => "nav-link responsive" + (isActive ? " active" : "")} end>
+            <NavLink to={"/history"} className={({ isActive }) => "nav-link responsive" + (isActive ? " active" : "")} end>
               History
             </NavLink>
             <div className="dropdown responsive">
@@ -43,12 +33,12 @@ export default function TopSec() {
                 <p className='responsive'>Closed:&nbsp;{info?.info?.closedElections}</p>
               </div>
             </div>
-            <NavLink to="/" className={({ isActive }) => "nav-link responsive" + (isActive ? " active" : "")} end>
+            <NavLink to={"/"} className={({ isActive }) => "nav-link responsive" + (isActive ? " active" : "")} end>
               <img src={getImageURL("default-pfp.jpg")} alt={`${user?.username}'s Profile Picture`} className='pfp' />
             </NavLink>
           </>
         )}
-      </Navbar>
+      </div>
       <Outlet></Outlet>
     </>
   )
