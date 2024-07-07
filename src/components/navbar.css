@@ -1,50 +1,71 @@
 .navMenu{
-    background-color: rgb(255, 255, 255);
-    color: rgb(46, 46, 46);
-    display: flex;
-    justify-content: space-between;
-    align-items:center;
-    padding: 0 1rem;
-  }
-  .navMenu ul{
-    padding:0;
-    margin:0;
-    list-style:none;
-    display:flex;
-    gap:1rem;
-  }
-  .navMenu a{
-    color: inherit;
-  }
+  background-color: rgb(255, 255, 255);
+  color: rgb(46, 46, 46);
+  display: flex;
+  justify-content: space-between;
+  align-items:center;
+  padding: 0 1rem;
+}
+.navMenu ul{
+  padding:0;
+  margin:0;
+  list-style:none;
+  display:flex;
+  gap:1rem;
+}
+.navMenu a{
+  color: inherit;
+}
+.container-fluid .navHome-container{
+   display: flex;
+   align-items: center;
+}
 .navHome, .navHome img{
   height: 3rem;
   width: 3rem;
 }
+.navHome{
+  display: flex;
+}
 .menuStats{
   font-size: 10px;
 }
-.pfp{
-  order:1000;
-  width: 2rem;
-  height: 2rem;
-  border-radius: 50%;
-  border: 1px solid #00b3e7;
-
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
+.navigation-element-container{
+  align-items: center;
+  width: 100%;
+}
+.navHome-title{
+  font-size: 1.75rem;
+  align-items: center;
+  display: flex;
+  height: 64px;
+}
+.pfp-response{
+  display: flex;
+  align-items: center;
+  height: 64px;
 }
 @media (min-width: 992px){
-  .pfp{
+  .pfp-responsive{
     order: 1000;
     align-self: flex-end;
+    display: flex;
+    height: 60px;
   }
   .nav-links{
     display: flex;
+    font-size: 1.5rem;
+    height: 64px;
+  }
+  .nav-item.dropdown{
+    font-size: 1.5rem;
+  }
+  .navigation-element-container{
+    height: 90px;
   }
 }
 @media(max-width:991px){
-  .pfp{
+  .pfp-responsive{
     align-self: center !important;
   }
 }

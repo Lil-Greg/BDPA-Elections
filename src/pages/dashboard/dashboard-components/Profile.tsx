@@ -10,7 +10,7 @@ import { FaRegEye, FaRegEyeSlash } from "react-icons/fa6";
 export default function Profile() {
     const { user, setUser } = useContext(UserContext);
     const getAllUsers = useQuery(api.users.get);
-    const changeUser = useMutation(api.users.changeUser);
+    const changeUser = useMutation(api.users.changeUserInProfile);
 
     const [noValue, setNoValue] = useState<boolean>(true);
     const [editState, setEditState] = useState<boolean>(false);
