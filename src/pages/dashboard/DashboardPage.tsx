@@ -36,30 +36,19 @@ export default function DashboardPage() {
                 <Tab eventKey="profile" title='Profile'>
                     <Profile />
                 </Tab>
-                {user?.type === 'administrator' ? (
-                    <Tab eventKey="assignment" title="Assignment">
+                {user?.type !== "reporter" && user?.type !== "voter" && (
+                    <Tab eventKey="assignment" title="Assign">
                         <AssignPage />
-                    </Tab>
-                ) : user?.type === 'voter' ? (
-                    <Tab eventKey="elections" title="Allowed Elections">
-                        <AssignedElections />
-                    </Tab>
-                ) : user?.type === 'moderator' ? (
-                    <Tab eventKey="assignment" title="Assignment">
-                        <AssignPage />
-                    </Tab>
-                ) : user?.type === 'super' ? (
-                    <Tab eventKey="assignment" title="Assignment">
-                        <AssignPage />
-                    </Tab>
-                ) : user?.type === 'reporter' && (
-                    <Tab eventKey="elections" title="Allowed Elections">
-                        <AssignedElections />
                     </Tab>
                 )}
-                {user.type === "administrator" && <Tab eventKey="elections" title="Elections">
+                {user?.type !== "voter" && user?.type !== "reporter" && user?.type !== "moderator" && <Tab eventKey="elections" title="Edit Elections">
                     <AdminElections />
                 </Tab>}
+                {user?.type !== "administrator" && user?.type !== "super" && (
+                    <Tab eventKey="assignedElections" title="Assignments">
+                        <AssignedElections user={user} />
+                    </Tab>
+                )}
                 <Tab eventKey="settings" title="Settings">
                     <Settings />
                 </Tab>

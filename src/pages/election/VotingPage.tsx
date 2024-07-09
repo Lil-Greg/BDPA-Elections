@@ -2,12 +2,13 @@ import './VotingPage.css';
 import { Button, Card, Col, Container, FloatingLabel, Form, InputGroup, ListGroup, Modal, Row } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import { Election } from "../../type";
-import { MakeVote, UseSingleElection } from "../../hooks/useElection";
+import { UseSingleElection } from "../../hooks/useElection";
 import React, { ChangeEvent, useContext, useEffect, useRef, useState } from 'react';
 import InputGroupText from 'react-bootstrap/esm/InputGroupText';
 import { IoCloseCircle, IoCloseCircleOutline, IoAddCircle, IoAddCircleOutline } from "react-icons/io5";
 import { FaLongArrowAltUp, FaLongArrowAltDown } from "react-icons/fa";
 import UserContext from '../../context/UserContext';
+import { MakeVote } from '../../hooks/useBallots';
 
 export default function VotingPage() {
     const { user } = useContext(UserContext);

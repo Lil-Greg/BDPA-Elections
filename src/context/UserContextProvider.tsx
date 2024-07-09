@@ -10,7 +10,7 @@ interface Props {
 // and localStorage will not accept
 // it's initial value
 export default function UserContextProvider({ children }: Props) {
-    const brother = window.localStorage.getItem('election-user');
+    const brother = window.localStorage.getItem('election-user') || window.sessionStorage.getItem("election-user");
     const defaultUser = brother !== undefined && brother ? JSON.parse(brother) : null;
     const [user, setUser] = useState<User | null>(() => defaultUser);
     const isAuthenticated = !!user; // sets Authenticated to user but with a boolean 

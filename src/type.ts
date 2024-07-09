@@ -116,6 +116,11 @@ export interface GetBallotsResponse {
     ballots: Ballots[]
 };
 
+export interface EditElection{
+    description: string;
+    options: string[];
+};
+
 export type Direction = "prev" | "next";
 
 export type History = {

@@ -8,6 +8,17 @@ export const get = query({
     return await ctx.db.query("users").collect();
   },
 });
+export const auth = query({
+  args: {
+    username: v.string(),
+    password: v.string()
+  },
+  handler: async (ctx, args) => {
+    return await ctx.db.query("users")
+    .filter(data => data.eq(data.field("username"), args.username) && data.eq(data.field("password"), args.password))
+    .collect();
+  },
+});
 
 export const getSingleUser = query({
   args:{
