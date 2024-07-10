@@ -1,29 +1,35 @@
 import CPLElections from '../../algo/CPL-Elections';
-import { Election, GetBallotsResponse, GetSingleBallotType, User } from "../../type";
+import { ElectionStatus, GetBallotsResponse, GetSingleBallotType, User } from "../../type";
 import IRVElections from "../../algo/IRV-Elections";
-import { useState } from 'react';
-import { GetBallots, GetSingleBallot } from '../../hooks/useBallots';
+import CacheFetch from '../../hooks/useCacheFetch';
+const url = import.meta.env.VITE_API_URL;
+const APIKey = import.meta.env.VITE_API_KEY;
 
-export default function DistributeCalls(election: Election, user: User) {
-    const [ballot, setBallot] = useState<GetSingleBallotType | undefined>();
-    const ballotCall = GetSingleBallot(election.election_id, user.username);
-    let winner;
-
-    if (election !== undefined) {
-        setBallot(ballotCall);
-        const optionsResponse: GetBallotsResponse | undefined = GetBallots(election.election_id);
-        if (optionsResponse !== undefined) {
-            const ballotsConverted = optionsResponse?.ballots.map((ballots) => {
-                return Object.keys(ballots.ranking);
-            }) || [];
-            if (election?.type === 'irv') {
-                const data = IRVElections(ballotsConverted);
-                winner = data;
-            } else if (election?.type === 'cpl') {
-                const { CPL } = CPLElections(ballotsConverted, election.options);
-                winner = CPL;
-            }
-        }
+const options = {
+    method: "GET",
+    headers: {
+        'Authorization': APIKey,
+        'content-type': 'application/json'
     }
-    return { ballot, winner };
+};
+export default async function DistributeCalls(election_id: string, user: User) {
+    let winner;
+    const { election, ballots, userVote } = await GetElectionData(election_id, user);
+    const ballotsConverted = ballots.ballots.map((ballots) => {
+        return Object.keys(ballots.ranking);
+    }) || [];
+    if (election?.type === 'irv') {
+        const data = IRVElections(ballotsConverted);
+        winner = data;
+    } else if (election?.type === 'cpl') {
+        const { CPL } = CPLElections(ballotsConverted, election.options);
+        winner = CPL;
+    }
+    return { election, winner, userVote };
+}
+async function GetElectionData(election_id: string, user: User) {
+    const election: ElectionStatus = await CacheFetch(`${url}elections/${election_id}`, options);
+    const ballots: GetBallotsResponse = await CacheFetch(`${url}elections/${election_id}/ballots`, options);
+    const userVote: GetSingleBallotType = await CacheFetch(`${url}elections/${election_id}/ballots/${user.username}`, options);
+    return { election: election.election, ballots, userVote }
 }

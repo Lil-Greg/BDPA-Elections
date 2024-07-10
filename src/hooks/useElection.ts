@@ -12,7 +12,7 @@ const options = {
     }
 };
 async function getAllElections(): Promise<Election[]>{
-    const data: ElectionsStatus = await CacheFetch(url + `elections`, options, 'getAllElections');
+    const data: ElectionsStatus = await CacheFetch(url + `elections`, options);
     const elections = data.elections.filter(electionD => 
         electionD.owned === true &&
         electionD.closesAt > Date.now() &&
@@ -33,7 +33,7 @@ export function UseSingleElection(id:string){
 
     useEffect(() => {
         async function fetchData(){
-            const singleElection:ElectionStatus = await CacheFetch(url + `elections/${id}`, options, id);
+            const singleElection:ElectionStatus = await CacheFetch(url + `elections/${id}`, options);
             setElection(singleElection.election);
         }
         fetchData();
@@ -51,6 +51,6 @@ export function useEditElection(election_id:string, formValues: EditElection){
     };
     useQuery({
         queryKey:["editElection"],
-        queryFn:() => CacheFetch(`${url}elections/${election_id}`, optionsEditElection, "editElection"),
+        queryFn:async () => await fetch(`${url}elections/${election_id}`, optionsEditElection),
     });
 }

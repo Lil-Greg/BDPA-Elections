@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { GetBallotsResponse, GetSingleBallotType } from "../type";
 import CacheFetch from "./useCacheFetch";
-const url = import.meta.env.API_URL;
-const APIKey = import.meta.env.API_KEY;
+const url = import.meta.env.VITE_API_URL;
+const APIKey = import.meta.env.VITE_API_KEY;
 
 const options = {
     method:"GET",
@@ -16,7 +16,7 @@ export function GetBallots(election_id:string):GetBallotsResponse | undefined{
     const {data, error} = useQuery<GetBallotsResponse>({
         queryKey:["GetBallots"],
         queryFn: async () => {
-            return await CacheFetch(`${url}elections/${election_id}/ballots`, options, "GetBallots");
+            return await CacheFetch(`${url}elections/${election_id}/ballots`, options);
         }
     });
     if(error !== null){
@@ -24,11 +24,11 @@ export function GetBallots(election_id:string):GetBallotsResponse | undefined{
     }
     return data;
 };
-export function GetSingleBallot(election_id:string, user_id:string): GetSingleBallotType | undefined{
+export function GetSingleBallot(election_id:string, username:string): GetSingleBallotType | undefined{
     const {data, error} = useQuery({
         queryKey:["GetSingleBallot"],
         queryFn: async () => {
-            const data: GetSingleBallotType = await CacheFetch(`${url}elections/${election_id}/ballots/${user_id}`, options, "GetSingleBallot");
+            const data: GetSingleBallotType = await CacheFetch(`${url}elections/${election_id}/ballots/${username}`, options);
             return data;
         },
     });
@@ -37,7 +37,7 @@ export function GetSingleBallot(election_id:string, user_id:string): GetSingleBa
     };
     return data;
 };
-export function MakeVote(election_id:string, voter_id:string, ranking:object){
+export async function MakeVote(election_id:string, voter_id:string, ranking:object){
     const puttingRankingInObject = {ranking};
     const optionsMakeVote = {
         method:"PUT",
@@ -47,15 +47,12 @@ export function MakeVote(election_id:string, voter_id:string, ranking:object){
         },
         body:JSON.stringify(puttingRankingInObject)
     };
-    const {data, error} = useQuery({
-        queryKey:["MakeVote"],
-        queryFn: async () => await CacheFetch(`${url}elections/${election_id}/ballots/${voter_id}`, optionsMakeVote, "MakeVote")
-    });
-    if(error !== null){
-        console.warn("Error with making vote", error);
-    };
-    return data;
+    try{
+        await fetch(`${url}elections/${election_id}/ballots/${voter_id}`, optionsMakeVote);
+    } catch(error){
+        console.warn("Error With Making Vote: ", error);
+    }
 };
 export default function EditVote(){
-
+    
 }

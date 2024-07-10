@@ -39,11 +39,8 @@ export default function AuthPage() {
             if (username && password) {
                 setInvalidUser(false);
                 setUser && setUser(authUser[0]); // Set Types
-                if (remember) {
-                    window.localStorage.setItem('election-user', JSON.stringify(authUser[0]));
-                } else if (remember === false) {
-                    window.sessionStorage.setItem("election-user", JSON.stringify(authUser[0]));
-                }
+                remember === true ? window.localStorage.setItem('election-user', JSON.stringify(authUser[0]))
+                    : window.sessionStorage.setItem("election-user", JSON.stringify(authUser[0]));
                 navigate('/', { replace: true });
             } else {
                 alert(`Please insert value`);
@@ -111,6 +108,7 @@ export default function AuthPage() {
                         type="checkbox"
                         id="autoSizingCheck"
                         className="mb-2"
+                        onChange={() => { setRemember(!remember) }}
                         label="Remember me"
                         style={{ fontSize: '1.1rem' }}
                     />

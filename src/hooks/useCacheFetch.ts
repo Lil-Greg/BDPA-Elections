@@ -1,7 +1,6 @@
-export default async function CacheFetch(url: string, options: RequestInit, name?:string){
-    const cacheKey = name === undefined ? `${url}_${JSON.stringify(options)}` : name;
-    const cached = sessionStorage.getItem(cacheKey);
-
+export default async function CacheFetch(url: string, options: RequestInit){
+    const cacheKey = `${url}_${JSON.stringify(options)}`;
+    const cached = window.sessionStorage.getItem(cacheKey);
     if(cached){
         return(JSON.parse(cached));
     };
