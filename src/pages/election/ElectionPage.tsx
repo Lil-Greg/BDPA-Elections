@@ -44,7 +44,7 @@ export default function ElectionPage() {
 
     const handleVoteClick = async () => {
         if (user?.type === 'voter') {
-            navigate(`/elections/${electionId}/vote`)
+            navigate(`/elections/${electionId}/vote`);
         }
     };
 

@@ -15,28 +15,46 @@ export default function VotingPage() {
         throw Error("No Election ID");
     }
     const election: Election | undefined = UseSingleElection(electionId);
-    console.log(election);
     const navigate = useNavigate();
     const defaultOptions = election ? election.options : [];
-    console.log(defaultOptions);
     const [rankings, setRankings] = useState<string[]>(defaultOptions);
     useEffect(() => {
         if (election && election.options) {
             setRankings(election.options);
         }
     }, [election]);
-    console.log(rankings);
     const [show, setShow] = useState(false);
 
     // Timer
-    const [now, setNow] = useState(Date.now());
-    const fiveMin = Date.now() + 300000;
-    console.log(fiveMin - now);
+    const [timeRanOut, setTimeRanOut] = useState(false);
+    const [minutes, setMinutes] = useState(0);
+    const [seconds, setSeconds] = useState(0);
 
-    // useEffect(() => {
-    //     setNow(Date.now);
-    //     console.log(fiveMin - now);
-    // }, [Date.now()]);
+    const brother = sessionStorage.getItem("FiveMin");
+    if (!brother || brother === null) {
+        sessionStorage.setItem("FiveMin", `${Date.now()}`);
+    }
+    useEffect(() => {
+        const fiveMin = parseInt(brother || "0") + 300000;
+        const target = new Date(fiveMin);
+
+        const interval = setInterval(() => {
+            const now = new Date();
+            const difference = target.getTime() - now.getTime();
+
+            const m = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+            setMinutes(m);
+
+            const s = Math.floor((difference % (1000 * 60)) / 1000);
+            setSeconds(s);
+
+            if (m <= 0 && s <= 0) {
+                setTimeRanOut(true);
+            }
+        }, 1000);
+
+        return () => clearInterval(interval);
+    }, []);
 
     const moveRankingUp = (index: number) => {
         if (index > 0) {
@@ -53,6 +71,11 @@ export default function VotingPage() {
         }
     };
 
+    if (timeRanOut === true) {
+        sessionStorage.removeItem("FiveMin");
+        setTimeout(() => navigate("/", { replace: true }), 1000);
+        ;
+    }
     const handleClose = () => {
         setShow(false);
     };
@@ -67,6 +90,7 @@ export default function VotingPage() {
             return acc;
         }, {});
         await MakeVote(electionId || '', user?.username || '', rankingsReduced);
+        sessionStorage.removeItem("FiveMin");
         navigate(`/elections/${electionId}`, { replace: true });
     };
     return <>
@@ -77,11 +101,9 @@ export default function VotingPage() {
             <Modal.Body className='voting-modal-body'>
                 {rankings.map((option, index) => {
                     const trueRank = index + 1;
-                    return <>
-                        <Row>
-                            <Col>{trueRank}. {option}</Col>
-                        </Row>
-                    </>
+                    return <Row key={option}>
+                        <Col>{trueRank}. {option}</Col>
+                    </Row>
                 })}
             </Modal.Body>
             <Modal.Footer style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -94,18 +116,20 @@ export default function VotingPage() {
             </Modal.Footer>
         </Modal>
         <Container>
-            <h1 style={{ textAlign: 'center' }}>{election?.title}</h1>
+            <h1 style={{ textAlign: 'center', textDecoration: "underline" }}>{election?.title}</h1>
+            <div className="time" style={{ textAlign: "center" }}>
+                <h3>Time</h3>
+                <h5 style={timeRanOut ? { fontSize: "2rem", color: "red" } : {}}>{minutes} : {seconds}</h5>
+            </div>
             <Row className='voting-row-container'>
                 <Card className="left-side side" as={Col}>
                     <Card.Title>Options</Card.Title>
                     <Card.Body as={Row} className="row grid-placement">
                         {election?.options.map((option, index) => {
                             const evenOrOdd = index % 2 === 0 ? 'even' : 'odd';
-                            return (
-                                <Col key={option} className={`option-${evenOrOdd} option col-md-6 col-2`}>
-                                    {index + 1}.&nbsp;{option}
-                                </Col>
-                            );
+                            return <Col key={option} className={`option-${evenOrOdd} option col-md-6 col-2`}>
+                                {index + 1}.&nbsp;{option}
+                            </Col>
                         })}
                     </Card.Body>
                 </Card>
