@@ -25,7 +25,7 @@ export default async function DistributeCalls(election_id: string, user: User) {
         const { CPL } = CPLElections(ballotsConverted, election.options);
         winner = CPL;
     }
-    return { election, winner, userVote };
+    return { election, winner, userVote, ballots };
 }
 async function GetElectionData(election_id: string, user: User) {
     const election: ElectionStatus = await CacheFetch(`${url}elections/${election_id}`, options);

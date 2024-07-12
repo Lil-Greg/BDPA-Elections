@@ -16,7 +16,7 @@ export default function ElectionPage() {
     }
     const navigate = useNavigate();
     if (!user) {
-        return null;
+        return;
     }
     const { data, isLoading, isError, error } = useQuery({
         queryKey: ["CombinedSingleElection"],
@@ -40,7 +40,9 @@ export default function ElectionPage() {
     if (!data) {
         throw Error("Single Election Use Query Data Errored");
     }
-    const { election, winner, userVote } = data;
+    const { election, winner, userVote, ballots } = data;
+
+    const ballotsDude = ballots.ballots.map(ballot => Object.keys(ballot.ranking));
 
     const handleVoteClick = async () => {
         if (user?.type === 'voter') {
@@ -84,6 +86,11 @@ export default function ElectionPage() {
                         </Button>
                     ) : user?.type === 'voter' && (
                         <Button onClick={handleVoteClick} variant='success'>Want to Vote?</Button>
+                    )}
+                    {user.type !== "voter" && user.type !== "reporter" && ballots.success === true ? (
+                        ballots.ballots.map((ballot, index) => <p key={ballot.voter_id}>Option: {ballotsDude[index]}; Ballot Ranking: {ballot.ranking.rank}</p>)
+                    ) : (
+                        <p>No Ballots</p>
                     )}
                 </Row>
             </Container>

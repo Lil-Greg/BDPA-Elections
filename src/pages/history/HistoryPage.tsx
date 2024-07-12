@@ -9,7 +9,7 @@ export default function HistoryPage() {
   const { user } = useContext(UserContext)
   const { electionsH, isLoading, isErroring } = useElectionHistory();
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const itemsPerPage = 5; // Number of elections per page
+  const itemsPerPage = 5;
 
   const monthNames = [
     'January', 'February', 'March', 'April', 'May', 'June',
@@ -26,18 +26,12 @@ export default function HistoryPage() {
         <div className="errorMessage">
           <img src={getImageURL('errorMagnifier.svg')} alt="Error Magnifier" />
           <h1>Something went wrong!</h1>
-          <hr />
-          {/* <code>
-                        Error Information (Broad): {electionsError?.stack}
-                        <p>{electionsError?.name}</p>
-                        {electionsError?.message}
-                    </code> */}
         </div>
       </div>
     </>
   }
   if (!electionsH) {
-    throw new Error
+    throw new Error;
   }
 
   // Calculate which elections to display based on pagination

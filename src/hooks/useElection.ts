@@ -27,6 +27,17 @@ export default function UseElection(){ // useEffect on elections data
     });
     return {elections: data, isLoading, isErroring:isError, electionsError: error};
 };
+export function UseUnfilteredElection(){
+    const {data, isLoading} = useQuery({
+        queryKey:["UnfilteredElections"],
+        queryFn:async () => {
+            const nigger: ElectionsStatus = await CacheFetch(`${url}elections`, options);
+            const owned = nigger.elections.filter(election => election.owned === true);
+            return owned;
+        }
+    });
+    return {elections:data, isLoading};
+}
 export function UseSingleElection(id:string){
     // console.warn("Error With UseSingleElection: ", error);
     const [election, setElection] = useState<Election | undefined>(undefined);
