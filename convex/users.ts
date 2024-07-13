@@ -8,6 +8,7 @@ export const get = query({
     return await ctx.db.query("users").collect();
   },
 });
+
 export const auth = query({
   args: {
     username: v.string(),
@@ -17,6 +18,17 @@ export const auth = query({
     return await ctx.db.query("users")
     .filter(data => data.eq(data.field("username"), args.username) && data.eq(data.field("password"), args.password))
     .collect();
+  },
+});
+
+export const emailAuth = query({
+  args:{
+    email: v.string()
+  },
+  handler: async (ctx, args) => {
+    return await ctx.db.query("users")
+      .filter(data => data.eq(data.field("email"), args.email))
+      .collect();
   },
 });
 
