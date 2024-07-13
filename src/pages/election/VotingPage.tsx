@@ -7,6 +7,8 @@ import React, { useContext, useEffect, useState } from 'react';
 import { FaLongArrowAltUp, FaLongArrowAltDown } from "react-icons/fa";
 import UserContext from '../../context/UserContext';
 import { MakeVote } from '../../hooks/useBallots';
+import { useMutation } from 'convex/react';
+import { api } from '../../../convex/_generated/api';
 
 export default function VotingPage() {
     const { user } = useContext(UserContext);
@@ -15,6 +17,7 @@ export default function VotingPage() {
         throw Error("No Election ID");
     }
     const election: Election | undefined = UseSingleElection(electionId);
+    const setPartElection = useMutation(api.users.setParticipatedElection);
     const navigate = useNavigate();
     const defaultOptions = election ? election.options : [];
     const [rankings, setRankings] = useState<string[]>(defaultOptions);
@@ -83,13 +86,20 @@ export default function VotingPage() {
         e.preventDefault();
         setShow(true);
     };
+    if (!user) {
+        return;
+    }
+    if (!electionId) {
+        return;
+    }
     const handleVoteSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         const rankingsReduced: { [key: string]: number } = rankings.reduce<{ [key: string]: number }>((acc, option, index) => {
             acc[option] = index + 1;
             return acc;
         }, {});
-        await MakeVote(electionId || '', user?.username || '', rankingsReduced);
+        await MakeVote(electionId, user.username, rankingsReduced);
+        await setPartElection({ id: user._id, electionId: electionId })
         sessionStorage.removeItem("FiveMin");
         navigate(`/elections/${electionId}`, { replace: true });
     };

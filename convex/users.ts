@@ -52,6 +52,25 @@ export const assignUserElection = mutation({
   }
 });
 
+export const setParticipatedElection = mutation({
+  args:{
+    id: v.id("users"),
+    electionId: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const beforeChange = await ctx.db.get(args.id);
+    const afterChange = beforeChange?.participatedElections?.filter(pElections => args.electionId === pElections);
+    if(afterChange !== undefined && afterChange.length == 1){
+      const concat = beforeChange?.participatedElections?.concat(...afterChange);
+      return await ctx.db.patch(args.id, {participatedElections: concat});
+    }else{
+      const electionId = [args.electionId];
+      return await ctx.db.patch(args.id, {participatedElections: electionId});
+    }
+    
+  },
+})
+
 export const changeType = mutation({
   args:{
     id: v.id("users"),
@@ -79,7 +98,6 @@ export const createUser = mutation(
     lastName:v.string()
     },
   handler: async (ctx, args) => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const userData = await ctx.db.insert("users", { password: args.password, type: args.type, salt: args.salt, key: args.key, email: args.email, username: args.username, city: args.city, state: args.state, address: args.address, zip:args.zip, firstName: args.firstName, lastName: args.lastName });
     return userData;
   },

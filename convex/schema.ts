@@ -7,6 +7,7 @@ export default defineSchema({
         assignedElections: v.optional(v.array<string>(
             v.string()
         )),
+        participatedElections: v.optional(v.array<string>(v.string())),
         pastLogin: v.optional(v.number()),
         ip: v.optional(v.string()),
         password: v.string(),

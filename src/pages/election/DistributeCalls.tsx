@@ -25,11 +25,11 @@ export default async function DistributeCalls(election_id: string, user: User) {
         const { CPL } = CPLElections(ballotsConverted, election.options);
         winner = CPL;
     }
-    return { election, winner, userVote, ballots };
+    return { election, winner, userVote, ballotsResponse: ballots, ballots: ballotsConverted };
 }
 async function GetElectionData(election_id: string, user: User) {
     const election: ElectionStatus = await CacheFetch(`${url}elections/${election_id}`, options);
     const ballots: GetBallotsResponse = await CacheFetch(`${url}elections/${election_id}/ballots`, options);
     const userVote: GetSingleBallotType = await CacheFetch(`${url}elections/${election_id}/ballots/${user.username}`, options);
-    return { election: election.election, ballots, userVote }
+    return { election: election.election, ballots, userVote };
 }

@@ -7,6 +7,7 @@ export default function AdminElections() {
     const [show, setShow] = useState(false);
     const [selectedId, setSelectedId] = useState('');
     const { elections, isLoading } = UseUnfilteredElection();
+    console.log(elections);
     const [currentPage, setCurrentPage] = useState<number>(1);
     const itemsPerPage = 5;
 
@@ -30,7 +31,7 @@ export default function AdminElections() {
     return (
         <Container className="AdminElections-container">
             <Container>
-                <Pagination className="pagination">
+                <Pagination className="pagination d-flex justify-content-center">
                     <Pagination.Prev
                         onClick={() => paginate(currentPage - 1)}
                         disabled={currentPage === 1}
@@ -60,7 +61,9 @@ export default function AdminElections() {
                     )}
                 </div>
             </Container>
-            <EditElectionsModal show={show} handleClose={handleClose} election_id={selectedId} />
+            {selectedId && (
+                <EditElectionsModal show={show} handleClose={handleClose} election_id={selectedId} />
+            )}
         </Container>
     )
 }
