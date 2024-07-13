@@ -1,6 +1,7 @@
 import { useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { useEffect, useState } from "react";
+import { User } from "../type";
 
 // The API expects a 64 byte key (128 hex digits long):
 const KEY_SIZE_BYTES = 64;
@@ -117,7 +118,7 @@ export default function useAuth(){
       return () => {}
     }, [singleUser, salt, params]);
 
-    return {success, setParams, user:singleUser[0]};
+    return {success, setParams, user:<User>singleUser[0]};
 }
 
 // import { useQuery } from "convex/react";

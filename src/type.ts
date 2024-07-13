@@ -1,64 +1,9 @@
 import { Id } from "../convex/_generated/dataModel";
 
-export interface ElectionInfo{
-    success:boolean,
-    info:{
-        upcomingElections:number,
-        openElections:number,
-        closedElections:number
-    }
-};
-export interface ElectionsStatus{
-    success: true,
-    elections: Election[]
-};
-export interface ElectionStatus{
-    success: true,
-    election: Election
-};
-export interface Election{
-    election_id: string,
-    title: string,
-    description: string,
-    options: string[],
-    createdAt: number,
-    opensAt: number,
-    closesAt: number,
-    owned: boolean,
-    deleted: boolean,
-    type: "irv" | "cpl"
-};
-export interface CreateElection{
-    title: string,
-    type: string | 'irv' | 'cpl',
-    description:string,
-    options:string[],
-    opensAt:number,
-    closesAt:number
-};
-export interface optionRankings{
-    name: string,
-    rank1Votes: number,
-    rank2Votes: number,
-    rank3Votes: number,
-};
-export interface Ballots{
-    voter_id: string,
-    ranking: {rank:number}
-};
-export interface GetSingleBallotType{
-    success:boolean,
-    ballot:{
-        voter_id: string,
-        ranking: {rank: number}
-    }
-};
-export interface GetBallotsResponse{
-    success:boolean,
-    ballots:Ballots[]
-};
-export interface User{
-    assignedElections?:string[];
+export interface User {
+    assignedElections?: string[];
+    pastLogin?: number[];
+    ip?: string;
     _id: Id<"users">;
     _creationTime: number;
     username: string;
@@ -74,7 +19,8 @@ export interface User{
     firstName: string;
     lastName: string;
 };
-export interface UserToCreate{
+
+export interface UserToCreate {
     username: string;
     password: string;
     type: string | 'voter' | 'administrator' | 'reporter' | 'moderator' | 'super';
@@ -88,20 +34,95 @@ export interface UserToCreate{
     firstName: string;
     lastName: string;
 };
-export interface UserApi{
-    success:boolean,
-    users:User[]
+
+export interface UserApi {
+    success: boolean,
+    users: User[]
 };
-export interface UserAuth{
-    success:boolean
+
+export interface UserAuth {
+    success: boolean
 };
+
 export interface UserContextType {
-    // isAuthenticated: boolean,
     user: User | null,
     setUser: React.Dispatch<React.SetStateAction<User | null>> | null,
     isAuthenticated: boolean
 };
+
+export interface ElectionInfo {
+    success: boolean,
+    info: {
+        upcomingElections: number,
+        openElections: number,
+        closedElections: number
+    }
+};
+
+export interface ElectionsStatus {
+    success: true,
+    elections: Election[]
+};
+
+export interface ElectionStatus {
+    success: true,
+    election: Election
+};
+
+export interface Election {
+    election_id: string,
+    title: string,
+    description: string,
+    options: string[],
+    createdAt: number,
+    opensAt: number,
+    closesAt: number,
+    owned: boolean,
+    deleted: boolean,
+    type: "irv" | "cpl"
+};
+
+export interface CreateElection {
+    title: string,
+    type: string | 'irv' | 'cpl',
+    description: string,
+    options: string[],
+    opensAt: number,
+    closesAt: number
+};
+
+export interface OptionRankings {
+    name: string,
+    rank1Votes: number,
+    rank2Votes: number,
+    rank3Votes: number
+};
+
+export interface Ballots {
+    voter_id: string,
+    ranking: { rank: number }
+};
+
+export interface GetSingleBallotType {
+    success: boolean,
+    ballot: {
+        voter_id: string,
+        ranking: { rank: number }
+    }
+};
+
+export interface GetBallotsResponse {
+    success: boolean,
+    ballots: Ballots[]
+};
+
+export interface EditElection{
+    description: string;
+    options: string[];
+};
+
 export type Direction = "prev" | "next";
+
 export type History = {
     elections: Election[],
     prev: string | undefined,
@@ -109,15 +130,8 @@ export type History = {
     page: number
 };
 
-export type Election = {
-    election_id: string;
-    title: string;
-    type: string;
-    description: string;
-    options: string[];
-    createdAt: number;
-    opensAt: number;
-    closesAt: number;
-    owned: boolean;
-    deleted: boolean;
+export type UseElectionHistoryReturn = {
+    elections: Election[];
+    isLoading: boolean;
+    isErroring: boolean;
 };

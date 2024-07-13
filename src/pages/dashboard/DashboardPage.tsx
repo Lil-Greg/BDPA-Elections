@@ -8,6 +8,7 @@ import { JSX } from 'react/jsx-runtime';
 import Settings from './dashboard-components/Settings';
 import AdminElections from './dashboard-components/AdminElections';
 import AssignPage from './dashboard-components/AssignPage';
+import AssignedElections from './dashboard-components/AssignedElections';
 
 export default function DashboardPage() {
     const { user } = useContext(UserContext);
@@ -23,7 +24,8 @@ export default function DashboardPage() {
                 <OverlayTrigger
                     placement="bottom"
                     delay={{ show: 250, hide: 400 }}
-                    overlay={renderTooltip}>
+                    overlay={renderTooltip}
+                >
                     <img src={getImageURL('default-pfp.jpg')} alt="User's Pfp" className='dashboard-pfp' />
                 </OverlayTrigger>
             </Row>
@@ -35,25 +37,17 @@ export default function DashboardPage() {
                 <Tab eventKey="profile" title='Profile'>
                     <Profile />
                 </Tab>
-                {user?.type === 'administrator' ? (
-                    <Tab eventKey="assignment" title="Assignment">
+                {user?.type !== "reporter" && user?.type !== "voter" && (
+                    <Tab eventKey="assignment" title="Assign">
                         <AssignPage />
                     </Tab>
-                ) : user?.type === 'voter' ? (
-                    <Tab eventKey="elections" title="Allowed Elections">
-                        <AdminElections />
-                    </Tab>
-                ) : user?.type === 'moderator' ? (
-                    <Tab eventKey="assignment" title="Assignment">
-                        <AssignPage />
-                    </Tab>
-                ) : user?.type === 'super' ? (
-                    <Tab eventKey="assignment" title="Assignment">
-                        <AssignPage />
-                    </Tab>
-                ) : user?.type === 'reporter' && (
-                    <Tab eventKey="elections" title="Allowed Elections">
-                        <AdminElections />
+                )}
+                {user?.type !== "voter" && user?.type !== "reporter" && user?.type !== "moderator" && <Tab eventKey="elections" title="Edit Elections">
+                    <AdminElections />
+                </Tab>}
+                {user?.type !== "administrator" && user?.type !== "super" && (
+                    <Tab eventKey="assignedElections" title="Assignments">
+                        <AssignedElections user={user} />
                     </Tab>
                 )}
                 <Tab eventKey="settings" title="Settings">

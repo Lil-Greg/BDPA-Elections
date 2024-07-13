@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Election, ElectionStatus, GetBallotsResponse, GetSingleBallotType } from "../type.ts";
+import { EditElection, Election, ElectionStatus, ElectionsStatus } from "../type.ts";
 import CacheFetch from "./useCacheFetch.ts";
 import { useQuery } from "@tanstack/react-query";
 import IRVElections from "../algo/IRV-Elections.ts";
@@ -13,95 +13,46 @@ const options = {
         'Authorization': APIKey,
         'content-type': 'application/json'
     }
-}
-
-export default function UseElection() {
-    const { data, isLoading, isError } = useQuery({
-        queryKey: ['allElections'],
-        queryFn: getAllElections
-    });
-    console.log(data);
-    return { elections: data, isLoading, isErroring: isError };
-}
-
-export function fetchAllElections() {
-    const { data } = useQuery({
-        queryKey: ['allElections'],
-        queryFn: getAllElections
-    })
-    return data;
-}
-export async function getAllElections() {
+};
+export default async function getAllElections() {
     let AllElections: Election[] = [];
     let hasMoreElections = true;
     let after = '';
     while (hasMoreElections) {
-        const elections = await CacheFetch(url + `elections?after=${after}`, options)
+        const data: ElectionsStatus = await CacheFetch(url + `elections?after=${after}`, options);
+        const elections = data.elections;
         hasMoreElections = elections?.length == 100;
         AllElections = [...AllElections, ...elections];
         after = elections[elections.length - 1].election_id;
     }
-    return AllElections
-}
-
-
+    console.log(AllElections);
+    const filteredElections = AllElections.filter(election => election.owned === true);
+    return filteredElections;
+};
 export function UseSingleElection(id: string) {
+    // console.warn("Error With UseSingleElection: ", error);
     const [election, setElection] = useState<Election | undefined>(undefined);
 
     useEffect(() => {
         async function fetchData() {
-            try {
-                const data = await fetch(url + `elections/${id}`, options);
-                const res: ElectionStatus = await data.json();
-                setElection(res.election);
-            } catch (error) {
-                console.warn(error);
-            }
+            const singleElection: ElectionStatus = await CacheFetch(url + `elections/${id}`, options);
+            setElection(singleElection.election);
         }
         fetchData();
     }, [id]);
     return election;
-}
-
-export async function GetBallots(election_id: string): Promise<GetBallotsResponse | undefined> {
-    try {
-        return await fetch(`${url}elections/${election_id}/ballots`, options).then(res => res.json());
-    } catch (error) {
-        console.error("Error With GetBallots ", error);
-    }
-}
-export async function GetSingleBallot(election_id: string, user_id: string): Promise<GetSingleBallotType | undefined> {
-    try {
-        const data: GetSingleBallotType = await fetch(`${url}elections/${election_id}/ballots/${user_id}`, options).then(res => res.json());
-        if (data.success === true) {
-            return data;
-        } else {
-            throw Error;
-        };
-    } catch (error) {
-        console.warn("", error)
-    };
-}
-export async function MakeVote(election_id: string, voter_id: string, ranking: object) {
-    const puttingRankingInObject = { ranking };
-    const optionsMakeVote = {
-        method: "PUT",
+};
+export function useEditElection(election_id: string, formValues: EditElection) {
+    const optionsEditElection = {
+        method: "PATCH",
         headers: {
             "Authorization": APIKey,
             "content-type": "application/json"
         },
-        body: JSON.stringify(puttingRankingInObject)
+        body: JSON.stringify(formValues)
     };
-    try {
-        return await fetch(`${url}elections/${election_id}/ballots/${voter_id}`, optionsMakeVote);
-    } catch (error) {
-        console.warn("Error with making vote", error);
-    }
-}
-export async function getElectionWinner(election: Election) {
-    const ballot = await CacheFetch(`${url}elections/${election.election_id}/ballots`, options)
-    const convertedBallots = convertBallots(ballot.ballots)
-    const winner = (election.type === "irv") ? IRVElections(convertedBallots) : CPLElections(convertedBallots, election.options).CPL
-    console.log(winner)
-    return winner
-}
+    useQuery({
+        queryKey: ["editElection"],
+        queryFn: async () => await fetch(`${url}elections/${election_id}`, optionsEditElection),
+    });
+};

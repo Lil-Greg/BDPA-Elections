@@ -1,99 +1,103 @@
 import './ElectionPage.css';
 import { useNavigate, useParams } from "react-router-dom";
-import { GetBallots, UseSingleElection, GetSingleBallot } from "../../hooks/useElection"
-import { GetBallotsResponse, GetSingleBallotType } from "../../type";
-import IRVElections from "../../algo/IRV-Elections";
 import { Button, Card, Col, Container, Row } from "react-bootstrap";
-import { useContext, useEffect, useState } from 'react';
+import { useContext } from 'react';
 import UserContext from '../../context/UserContext';
-import CPLElections from '../../algo/CPL-Elections';
+import DistributeCalls from './DistributeCalls';
+import { useQuery } from '@tanstack/react-query';
+
+// TO-DO: Fix the render issue - may be the useQueries from the multiple fetches.
 
 export default function ElectionPage() {
-    const { electionId } = useParams<string>() || '';
+    const { electionId } = useParams<string>();
     const { user } = useContext(UserContext);
-    const election = UseSingleElection(electionId || '');
+    if (!electionId) {
+        throw Error('Missing election_id param');
+    }
     const navigate = useNavigate();
-    const [winner, setWinner] = useState<string>('');
-    const [ballot, setBallot] = useState<GetSingleBallotType | undefined>();
+    if (!user) {
+        return;
+    }
+    const { data, isLoading, isError, error } = useQuery({
+        queryKey: ["CombinedSingleElection"],
+        queryFn: () => DistributeCalls(electionId, user),
+    });
+
     const monthNames = ['January', 'Febuary', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
-    // if (isLoading) {
-    //     return <>
-    //         Loading...
-    //     </>
-    // };
-    // if (isErroring) {
-    //     return <>
-    //         Something Went Wrong!
-    //     </>
-    // }
-    useEffect(() => {
-        async function fetchData() {
-            const ballotCall = await GetSingleBallot(electionId || '', user?.username || '');
-            setBallot(ballotCall);
-            const optionsResponse: GetBallotsResponse | undefined = await GetBallots(election?.election_id || '');
-            const ballotsConverted = optionsResponse?.ballots.map((ballots) => {
-                return Object.keys(ballots.ranking);
-            }) || [];
-            if (election?.type === 'irv') {
-                const data = IRVElections(ballotsConverted);
-                setWinner(data);
-            } else if (election?.type === 'cpl') {
-                const { CPL } = CPLElections(ballotsConverted, election.options);
-                setWinner(CPL);
-            }
-        }
-        fetchData();
-    }, [election])
+    if (isLoading) {
+        return <>
+            Loading...
+        </>
+    };
+    if (isError) {
+        return <>
+            Something Went Wrong!
+            <br />
+            {JSON.stringify(error)}
+        </>
+    };
+    if (!data) {
+        throw Error("Single Election Use Query Data Errored");
+    };
+    const { election, winner, userVote, ballotsResponse, ballots } = data;
 
     const handleVoteClick = async () => {
         if (user?.type === 'voter') {
-            navigate(`/elections/${electionId}/${user._id}`)
+            navigate(`/elections/${electionId}/vote`);
         }
-    }
-
+    };
     return (
-        <>
-            <Container className="electionPage-container">
-                <Card className="electionPage-jumboCard">
-                    <h1 className="electionPage-title">{election?.title}</h1>
-                    <h5 className="electionPage-description">{election?.description}</h5>
-                    <Row>
-                        <Col>
-                            <p className='electionPage-openingDate electionPage-Dates'>
-                                {election && monthNames[(new Date(election.opensAt).getUTCMonth())]}&nbsp;
-                                {election && new Date(election.opensAt).getDay().toString()},&nbsp;
-                                {election && new Date(election.opensAt).getFullYear().toString()}
-                            </p>
-                        </Col>
-                        <Col>
-                            <p className='electionPage-closingDate electionPage-Dates'>
-                                {election && monthNames[(new Date(election.opensAt).getUTCMonth())]}&nbsp;
-                                {election && new Date(election.opensAt).getDay().toString()},&nbsp;
-                                {election && new Date(election.opensAt).getFullYear().toString()}
-                            </p>
-                        </Col>
-                    </Row>
-                </Card>
-                <div className='options-overlap-div'>
-                    {election?.options.map((option) => {
-                        return (
-                            <>
-                                <p className={`every-option option-${user?.type !== 'voter' || ballot?.success === true ? winner === option ? 'winner' : 'regular' : ''}`}>{option}</p>&nbsp;&nbsp;
-                            </>
-                        )
-                    })}
-                </div>
-                <Row className='election-vote-btn'>
-                    {user?.type === 'voter' && ballot?.success === true ? (
-                        <Button variant='danger'>
-                            Already Voted, Want to Go Back?
-                        </Button>
-                    ) : user?.type === 'voter' && (
-                        <Button onClick={handleVoteClick} variant='success'>Want to Vote?</Button>
-                    )}
+        <Container className="electionPage-container">
+            <Card className="electionPage-jumboCard">
+                <h1 className="electionPage-title">{election?.title}</h1>
+                <h5 className="electionPage-description">{election?.description}</h5>
+                <Row>
+                    <Col>
+                        <p className='electionPage-openingDate electionPage-Dates'>
+                            {election && monthNames[(new Date(election.opensAt).getUTCMonth())]}&nbsp;
+                            {election && new Date(election.opensAt).getDay().toString()},&nbsp;
+                            {election && new Date(election.opensAt).getFullYear().toString()}
+                        </p>
+                    </Col>
+                    <Col>
+                        <p className='electionPage-closingDate electionPage-Dates'>
+                            {election && monthNames[(new Date(election.opensAt).getUTCMonth())]}&nbsp;
+                            {election && new Date(election.opensAt).getDay().toString()},&nbsp;
+                            {election && new Date(election.opensAt).getFullYear().toString()}
+                        </p>
+                    </Col>
                 </Row>
-            </Container>
-        </>
+            </Card>
+            <div className='options-overlap-div'>
+                {election.options.map(option => <p key={option} className={`me-2 every-option option-${user?.type !== 'voter' || userVote?.success === true ? winner === option ? 'winner' : 'regular' : ''}`}>{option}</p>)}
+            </div>
+            <Row className='election-vote-btn'>
+                {user.type === 'voter' && userVote.success === true ? (
+                    <Button
+                        variant='primary'
+                        onClick={() => { navigate(`/elections/${electionId}/vote`) }}
+                    >
+                        Already Voted, Want to Vote Again?
+                    </Button>
+                ) : user.type === 'voter' && (
+                    <Button onClick={handleVoteClick} variant='success'>Want to Vote?</Button>
+                )}
+                <div className="row">
+                    <h3 className='h3 col-12 mb-3' style={{ textDecoration: "underline" }}>Ballots</h3>
+                    {user.type !== "voter" && user.type !== "reporter" && ballotsResponse.success === true ? (
+                        ballots.map((ballot, index) => <div key={index} className='col-4 d-flex justify-content-center'>
+                            <p>{index % 2 === 0 ? "*****"
+                                : index % 3 === 0 ? "*******"
+                                    : index % 5 === 0 ? "***"
+                                        : "*********"}: {ballot.map(option => <span
+                                            key={option}>{option}, </span>)}</p>
+                        </div>)
+                    ) : (
+                        <p>No Ballots</p>
+                    )}
+                </div>
+            </Row>
+        </Container>
     )
 }

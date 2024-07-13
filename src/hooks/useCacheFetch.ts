@@ -1,17 +1,12 @@
 export default async function CacheFetch(url: string, options: RequestInit){
-    const cacheKey = `${url}_${JSON.stringify(options)}`
-
-    const cached = localStorage.getItem(cacheKey)
+    const cacheKey = `${url}_${JSON.stringify(options)}`;
+    const cached = window.sessionStorage.getItem(cacheKey);
     if(cached){
         return(JSON.parse(cached));
-    }
-    try{
-        const results = await fetch(url, options);
-        const data = await results.json();
-        localStorage.setItem(cacheKey, JSON.stringify(data));
-        return (data);
-    }
-    catch(error){
-        throw error;
-    }
+    };
+    const data = await fetch(url, options).then(res => res.json());
+    if(data.success){ 
+        sessionStorage.setItem(cacheKey, JSON.stringify(data));
+    };
+    return data;
 }

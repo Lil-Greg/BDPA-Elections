@@ -6,10 +6,8 @@ const APIKey = import.meta.env.VITE_API_KEY;
 
 export default function useElectionHistory(){
     const {user} = useContext(UserContext);
-    const getDate = new Date();
-    const dateToString = `${getDate.getMonth()} ${getDate.getFullYear()} ${getDate.getDay()}`;
-    const setMilliseconds = new Date().setMilliseconds(parseInt(dateToString));
-    const [elections, setElections] = useState<Election[]>();
+    const setMilliseconds = Date.now();
+    const [electionsH, setElections] = useState<Election[]>();
     const [isLoading, setIsLoading] = useState(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const options = {
@@ -43,5 +41,5 @@ export default function useElectionHistory(){
         }   
         fetchData();
     },[])
-    return { elections, isLoading, isErroring };
+    return { electionsH, isLoading, isErroring };
 }
