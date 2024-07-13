@@ -1,6 +1,7 @@
 import { Button, FloatingLabel, Form, Modal } from "react-bootstrap";
-import UseElection from "../../../hooks/useElection";
 import { useRef } from "react";
+import { useQuery } from "@tanstack/react-query";
+import getAllElections from "../../../hooks/useElection";
 
 type EditElectionModal = {
     show: boolean,
@@ -8,15 +9,20 @@ type EditElectionModal = {
     election_id: string,
 }
 export default function EditElectionsModal({ show, handleClose, election_id }: EditElectionModal) {
-    const { elections } = UseElection();
+    const { data } = useQuery({
+        queryKey: ["GetAllElections"],
+        queryFn: getAllElections,
+    });
+    const elections = data;
     if (!elections) {
         console.warn("Shit is not Working...")
         show = false;
         return;
     }
-    const data = elections.filter(election => election.election_id === election_id);
-    const election = data[0];
+    const coolest = elections.filter(election => election.election_id === election_id);
+    const election = coolest[0];
 
+    const titleRef = useRef<HTMLInputElement>(null);
     const descriptionRef = useRef<HTMLTextAreaElement>(null);
     const handleDeleteElection = () => {
         //Delete Election
@@ -30,6 +36,15 @@ export default function EditElectionsModal({ show, handleClose, election_id }: E
         </Modal.Header>
         <Modal.Body>
             <Form>
+                <FloatingLabel controlId="floatingLabelEditTitle" label="Title">
+                    <Form.Control
+                        placeholder="Title"
+                        isInvalid={false}
+                        defaultValue={election.title}
+                        ref={titleRef}
+                    />
+                    <Form.Control.Feedback type="invalid"></Form.Control.Feedback>
+                </FloatingLabel>
                 <FloatingLabel controlId="floatingLabelEditDesc" label="Description">
                     <Form.Control
                         as="textarea"

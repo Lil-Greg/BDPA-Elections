@@ -83,20 +83,22 @@ export default function ElectionPage() {
                 ) : user.type === 'voter' && (
                     <Button onClick={handleVoteClick} variant='success'>Want to Vote?</Button>
                 )}
-                <div className="row">
-                    <h3 className='h3 col-12 mb-3' style={{ textDecoration: "underline" }}>Ballots</h3>
-                    {user.type !== "voter" && user.type !== "reporter" && ballotsResponse.success === true ? (
-                        ballots.map((ballot, index) => <div key={index} className='col-4 d-flex justify-content-center'>
-                            <p>{index % 2 === 0 ? "*****"
-                                : index % 3 === 0 ? "*******"
-                                    : index % 5 === 0 ? "***"
-                                        : "*********"}: {ballot.map(option => <span
-                                            key={option}>{option}, </span>)}</p>
-                        </div>)
-                    ) : (
-                        <p>No Ballots</p>
-                    )}
-                </div>
+                {user.type !== "voter" && user.type !== "reporter" && (
+                    <div className="row">
+                        <h3 className='h3 col-12 mb-3' style={{ textDecoration: "underline" }}>Ballots</h3>
+                        {ballotsResponse.success === true ? (
+                            ballots.map((ballot, index) => <div key={index} className='col-4 d-flex justify-content-center'>
+                                <p>{index % 2 === 0 ? "*****"
+                                    : index % 3 === 0 ? "*******"
+                                        : index % 5 === 0 ? "***"
+                                            : "*********"}: {ballot.map(option => <span
+                                                key={option}>{option}, </span>)}</p>
+                            </div>)
+                        ) : (
+                            <p>No Ballots</p>
+                        )}
+                    </div>
+                )}
             </Row>
         </Container>
     )
