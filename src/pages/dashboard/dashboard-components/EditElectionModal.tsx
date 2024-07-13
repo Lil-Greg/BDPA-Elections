@@ -35,8 +35,8 @@ export default function EditElectionsModal({ show, handleClose, election_id }: E
             <Modal.Title>Editing:&nbsp;<span style={{ textDecoration: "underline" }}>{election.title} Election</span> </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-            <Form className="d-flex justify-content-center">
-                <FloatingLabel controlId="floatingLabelEditTitle" label="Title">
+            <Form className="row">
+                <FloatingLabel controlId="floatingLabelEditTitle" label="Title" className="col-12">
                     <Form.Control
                         placeholder="Title"
                         isInvalid={false}
@@ -45,7 +45,7 @@ export default function EditElectionsModal({ show, handleClose, election_id }: E
                     />
                     <Form.Control.Feedback type="invalid"></Form.Control.Feedback>
                 </FloatingLabel>
-                <FloatingLabel controlId="floatingLabelEditDesc" label="Description">
+                <FloatingLabel controlId="floatingLabelEditDesc" label="Description" className="col-12">
                     <Form.Control
                         as="textarea"
                         placeholder="Description"

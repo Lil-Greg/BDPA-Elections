@@ -11,6 +11,9 @@ import UserContext from "../../context/UserContext";
 
 export default function RegisterPage() {
     const { user } = useContext(UserContext);
+    if (!user) {
+        return;
+    }
     const getAllUsers = useQuery(api.users.get);
     const createUser = useMutation(api.users.createUser);
     const [progress, setProgress] = useState<number>(0);
@@ -133,12 +136,12 @@ export default function RegisterPage() {
                     <div className="col-md-6">
                         <label htmlFor="typeState" className="form-label">Type</label>
                         <select id="typeState" className="form-select" ref={typeRef} defaultValue="voter">
-                            {user === null && (
-                                <>
-                                    <option value="voter">Voter</option>
-                                    <option value="reporter">Reporter</option>
-                                </>
-                            )}
+                            <option value="voter">Voter</option>
+                            <option value="reporter">Reporter</option>
+                            {user.type === "super" && (<option value="administrator">Administrator</option>)}
+                            {user.type !== "moderator"
+                                && user.type !== "reporter"
+                                && user.type !== "voter" && (<option value="moderator">Moderator</option>)}
                         </select>
                     </div>
                     <div className="col-12">

@@ -17,7 +17,13 @@ export default function AssignedElections({ user }: Props) {
         <h3 style={{ textDecoration: "underline" }}>{user?.username}&nbsp;Assigned Elections</h3>
         <div className="row">
             {assignedElections && assignedElections.length > 0
-                ? assignedElections.map((election) => <NavLink to={`/elections/${election.election_id}`} className="col-4">{election.title}</NavLink>)
+                ? assignedElections.map((election) => <NavLink
+                    to={`/elections/${election.election_id}`}
+                    className="col-4"
+                // style={{ textDecoration: "none" }}
+                >
+                    {election.title}
+                </NavLink>)
                 : <p>No Assignments</p>}
         </div>
     </>
