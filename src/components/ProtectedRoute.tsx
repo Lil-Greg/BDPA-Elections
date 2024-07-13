@@ -13,13 +13,19 @@ export default function ProtectedRoute({ allowedUserTypes, children }: Props) {
     if (user) {
         const isAllowed = allowedUserTypes.includes(user.type);
         if (isAuthenticated === false) {
+            console.warn("User not logged in");
             return <Navigate to='/login' replace />;
             // replaces entire elections with login page, so user cannot go back to previous pages unauthenticated
         }
         if (!isAllowed) {
+            console.warn("User not allowed on page");
+            console.log(allowedUserTypes);
+            console.log(user)
+            console.log(user.type)
             return <Navigate to='/' replace />;
         }
     } else {
+        console.warn("User not logged in");
         return <Navigate to='/login' replace />;
     }
 

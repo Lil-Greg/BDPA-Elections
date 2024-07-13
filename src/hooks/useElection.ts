@@ -56,3 +56,11 @@ export function useEditElection(election_id: string, formValues: EditElection) {
         queryFn: async () => await fetch(`${url}elections/${election_id}`, optionsEditElection),
     });
 };
+
+export async function getElectionWinner(election: Election) {
+    const ballot = await CacheFetch(`${url}elections/${election.election_id}/ballots`, options)
+    const convertedBallots = convertBallots(ballot.ballots)
+    const winner = (election.type === "irv") ? IRVElections(convertedBallots) : CPLElections(convertedBallots, election.options).CPL
+    console.log(winner)
+    return winner
+}
