@@ -4,7 +4,8 @@ import { Button, Card, Col, Container, Pagination, Row } from 'react-bootstrap';
 import getImageURL from '../../utils/image-util';
 import { useContext, useState } from 'react';
 import UserContext from '../../context/UserContext';
-import UseElection from '../../hooks/useElection';
+import getAllElections from '../../hooks/useElection';
+import { useQuery } from '@tanstack/react-query';
 
 export default function MultiElectionsPage() {
     const { user } = useContext(UserContext);
@@ -12,7 +13,11 @@ export default function MultiElectionsPage() {
         console.warn("Multi-Elections: User is Undefined");
         return;
     }
-    const { elections, isLoading, isErroring, electionsError } = UseElection();
+    const { data, isLoading, isError, error } = useQuery({
+        queryKey: ["GetAllElections"],
+        queryFn: getAllElections,
+    });
+    const elections = data;
     console.log(elections)
     const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     const navigate = useNavigate();
@@ -24,7 +29,7 @@ export default function MultiElectionsPage() {
             <div className="loadingText">Loading...</div>
         </>
     };
-    if (isErroring) {
+    if (isError) {
         return <>
             <div className="errorCard">
                 <div className="errorMessage">
@@ -32,9 +37,9 @@ export default function MultiElectionsPage() {
                     <h1>Something went wrong!</h1>
                     <hr />
                     <code>
-                        Error Information (Broad): {electionsError?.stack}
-                        <p>{electionsError?.name}</p>
-                        {electionsError?.message}
+                        Error Information (Broad): {error?.stack}
+                        <p>{error?.name}</p>
+                        {error?.message}
                     </code>
                 </div>
             </div>
