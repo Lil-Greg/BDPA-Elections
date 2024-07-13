@@ -6,7 +6,7 @@ import UserContext from '../../context/UserContext';
 import DistributeCalls from './DistributeCalls';
 import { useQuery } from '@tanstack/react-query';
 
-// TO-DO: Fix the render issue - may be the useQueries from the multiple fetches.
+/* Display Election information and allows Users to Vote */
 
 export default function ElectionPage() {
     const { electionId } = useParams<string>();
