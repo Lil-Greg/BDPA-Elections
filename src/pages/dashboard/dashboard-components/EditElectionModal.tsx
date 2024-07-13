@@ -1,5 +1,5 @@
 import { Button, FloatingLabel, Form, Modal } from "react-bootstrap";
-import { UseUnfilteredElection } from "../../../hooks/useElection";
+import UseElection from "../../../hooks/useElection";
 import { useRef } from "react";
 
 type EditElectionModal = {
@@ -8,7 +8,7 @@ type EditElectionModal = {
     election_id: string,
 }
 export default function EditElectionsModal({ show, handleClose, election_id }: EditElectionModal) {
-    const { elections } = UseUnfilteredElection();
+    const { elections } = UseElection();
     if (!elections) {
         console.warn("Shit is not Working...")
         show = false;

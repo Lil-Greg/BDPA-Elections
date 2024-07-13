@@ -34,6 +34,11 @@ export default function AssignPage() {
 
     const [assignElection, setAssignElection] = useState(false);
     const [assignRole, setAssignRole] = useState(false);
+    /*data.elections.filter(electionD => 
+        electionD.owned === true &&
+        electionD.closesAt > Date.now() &&
+        electionD.deleted === false && 
+        electionD.opensAt < Date.now() */
 
     if (isLoading) {
         return <>

@@ -24,7 +24,8 @@ export default function DashboardPage() {
                 <OverlayTrigger
                     placement="bottom"
                     delay={{ show: 250, hide: 400 }}
-                    overlay={renderTooltip}>
+                    overlay={renderTooltip}
+                >
                     <img src={getImageURL('default-pfp.jpg')} alt="User's Pfp" className='dashboard-pfp' />
                 </OverlayTrigger>
             </Row>
