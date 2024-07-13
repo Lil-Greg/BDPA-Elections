@@ -138,10 +138,10 @@ export default function RegisterPage() {
                         <select id="typeState" className="form-select" ref={typeRef} defaultValue="voter">
                             <option value="voter">Voter</option>
                             <option value="reporter">Reporter</option>
-                            {user.type === "super" && (<option value="administrator">Administrator</option>)}
                             {user.type !== "moderator"
                                 && user.type !== "reporter"
                                 && user.type !== "voter" && (<option value="moderator">Moderator</option>)}
+                            {user.type === "super" && (<option value="administrator">Administrator</option>)}
                         </select>
                     </div>
                     <div className="col-12">
