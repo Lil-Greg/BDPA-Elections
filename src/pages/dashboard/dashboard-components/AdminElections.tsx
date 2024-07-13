@@ -9,7 +9,7 @@ export default function AdminElections() {
     const [selectedId, setSelectedId] = useState('');
     const { data, isLoading } = useQuery({
         queryKey: ["GetAllElections"],
-        queryFn: getAllElections,
+        queryFn: () => getAllElections(),
     });
     const elections = data;
     const [currentPage, setCurrentPage] = useState<number>(1);

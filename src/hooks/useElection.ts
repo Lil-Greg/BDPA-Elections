@@ -11,7 +11,7 @@ const options = {
         'content-type':'application/json'
     }
 };
-export default async function getAllElections() {
+export default async function getAllElections(notFiltered = false) {
     let AllElections: Election[] = [];
     let hasMoreElections = true;
     let after = '';
@@ -22,9 +22,8 @@ export default async function getAllElections() {
         AllElections = [...AllElections, ...elections];
         after = elections[elections.length - 1].election_id;
     }
-    console.log(AllElections);
     const filteredElections = AllElections.filter(election => election.owned === true);
-    return filteredElections;
+    return notFiltered ? AllElections : filteredElections;
 };
 export function UseSingleElection(id:string){
     // console.warn("Error With UseSingleElection: ", error);

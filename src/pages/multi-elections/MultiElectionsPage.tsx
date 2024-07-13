@@ -15,10 +15,9 @@ export default function MultiElectionsPage() {
     }
     const { data, isLoading, isError, error } = useQuery({
         queryKey: ["GetAllElections"],
-        queryFn: getAllElections,
+        queryFn: () => getAllElections(),
     });
     const elections = data;
-    console.log(elections)
     const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     const navigate = useNavigate();
     const [currentPage, setCurrentPage] = useState<number>(1);

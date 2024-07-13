@@ -11,7 +11,7 @@ type EditElectionModal = {
 export default function EditElectionsModal({ show, handleClose, election_id }: EditElectionModal) {
     const { data } = useQuery({
         queryKey: ["GetAllElections"],
-        queryFn: getAllElections,
+        queryFn: () => getAllElections(),
     });
     const elections = data;
     if (!elections) {
@@ -35,7 +35,7 @@ export default function EditElectionsModal({ show, handleClose, election_id }: E
             <Modal.Title>Editing:&nbsp;<span style={{ textDecoration: "underline" }}>{election.title} Election</span> </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-            <Form>
+            <Form className="d-flex justify-content-center">
                 <FloatingLabel controlId="floatingLabelEditTitle" label="Title">
                     <Form.Control
                         placeholder="Title"
