@@ -32,6 +32,16 @@ export const emailAuth = query({
   },
 });
 
+export const changePassword = mutation({
+  args:{
+    id:v.id("users"),
+    password: v.string()
+  },
+  handler: async (ctx, args) => {
+    return await ctx.db.patch(args.id, {password: args.password});
+  },
+})
+
 export const getSingleUser = query({
   args:{
     username:v.string()

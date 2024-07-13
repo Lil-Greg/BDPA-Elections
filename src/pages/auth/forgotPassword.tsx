@@ -20,17 +20,16 @@ export default function ForgotPassword() {
   const [userAc, setUserAc] = useState<User>();
 
   const authEmail = useQuery(api.users.emailAuth, { email: emailState });
-  const changePassword = useMutation(api.users.changeUserInProfile);
+  const changePassword = useMutation(api.users.changePassword);
 
   const navigate = useNavigate();
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const email = e.currentTarget.value;
+    setEmailState(email);
     if (!authEmail || authEmail.length === 0) {
       setEmailError(true);
-      return;
     } else {
-      setEmailState(email);
       setEmailError(false);
     }
   };
@@ -49,7 +48,7 @@ export default function ForgotPassword() {
 
   const handleEmailSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!emailError && authEmail && authEmail.length > 0) {
+    if (authEmail && authEmail.length > 0) {
       setUserAc(authEmail[0]);
       setPasswordField(true);
     }
@@ -57,9 +56,9 @@ export default function ForgotPassword() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
+    console.log("Working")
     if (passwordError === false && userAc) {
-      changePassword({ id: userAc._id, selectedField: { password: passwordState } });
+      changePassword({ id: userAc._id, password: passwordState });
       navigate("/login", { replace: true });
     }
   };
@@ -102,7 +101,7 @@ export default function ForgotPassword() {
             </InputGroup>
             <ProgressBar now={progress} max={18} variant={progress > 17 ? 'success' : progress <= 10 ? 'danger' : 'warning'} />
           </div>
-          <Button>Change Password</Button>
+          <Button type="submit">Change Password</Button>
         </Form>
       )}
     </Container>
