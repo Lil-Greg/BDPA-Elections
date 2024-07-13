@@ -70,7 +70,7 @@ export default function ElectionPage() {
                 </Row>
             </Card>
             <div className='options-overlap-div'>
-                {election.options.map(option => <p key={option} className={`me-2 every-option option-${user?.type !== 'voter' || userVote?.success === true ? winner === option ? 'winner' : 'regular' : ''}`}>{option}</p>)}
+                {election.options.map(option => <p key={option} className={`me-2 every-option option-${winner === option ? 'winner' : 'regular'}`}>{option}</p>)}
             </div>
             <Row className='election-vote-btn'>
                 {user.type === 'voter' && userVote.success === true ? (

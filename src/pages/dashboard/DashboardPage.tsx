@@ -19,9 +19,10 @@ export default function DashboardPage() {
             Change Profile Picture
         </Tooltip>
     );
+    console.log("Past Login", user?.pastLogin);
     return (
         <Container className="dashboard-container mt-3">
-            <h1>Welcome, {user?.username}</h1>
+            <h1>Welcome,&nbsp;{user?.firstName}&nbsp;{user?.lastName}</h1>
             <Row className='dashboard-base-content'>
                 <OverlayTrigger
                     placement="bottom"
