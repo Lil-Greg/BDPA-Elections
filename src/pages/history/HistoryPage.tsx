@@ -5,6 +5,8 @@ import UserContext from '../../context/UserContext';
 import useElectionHistory from '../../hooks/useElectionHistory';
 import getImageURL from '../../utils/image-util';
 
+/* Display elections which are closed but not deleted */
+
 export default function HistoryPage() {
   const { user } = useContext(UserContext)
   const { electionsH, isLoading, isErroring } = useElectionHistory();

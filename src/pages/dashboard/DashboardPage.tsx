@@ -10,6 +10,8 @@ import AdminElections from './dashboard-components/AdminElections';
 import AssignPage from './dashboard-components/AssignPage';
 import AssignedElections from './dashboard-components/AssignedElections';
 
+/* Display User information */
+
 export default function DashboardPage() {
     const { user } = useContext(UserContext);
     const renderTooltip = (props: JSX.IntrinsicAttributes & TooltipProps & RefAttributes<HTMLDivElement>) => (
