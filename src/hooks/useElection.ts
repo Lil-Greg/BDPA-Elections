@@ -38,7 +38,7 @@ export function UseSingleElection(id:string){
     }, [id]);
     return election;
 };
-export function useEditElection(election_id:string, formValues: EditElection){
+export async function useEditElection(election_id:string, formValues: EditElection){
     const optionsEditElection = {
         method: "PATCH",
         headers:{
@@ -47,8 +47,15 @@ export function useEditElection(election_id:string, formValues: EditElection){
         },
         body:JSON.stringify(formValues)
     };
-    useQuery({
-        queryKey:["editElection"],
-        queryFn:async () => await fetch(`${url}elections/${election_id}`, optionsEditElection),
-    });
+    return await fetch(`${url}elections/${election_id}`, optionsEditElection);
 };
+export async function useDeleteElection(election_id: string): Promise<{success: boolean}>{
+    const deleteOptions = {
+        method: "DELETE",
+        headers: {
+            "Authorization": APIKey,
+            "content-type":"application/json"
+        }
+    }
+    return await fetch(`${url}elections/${election_id}`, deleteOptions).then(res => res.json());
+}

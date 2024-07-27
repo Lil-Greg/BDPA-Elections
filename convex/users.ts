@@ -136,8 +136,11 @@ export const setIpAndRecentLogin = mutation({
       console.warn("Cannot Set Ip, get is undefined");
       return;
     }
-
-    return await ctx.db.patch(args.id, {ip: args.ip, pastLogin: beforeChange.pastLogin ? [beforeChange.pastLogin.pop() || 0, Date.now()] : [Date.now()]});
+    beforeChange.ip?.push(args.ip);
+    beforeChange.pastLogin?.push(Date.now());
+    // Use Slice to remove the last
+    return await ctx.db.patch(args.id, {ip: beforeChange.ip ? beforeChange.ip?.slice(-5, beforeChange.ip.length) : [args.ip], 
+      pastLogin: beforeChange.pastLogin ? beforeChange.pastLogin.slice(-5, beforeChange.pastLogin.length) : [Date.now()]});
   }
 });
 //  PATCH (UPDATE) METHOD

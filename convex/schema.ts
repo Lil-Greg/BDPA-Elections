@@ -9,7 +9,7 @@ export default defineSchema({
         )),
         participatedElections: v.optional(v.array<string>(v.string())),
         pastLogin: v.optional(v.array(v.number())),
-        ip: v.optional(v.string()),
+        ip: v.optional(v.array<string>(v.string())),
         password: v.string(),
         salt: v.string(),
         key:v.string(),

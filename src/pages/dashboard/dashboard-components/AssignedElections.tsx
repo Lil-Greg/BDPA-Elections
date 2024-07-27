@@ -20,6 +20,7 @@ export default function AssignedElections({ user }: Props) {
                 ? assignedElections.map((election) => <NavLink
                     to={`/elections/${election.election_id}`}
                     className="col-4"
+                    key={election.election_id}
                 // style={{ textDecoration: "none" }}
                 >
                     {election.title}

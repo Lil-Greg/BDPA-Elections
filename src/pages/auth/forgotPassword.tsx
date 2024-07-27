@@ -28,7 +28,7 @@ export default function ForgotPassword() {
     const email = e.currentTarget.value;
     setEmailState(email);
     if (!authEmail || authEmail.length === 0) {
-      setEmailError(true);
+      setEmailError(false); // Error Handling 101
     } else {
       setEmailError(false);
     }
@@ -50,13 +50,13 @@ export default function ForgotPassword() {
     e.preventDefault();
     if (authEmail && authEmail.length > 0) {
       setUserAc(authEmail[0]);
+      alert(`Changing Password For ${emailState}`);
       setPasswordField(true);
     }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Working")
     if (passwordError === false && userAc) {
       changePassword({ id: userAc._id, password: passwordState });
       navigate("/login", { replace: true });
@@ -96,8 +96,8 @@ export default function ForgotPassword() {
                 id="inputPassword4"
                 isInvalid={passwordError}
               />
-              <Form.Control.Feedback type="invalid">Password Must Be Greater Than 10 Characters</Form.Control.Feedback>
               <InputGroup.Text onClick={togglePasswordShow}>{passwordShow ? <FaRegEyeSlash /> : <FaRegEye />}</InputGroup.Text>
+              <Form.Control.Feedback type="invalid">Password Must Be Greater Than 10 Characters</Form.Control.Feedback>
             </InputGroup>
             <ProgressBar now={progress} max={18} variant={progress > 17 ? 'success' : progress <= 10 ? 'danger' : 'warning'} />
           </div>
