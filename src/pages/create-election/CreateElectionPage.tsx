@@ -6,10 +6,10 @@ import AdminCreateElection from "../../hooks/useCreateElection";
 import { useNavigate } from "react-router-dom";
 import InputGroupText from 'react-bootstrap/esm/InputGroupText';
 import { IoCloseCircle, IoCloseCircleOutline } from "react-icons/io5";
-import UseElection from '../../hooks/useElection';
+import getAllElections from '../../hooks/useElection';
 
 export default function CreateElectionPage() {
-    const { elections } = UseElection();
+    const elections = getAllElections();
     const navigate = useNavigate();
     const [show, setShow] = useState(false);
     const [error, setError] = useState(false);
@@ -29,6 +29,8 @@ export default function CreateElectionPage() {
     const optionsRef = useRef<HTMLInputElement>(null);
     const opensAtRef = useRef<HTMLInputElement>(null);
     const closesAtRef = useRef<HTMLInputElement>(null);
+    const opensAtTimeRef = useRef<HTMLInputElement>(null);
+    const closesAtTimeRef = useRef<HTMLInputElement>(null);
 
     const [show2, setShow2] = useState(false);
     const [optionSameName, setOptionSameName] = useState(false);
@@ -90,6 +92,14 @@ export default function CreateElectionPage() {
         const openingDate = new Date(opensAtValue).setMilliseconds(parseInt(opensAtValue));
         const closingDate = new Date(closesAtValue).setMilliseconds(parseInt(closesAtValue));
         const opensAtLessThanOrEqualToCloses = openingDate <= closingDate ? true : false;
+
+        const openingTime = opensAtTimeRef.current?.value;
+        const closingTime = closesAtTimeRef.current?.value;
+        console.log("Opening Time: ", openingTime);
+        console.log("Closing Time: ", closingTime);
+
+        console.log("Opening Time - Date: ", new Date(openingDate).setTime(parseInt(openingTime || "")));//parseInt(openingTime || "")
+        console.log("Closing Time - Date: ", new Date(closingDate).setTime(parseInt(closingTime || "")));//parseInt(closingTime || "")
 
         const checkingSameTitle = elections?.filter((oneElection) => oneElection.title.toLowerCase() === titleValue?.toLowerCase());
         if (titleValue && descriptionValue && optionsArray && opensAtValue && closesAtValue && typeValue && typeValue !== undefined && optionsArray.length !== 0 && opensAtLessThanOrEqualToCloses === true) {
@@ -229,12 +239,14 @@ export default function CreateElectionPage() {
                     </Form.Select>
                     <Row>
                         <Col style={{ marginTop: '1rem' }}>
-                            <p style={{ lineHeight: '0.25rem' }}>Opens At</p>
-                            <Form.Control ref={opensAtRef} type="date" />
+                            <p style={{ lineHeight: '0.25rem', textAlign: "center" }}>Opens At</p>
+                            <Form.Control ref={opensAtRef} type="date" className='mb-1' />
+                            <Form.Control ref={opensAtTimeRef} type='time' />
                         </Col>
                         <Col style={{ marginTop: '1rem', marginBottom: '1rem' }}>
-                            <p style={{ lineHeight: '0.25rem' }}>Closes At</p>
-                            <Form.Control ref={closesAtRef} type="date" />
+                            <p style={{ lineHeight: '0.25rem', textAlign: "center" }}>Closes At</p>
+                            <Form.Control ref={closesAtRef} type="date" className='mb-1' />
+                            <Form.Control ref={closesAtTimeRef} type='time' />
                         </Col>
                     </Row>
                     <Button variant="primary" type="submit" onClick={handleShow}>

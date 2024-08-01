@@ -1,18 +1,9 @@
+import { Ballots } from "../type";
+
 type Ranking = { [candidate: string]: number };
 type Voter = { voter_id: string; ranking: Ranking };
 
-export default function STARElections(): string{
-
-
-// Sample data
-const voters: Voter[] = [
-  { voter_id: "1", ranking: { Biden: 5, Warren: 3, Sanders: 4 } },
-  { voter_id: "2", ranking: { Biden: 3, Warren: 4, Sanders: 5 } },
-  { voter_id: "3", ranking: { Biden: 4, Warren: 5, Sanders: 3 } },
-  { voter_id: "1", ranking: { Biden: 5, Warren: 3, Sanders: 4 } },
-  { voter_id: "2", ranking: { Biden: 3, Warren: 4, Sanders: 5 } },
-  { voter_id: "3", ranking: { Biden: 4, Warren: 5, Sanders: 3 } },
-];
+export default function StarElections(voters: Ballots[]): string{
 
 // Function to calculate the total scores
 function calculateScores(voters: Voter[]): { [candidate: string]: number } {

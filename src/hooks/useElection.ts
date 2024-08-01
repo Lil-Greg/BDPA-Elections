@@ -10,7 +10,7 @@ const options = {
         'content-type':'application/json'
     }
 };
-export default async function getAllElections(notFiltered = false) {
+export default async function getAllElections(notFiltered = false): Promise<Election[]> {
     // const timeout = (fn, time) => {
     //     new Promise(resolve => setTimeout(resolve, time));
     // };
@@ -20,17 +20,12 @@ export default async function getAllElections(notFiltered = false) {
     let after = '';
     while (hasMoreElections) {
         const data: ElectionsStatus = await CacheFetch(url + `elections?after=${after}`, options);
-        console.log(data);
         const elections = data.elections;
-        console.log("New Call", elections);
         hasMoreElections = elections?.length == 100;
         AllElections = [...AllElections, ...elections];
         after = elections[elections.length - 1].election_id;
-        console.log("All Elections", AllElections);
     }
     const filteredElections = AllElections.filter(election => election.owned === true);
-    console.log("Filtered",filteredElections);
-    console.log("All Elections after loop", AllElections);
     return notFiltered ? AllElections : filteredElections;
 };
 export function UseSingleElection(id:string){
