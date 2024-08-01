@@ -103,6 +103,3 @@ export default function ElectionPage() {
         </Container>
     )
 }
-export function Warning() {
-    if ()
-        }
