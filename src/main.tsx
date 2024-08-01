@@ -35,7 +35,7 @@ const router = createBrowserRouter([
     element: <ProtectedRoute allowedUserTypes={['voter', "reporter", 'administrator', 'super', "moderator"]}><MultiElectionsPage /></ProtectedRoute>,
   }, {
     path: '/elections/:electionId',
-    element: <ProtectedRoute allowedUserTypes={['voter', 'administrator', 'super']}><ElectionPage /></ProtectedRoute>
+    element: <ProtectedRoute allowedUserTypes={['voter', 'administrator', 'super']}><ElectionPage />//</ProtectedRoute>
   }, {
     path: '/elections/:electionId/vote',
     element: <ProtectedRoute allowedUserTypes={['voter']}><VotingPage /></ProtectedRoute>
@@ -51,7 +51,7 @@ const router = createBrowserRouter([
   }, {
     path: '/elections/history',
     element: <ProtectedRoute allowedUserTypes={['reporter', 'moderator', 'administrator', 'super', 'voter']}><HistoryPage /></ProtectedRoute>
-  },{
+  }, {
     path: '/maintenance',
     element: <MaintenancePage />
   }

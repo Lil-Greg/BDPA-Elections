@@ -228,6 +228,7 @@ export default function AssignPage() {
                                 isInvalid={electionError === false ? false : true}
                                 defaultValue='none'
                             >
+                                {/* show different users to assign to an election */}
                                 <option value="none" disabled>Assign {assignUser?.username} To An Election</option>
                                 {electionsDataList()?.length === 0 ? (
                                     <option value="error" disabled>You Cannot Assign Users because You Are Not Assigned Any Election</option>

@@ -108,6 +108,7 @@ export default function HistoryPage() {
               </div>
             </Accordion.Header>
             <Accordion.Body>
+              {/* helps add winners to the page */}
               {activeKey === `${index}`
                 && <Options election={electionInfo} />}
             </Accordion.Body>

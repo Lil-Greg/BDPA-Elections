@@ -159,7 +159,7 @@ export default function RegisterPage() {
                         <label htmlFor="inputCity" className="form-label">City</label>
                         <input type="text" className="form-control" id="inputCity" ref={cityRef} required />
                     </div>
-
+                    {/* the states to selct */}
                     <div className="col-md-4">
                         <label htmlFor="inputState" className="form-label">State</label>
                         <select id="inputState" className="form-select" ref={stateRef} defaultValue={'none'} required>

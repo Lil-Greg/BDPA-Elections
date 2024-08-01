@@ -10,6 +10,7 @@ export interface User {
     _creationTime: number;
     username: string;
     password: string;
+    // types of users
     type: string | 'voter' | 'administrator' | 'reporter' | 'moderator' | 'super';
     salt: string;
     key: string;
