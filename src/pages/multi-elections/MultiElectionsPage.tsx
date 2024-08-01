@@ -24,25 +24,21 @@ export default function MultiElectionsPage() {
     const itemsPerPage = 5; // Number of elections per page
 
     if (isLoading) {
-        return <>
-            <div className="loadingText">Loading...</div>
-        </>
+        return <div className="loadingText">Loading...</div>
     };
     if (isError) {
-        return <>
-            <div className="errorCard">
-                <div className="errorMessage">
-                    <img src={getImageURL('errorMagnifier.svg')} alt="Error Magnifier" />
-                    <h1>Something went wrong!</h1>
-                    <hr />
-                    <code>
-                        Error Information (Broad): {error?.stack}
-                        <p>{error?.name}</p>
-                        {error?.message}
-                    </code>
-                </div>
+        return <div className="errorCard">
+            <div className="errorMessage">
+                <img src={getImageURL('errorMagnifier.svg')} alt="Error Magnifier" />
+                <h1>Something went wrong!</h1>
+                <hr />
+                <code>
+                    Error Information (Broad): {error?.stack}
+                    <p>{error?.name}</p>
+                    {error?.message}
+                </code>
             </div>
-        </>
+        </div>
     };
 
     const indexOfLastItem = currentPage * itemsPerPage;
