@@ -3,11 +3,12 @@ import UserContext from "../context/UserContext";
 import { Navigate } from "react-router-dom";
 
 type Props = {
-    children: ReactNode,
-    allowedUserTypes: string[] //'voter' | 'moderator' |'administrator' | 'super' | 'reporter'
-}
+    children: ReactNode;
+    allowedUserTypes: string[]; // 'voter' | 'moderator' | 'administrator' | 'super' | 'reporter'
+    maintenanceMode?: boolean;
+};
 
-export default function ProtectedRoute({ allowedUserTypes, children }: Props) {
+export default function ProtectedRoute({ allowedUserTypes, children, maintenanceMode }: Props) {
     const { isAuthenticated, user } = useContext(UserContext);
 
     if (user) {
@@ -29,6 +30,15 @@ export default function ProtectedRoute({ allowedUserTypes, children }: Props) {
         return <Navigate to='/login' replace />;
     }
 
+    const isAllowed = allowedUserTypes.includes(user.type);
 
-    return <>{children}</>
+    if (!isAllowed) {
+        return <Navigate to='/' replace />;
+    }
+
+    if (maintenanceMode && (user.type !== 'administrator' && user.type !== 'super')) {
+        return <Navigate to='/maintenance' replace />;
+    }
+
+    return <>{children}</>;
 }
