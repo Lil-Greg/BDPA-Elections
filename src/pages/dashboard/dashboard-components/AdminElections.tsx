@@ -1,7 +1,7 @@
 import { useState } from "react";
 import EditElectionsModal from "./EditElectionModal";
 import { Button, Container, Pagination } from "react-bootstrap";
-import getAllElections from "../../../hooks/useElection";
+import useAllElections from "../../../hooks/useElection";
 import { useQuery } from "@tanstack/react-query";
 
 export default function AdminElections() {
@@ -9,7 +9,7 @@ export default function AdminElections() {
     const [selectedId, setSelectedId] = useState('');
     const { data, isLoading } = useQuery({
         queryKey: ["GetAllElections"],
-        queryFn: () => getAllElections(),
+        queryFn: () => useAllElections(),
     });
     const elections = data;
     const [currentPage, setCurrentPage] = useState<number>(1);

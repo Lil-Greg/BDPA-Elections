@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { EditElection, Election, ElectionStatus, ElectionsStatus } from "../type.ts";
 import CacheFetch from "./useCacheFetch.ts";
-import { useQuery } from "@tanstack/react-query";
 const url:string = import.meta.env.VITE_API_URL;
 const APIKey:string = import.meta.env.VITE_API_KEY;
 const options = {
@@ -12,17 +11,26 @@ const options = {
     }
 };
 export default async function getAllElections(notFiltered = false) {
+    // const timeout = (fn, time) => {
+    //     new Promise(resolve => setTimeout(resolve, time));
+    // };
+
     let AllElections: Election[] = [];
     let hasMoreElections = true;
     let after = '';
     while (hasMoreElections) {
         const data: ElectionsStatus = await CacheFetch(url + `elections?after=${after}`, options);
+        console.log(data);
         const elections = data.elections;
+        console.log("New Call", elections);
         hasMoreElections = elections?.length == 100;
         AllElections = [...AllElections, ...elections];
         after = elections[elections.length - 1].election_id;
+        console.log("All Elections", AllElections);
     }
     const filteredElections = AllElections.filter(election => election.owned === true);
+    console.log("Filtered",filteredElections);
+    console.log("All Elections after loop", AllElections);
     return notFiltered ? AllElections : filteredElections;
 };
 export function UseSingleElection(id:string){

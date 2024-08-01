@@ -17,8 +17,8 @@ export default function IRVElections(ballotsConverted:string[][]){
             }else{
                 firstPlaceCount[firstChoice] = 1;// Sets new value if not the same name in object
             }
-        }    
-        return firstPlaceCount;// candidate name: number of first place votes.    
+        }
+        return firstPlaceCount;// candidate name: number of first place votes.
     }
     const findCandidateWithLeastVotes = (count: { [x: string]: number; }):string => {
         let fewestVotes = Infinity;

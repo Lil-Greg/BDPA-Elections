@@ -4,7 +4,7 @@ import { Button, Card, Col, Container, Pagination, Row } from 'react-bootstrap';
 import getImageURL from '../../utils/image-util';
 import { useContext, useState } from 'react';
 import UserContext from '../../context/UserContext';
-import getAllElections from '../../hooks/useElection';
+import useAllElections from '../../hooks/useElection';
 import { useQuery } from '@tanstack/react-query';
 
 export default function MultiElectionsPage() {
@@ -15,7 +15,7 @@ export default function MultiElectionsPage() {
     }
     const { data, isLoading, isError, error } = useQuery({
         queryKey: ["GetAllElections"],
-        queryFn: () => getAllElections(),
+        queryFn: () => useAllElections(),
     });
     const elections = data;
     const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];

@@ -4,13 +4,17 @@ import { Button, Card, Col, Container, Row } from "react-bootstrap";
 import { useContext } from 'react';
 import UserContext from '../../context/UserContext';
 import DistributeCalls from './DistributeCalls';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery as useTanstackQuery } from '@tanstack/react-query';
+import { useQuery } from 'convex/react';
+import { api } from '../../../convex/_generated/api';
 
 /* Display Election information and allows Users to Vote */
 
 export default function ElectionPage() {
     const { electionId } = useParams<string>();
     const { user } = useContext(UserContext);
+
+    const allUsersName = useQuery(api.users.get);
     if (!electionId) {
         throw Error('Missing election_id param');
     }
@@ -18,7 +22,7 @@ export default function ElectionPage() {
     if (!user) {
         return;
     }
-    const { data, isLoading, isError, error } = useQuery({
+    const { data, isLoading, isError, error } = useTanstackQuery({
         queryKey: ["CombinedSingleElection"],
         queryFn: () => DistributeCalls(electionId, user),
     });
@@ -41,7 +45,8 @@ export default function ElectionPage() {
         throw Error("Single Election Use Query Data Errored");
     };
     const { election, winner, userVote, ballotsResponse, ballots } = data;
-
+    const voterNames = ballotsResponse.ballots.map(ballot => ballot.voter_id);
+    const filteredUsernames = allUsersName?.filter(value => voterNames.includes(value.username));
     const handleVoteClick = async () => {
         if (user?.type === 'voter') {
             navigate(`/elections/${electionId}/vote`);
@@ -86,13 +91,10 @@ export default function ElectionPage() {
                 {user.type !== "voter" && user.type !== "reporter" && (
                     <div className="row">
                         <h3 className='h3 col-12 mb-3' style={{ textDecoration: "underline" }}>Ballots</h3>
-                        {ballotsResponse.success === true ? (
+                        {ballotsResponse.success === true && filteredUsernames ? (
                             ballots.map((ballot, index) => <div key={index} className='col-4 d-flex justify-content-center'>
-                                <p>{index % 2 === 0 ? "*****"
-                                    : index % 3 === 0 ? "*******"
-                                        : index % 5 === 0 ? "***"
-                                            : "*********"}: {ballot.map(option => <span
-                                                key={option}>{option}, </span>)}</p>
+                                <p><span className='h6' style={{ textDecoration: "underline" }}>{filteredUsernames[index].firstName}&nbsp;{filteredUsernames[index].lastName}</span>: {ballot.map(option => <span
+                                    key={option}>{option}, </span>)}</p>
                             </div>)
                         ) : (
                             <p>No Ballots</p>

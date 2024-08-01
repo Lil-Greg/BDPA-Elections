@@ -2,11 +2,20 @@ import { query } from "./_generated/server";
 import { mutation } from "./_generated/server";
 import { ConvexError, v } from "convex/values";
 
+// api.users.functionName
 export const get = query({
   args: {},
   handler: async (ctx) => {
     return await ctx.db.query("users").collect();
   },
+});
+
+export const getUsernames = query({
+  args:{},
+  handler:async(ctx) => {
+    const query = await ctx.db.query("users").collect();
+    return query.map(user => user.username);
+  }
 });
 
 export const auth = query({
