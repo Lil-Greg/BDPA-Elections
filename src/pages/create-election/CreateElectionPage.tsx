@@ -231,12 +231,23 @@ export default function CreateElectionPage() {
                         </FloatingLabel>
                         {optionSameName === false && noOptions === false && (<InputGroupText onClick={handleAddNewOption} className='create-election-option-input-group-text'>+</InputGroupText>)}
                     </InputGroup>
+                    {/* Buttons to choose type of election and too choose if it public or private */}
                     <Button className='mb-2' variant={optionSameName ? 'danger' : 'success'} onClick={handleShow2}>See Options</Button>
                     <Form.Select defaultValue='none' className='mb-3 w-50 create-election-type-selection' ref={typeRef}>
                         <option value="none">Select A Type...</option>
                         <option value='irv'>Instant-Runoff Voting Method (IRV)</option>
                         <option value='cpl'>Copeland Voting Method (CPL)</option>
+                        <option value='STAR'>Score then automatic runoff Voting Method (STAR)</option>
+                        <option value='FP'>First past the post Voting Method (FP)</option>
+
                     </Form.Select>
+                    <Row>
+                        <Button className='mb-2' variant={optionSameName ? 'danger' : 'success'} onClick={handleShow2}>Pick One</Button>
+                        <Form.Select defaultValue='none' className='mb-3 w-50 create-election-type-selection' ref={typeRef}>
+                            <option value="P">Private</option>
+                            <option value="P">Public</option>
+                        </Form.Select>
+                    </Row>
                     <Row>
                         <Col style={{ marginTop: '1rem' }}>
                             <p style={{ lineHeight: '0.25rem', textAlign: "center" }}>Opens At</p>

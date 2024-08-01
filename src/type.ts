@@ -1,6 +1,8 @@
 import { Id } from "../convex/_generated/dataModel";
 
 export interface User {
+    userName: string;
+    userType: string;
     assignedElections?: string[];
     pastLogin?: number[];
     ip?: string[];
@@ -8,6 +10,7 @@ export interface User {
     _creationTime: number;
     username: string;
     password: string;
+    // types of users
     type: string | 'voter' | 'administrator' | 'reporter' | 'moderator' | 'super';
     salt: string;
     key: string;
@@ -116,7 +119,7 @@ export interface GetBallotsResponse {
     ballots: Ballots[]
 };
 
-export interface EditElection{
+export interface EditElection {
     title: string;
     description: string;
     type: string | "irv" | "cpl";

@@ -4,6 +4,7 @@ import './HistoryPage.css';
 import UserContext from '../../context/UserContext';
 import useElectionHistory from '../../hooks/useElectionHistory';
 import getImageURL from '../../utils/image-util';
+import Options from './options';
 
 /* Display elections which are closed but not deleted */
 
@@ -11,6 +12,7 @@ export default function HistoryPage() {
   const { user } = useContext(UserContext)
   const { electionsH, isLoading, isErroring } = useElectionHistory();
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [activeKey, setActiveKey] = useState(null);
   const itemsPerPage = 5;
 
   const monthNames = [
@@ -65,7 +67,7 @@ export default function HistoryPage() {
         disabled={currentPage === totalPages}
       />
     </Pagination>
-    <Accordion className='mb-2'>
+    <Accordion className='mb-2' activeKey={activeKey} onSelect={(key) => setActiveKey(key)}>
       {currentElections.map((electionInfo, index) => {
         const evenOrOdd = index % 2 === 0 ? 'even' : 'odd';
         return (
@@ -106,7 +108,9 @@ export default function HistoryPage() {
               </div>
             </Accordion.Header>
             <Accordion.Body>
-              {/* Body content if needed */}
+              {/* helps add winners to the page */}
+              {activeKey === `${index}`
+                && <Options election={electionInfo} />}
             </Accordion.Body>
           </Accordion.Item>
         );

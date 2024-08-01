@@ -95,6 +95,16 @@ export default function RegisterPage() {
                     <div className="col-md-6">
                         <label htmlFor="inputEmail4" className="form-label" >Email</label>
                         <input type="email" className="form-control" id="inputEmail4" ref={emailRef} required />
+                        <Form.Control
+                            type="text"
+                            autoComplete="off"
+                            className="form-control"
+                            onChange={handleUsernameChange}
+                            id="inputUsername"
+                            ref={usernameRef}
+                            isInvalid={invalidUsername === true ? invalidUsername : sameUsername}
+                            required
+                        />
                     </div>
                     <div className="col-md-6">
                         <label htmlFor="inputFirst" className="form-label" >First Name</label>
@@ -149,7 +159,7 @@ export default function RegisterPage() {
                         <label htmlFor="inputCity" className="form-label">City</label>
                         <input type="text" className="form-control" id="inputCity" ref={cityRef} required />
                     </div>
-
+                    {/* the states to selct */}
                     <div className="col-md-4">
                         <label htmlFor="inputState" className="form-label">State</label>
                         <select id="inputState" className="form-select" ref={stateRef} defaultValue={'none'} required>

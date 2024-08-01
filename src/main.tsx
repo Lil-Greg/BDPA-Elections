@@ -17,6 +17,7 @@ import VotingPage from './pages/election/VotingPage.tsx';
 import ForgotPassword from './pages/auth/forgotPassword.tsx';
 import HistoryPage from './pages/history/HistoryPage.tsx';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import MaintenancePage from './pages/Maintenance/MaintenancePage.tsx';
 // import TopSec from './components/TopSec.tsx';
 
 const convex = new ConvexReactClient(import.meta.env.VITE_CONVEX_URL as string);
@@ -34,7 +35,7 @@ const router = createBrowserRouter([
     element: <ProtectedRoute allowedUserTypes={['voter', "reporter", 'administrator', 'super', "moderator"]}><MultiElectionsPage /></ProtectedRoute>,
   }, {
     path: '/elections/:electionId',
-    element: <ProtectedRoute allowedUserTypes={['voter', 'administrator', 'super']}><ElectionPage /></ProtectedRoute>
+    element: <ProtectedRoute allowedUserTypes={['voter', 'administrator', 'super']}><ElectionPage />//</ProtectedRoute>
   }, {
     path: '/elections/:electionId/vote',
     element: <ProtectedRoute allowedUserTypes={['voter']}><VotingPage /></ProtectedRoute>
@@ -50,6 +51,9 @@ const router = createBrowserRouter([
   }, {
     path: '/elections/history',
     element: <ProtectedRoute allowedUserTypes={['reporter', 'moderator', 'administrator', 'super', 'voter']}><HistoryPage /></ProtectedRoute>
+  }, {
+    path: '/maintenance',
+    element: <MaintenancePage />
   }
 ]);
 ReactDOM.createRoot(document.getElementById('root')!).render(

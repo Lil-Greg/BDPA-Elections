@@ -42,6 +42,7 @@ export default function AuthPage() {
             if (!userIp) {
                 throw Error("User's IP is Undefined");
             };
+            // adding the captcha
             if (captcha === correctCaptcha) {
                 setInvalidCaptcha(false);
                 setIpAndLogin({ id: authUser[0]._id, ip: userIp });
@@ -51,6 +52,7 @@ export default function AuthPage() {
                     remember === true ? window.localStorage.setItem('election-user', JSON.stringify(authUser[0]))
                         : window.sessionStorage.setItem("election-user", JSON.stringify(authUser[0]));
                     navigate('/', { replace: true });
+
                 } else {
                     setInvalidUser(true);
                     setLoginAttemptsRemaining(loginAttemptsRemaining - 1);
@@ -59,6 +61,7 @@ export default function AuthPage() {
                 setInvalidCaptcha(true);
                 setLoginAttemptsRemaining(loginAttemptsRemaining - 1);
             }
+            // shows amount of attempts left
         } else if (authUser === undefined || authUser?.length === 0) {
             setInvalidUser(true);
             setLoginAttemptsRemaining(loginAttemptsRemaining - 1);
@@ -125,10 +128,15 @@ export default function AuthPage() {
 
                 <a className="m-1" style={{ textDecoration: 'none' }} href="/forgot"><h5>Forgot Password?</h5></a>
             </Row>
+            {/* To guide the link to the register page */}
             <Row>
                 <NavLink to={'/register'}><h5>Sign Up</h5></NavLink>
             </Row>
             <Row className="mt-2 mb-4">
+                <Col xs="auto">
+                    {loginAttemptsRemaining} Login Attempts Remaining
+
+                </Col>
                 <Col xs="auto">
                     <Button variant="primary" type="submit">
                         Submit
