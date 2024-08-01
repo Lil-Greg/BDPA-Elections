@@ -17,6 +17,8 @@ import VotingPage from './pages/election/VotingPage.tsx';
 import ForgotPassword from './pages/auth/forgotPassword.tsx';
 import HistoryPage from './pages/history/HistoryPage.tsx';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import MaintenancePage from './pages/Maintenance/MaintenancePage.tsx';
+// import TopSec from './components/TopSec.tsx';
 
 const convex = new ConvexReactClient(import.meta.env.VITE_CONVEX_URL as string);
 const queryClient = new QueryClient();
@@ -49,6 +51,9 @@ const router = createBrowserRouter([
   }, {
     path: '/elections/history',
     element: <ProtectedRoute allowedUserTypes={['reporter', 'moderator', 'administrator', 'super', 'voter']}><HistoryPage /></ProtectedRoute>
+  },{
+    path: '/maintenance',
+    element: <MaintenancePage />
   }
 ]);
 ReactDOM.createRoot(document.getElementById('root')!).render(

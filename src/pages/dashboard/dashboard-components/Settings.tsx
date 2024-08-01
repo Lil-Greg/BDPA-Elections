@@ -82,7 +82,18 @@ export default function Settings() {
                             <Button onClick={() => navigate('/register')} className="settings-register-button">Register</Button>
                         </Card.Body>
                     </Card>
+                    
                 )}
+                    <Card className="settings-card-maintenance mb-2 settings-card">
+                        <Card.Title className="settings-card-title-maintenance">
+                            Enter Maintenance Mode
+                        </Card.Title>
+                        <Card.Body className="settings-card-body">
+                            <Button variant="success"onClick={() => navigate('/maintenance')} className="settings-maintenance-button">
+                                Activate
+                            </Button>
+                        </Card.Body>
+                    </Card>
 
                 <Card className="settings-danger-zone settings-card">
                     <Card.Title style={{ fontSize: '2rem', fontWeight: '500', color: '#dc3545', textDecoration: 'underline #dc3545' }}>Danger Zone</Card.Title>

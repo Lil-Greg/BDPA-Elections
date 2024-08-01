@@ -69,3 +69,19 @@
     animation-duration: 1;
     background-color: rgba(0, 179, 231, 0.5);
 }
+.AdminElections-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.settings-card-title-maintenance {
+    color: #08e700;
+    font-weight: 500;
+    font-size: 2rem;
+    text-decoration: underline #08e700;
+}
+
+.settings-card-maintenance {
+    padding: 1rem;
+    border-color: #08e700;
+}
