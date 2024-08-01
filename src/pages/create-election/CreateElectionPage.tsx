@@ -227,8 +227,8 @@ export default function CreateElectionPage() {
                         <option value="none">Select A Type...</option>
                         <option value='irv'>Instant-Runoff Voting Method (IRV)</option>
                         <option value='cpl'>Copeland Voting Method (CPL)</option>
-                        <option value='STAR'>STAR Voting Method (STAR)</option>
-                        <option value='STAR'>STAR Voting Method (STAR)</option>
+                        <option value='STAR'>Score than automatic runoff Voting Method (STAR)</option>
+                        <option value='FPTP'>First past the post Voting Method (FPTP)</option>
                     </Form.Select>
                     <Row>
                         <Button className='mb-2' variant={optionSameName ? 'danger' : 'success'} onClick={handleShow2}>Pick One</Button>
