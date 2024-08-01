@@ -5,7 +5,7 @@ export interface User {
     userType: string;
     assignedElections?: string[];
     pastLogin?: number[];
-    ip?: string;
+    ip?: string[];
     _id: Id<"users">;
     _creationTime: number;
     username: string;
@@ -119,8 +119,12 @@ export interface GetBallotsResponse {
 };
 
 export interface EditElection {
+    title: string;
     description: string;
+    type: string | "irv" | "cpl";
     options: string[];
+    opensAt: number;
+    closesAt: number;
 };
 
 export type Direction = "prev" | "next";

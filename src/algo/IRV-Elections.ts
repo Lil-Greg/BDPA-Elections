@@ -7,6 +7,9 @@ export default function IRVElections(ballotsConverted:string[][]){
     if(ballotsConverted.length<=0)
         return ""
 
+    if(ballotsConverted.length===0)
+        return "";
+
     const countFirstPlacers = () => {
         const firstPlaceCount: { [x: string]: number; } = {};
         for(const ballot of ballotsConverted){

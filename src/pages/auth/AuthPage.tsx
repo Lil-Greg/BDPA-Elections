@@ -11,6 +11,8 @@ import { api } from '../../../convex/_generated/api';
 import getImageURL from '../../utils/image-util';
 import GetIp from '../../hooks/getIp';
 
+/* Checks and Stores User information */
+
 export default function AuthPage() {
     const { userIp } = GetIp();
     const setIpAndLogin = useMutation(api.users.setIpAndRecentLogin);

@@ -10,6 +10,8 @@ import AdminElections from './dashboard-components/AdminElections';
 import AssignPage from './dashboard-components/AssignPage';
 import AssignedElections from './dashboard-components/AssignedElections';
 
+/* Display User information */
+
 export default function DashboardPage() {
     const { user } = useContext(UserContext);
     const renderTooltip = (props: JSX.IntrinsicAttributes & TooltipProps & RefAttributes<HTMLDivElement>) => (
@@ -17,9 +19,10 @@ export default function DashboardPage() {
             Change Profile Picture
         </Tooltip>
     );
+    console.log("Past Login", user?.pastLogin);
     return (
         <Container className="dashboard-container mt-3">
-            <h1>Welcome, {user?.username}</h1>
+            <h1>Welcome,&nbsp;{user?.firstName}&nbsp;{user?.lastName}</h1>
             <Row className='dashboard-base-content'>
                 <OverlayTrigger
                     placement="bottom"

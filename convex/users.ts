@@ -8,6 +8,7 @@ export const get = query({
     return await ctx.db.query("users").collect();
   },
 });
+
 export const auth = query({
   args: {
     username: v.string(),
@@ -19,6 +20,27 @@ export const auth = query({
     .collect();
   },
 });
+
+export const emailAuth = query({
+  args:{
+    email: v.string()
+  },
+  handler: async (ctx, args) => {
+    return await ctx.db.query("users")
+      .filter(data => data.eq(data.field("email"), args.email))
+      .collect();
+  },
+});
+
+export const changePassword = mutation({
+  args:{
+    id:v.id("users"),
+    password: v.string()
+  },
+  handler: async (ctx, args) => {
+    return await ctx.db.patch(args.id, {password: args.password});
+  },
+})
 
 export const getSingleUser = query({
   args:{
@@ -114,8 +136,11 @@ export const setIpAndRecentLogin = mutation({
       console.warn("Cannot Set Ip, get is undefined");
       return;
     }
-
-    return await ctx.db.patch(args.id, {ip: args.ip, pastLogin: beforeChange.pastLogin ? [beforeChange.pastLogin.pop() || 0, Date.now()] : [Date.now()]});
+    beforeChange.ip?.push(args.ip);
+    beforeChange.pastLogin?.push(Date.now());
+    // Use Slice to remove the last
+    return await ctx.db.patch(args.id, {ip: beforeChange.ip ? beforeChange.ip?.slice(-5, beforeChange.ip.length) : [args.ip], 
+      pastLogin: beforeChange.pastLogin ? beforeChange.pastLogin.slice(-5, beforeChange.pastLogin.length) : [Date.now()]});
   }
 });
 //  PATCH (UPDATE) METHOD

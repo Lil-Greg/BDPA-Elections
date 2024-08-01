@@ -1,6 +1,6 @@
 import React, { useContext, useRef, useState } from "react";
 import UserContext from "../../../context/UserContext";
-import { Button, Col, Container, Form, InputGroup, ProgressBar, Row } from "react-bootstrap";
+import { Accordion, Button, Col, Container, Form, InputGroup, ProgressBar, Row } from "react-bootstrap";
 import { TbPencil, TbPencilOff } from "react-icons/tb";
 import { useMutation, useQuery } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
@@ -198,23 +198,25 @@ export default function Profile() {
                                 <h4 style={{ textDecoration: "underline" }}>Email</h4>
                                 <p className="h6 profile-page dashboard-email">{user?.email}</p>
                             </Col>
-                            <Col className="col-6">
-                                <h4 style={{ textDecoration: "underline" }}>Current IP</h4>
-                                <p className="h6 profile-page dashboard-email">{user?.ip}</p>
-                            </Col>
-                            <Col className="col-6">
+                            <Col className="col-12">
                                 <h4 style={{ textDecoration: "underline" }}>Previous Login</h4>
-                                <p className="h6 profile-page dashboard-email">
-                                    {user.pastLogin && (<span>
-                                        {monthNames[new Date(user.pastLogin[0]).getMonth()]}&nbsp;
-                                        {new Date(user.pastLogin[0]).getDate()},&nbsp;
-                                        {new Date(user.pastLogin[0]).getFullYear()},&nbsp;
-                                        {new Date(user.pastLogin[0]).getHours() > 12 ? new Date(user.pastLogin[0]).getHours() - 12 : new Date(user.pastLogin[0]).getHours()}:
-                                        {new Date(user.pastLogin[0]).getMinutes()}&nbsp;
-                                        {new Date(user.pastLogin[0]).getHours() > 12 ? "P.M." : "A.M."}
-                                    </span>
+                                <Accordion>
+                                    {user.pastLogin && user.pastLogin.map((login, index) => <Accordion.Item eventKey={`${index}`} key={index}>
+                                        <p className="h6 profile-page dashboard-email">
+                                            <span>
+                                                {monthNames[new Date(login).getMonth()]}&nbsp;
+                                                {new Date(login).getDate()},&nbsp;
+                                                {new Date(login).getFullYear()},&nbsp;
+                                                {new Date(login).getHours() > 12 ? new Date(login).getHours() - 12 : new Date(login).getHours()}:
+                                                {new Date(login).getMinutes()}&nbsp;
+                                                {new Date(login).getHours() > 12 ? "P.M. " : "A.M. "}
+                                            </span>
+
+                                            -&nbsp;{user.ip ? user?.ip[index] : "IP Undefined"}
+                                        </p>
+                                    </Accordion.Item>
                                     )}
-                                </p>
+                                </Accordion>
                             </Col>
                         </Row>
                     </>

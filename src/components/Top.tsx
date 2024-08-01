@@ -27,9 +27,7 @@ export default function Top() {
                             <Navbar.Collapse id="basic-navbar-nav">
                                 <Nav style={{ textAlign: 'center', textEmphasis: '300', justifyContent: "space-between" }} className="me-auto navigation-element-container">
                                     <Nav className="nav-links">
-                                        {user?.type !== "reporter" && (
-                                            <Nav.Link href="/elections">Elections</Nav.Link>
-                                        )}
+                                        <Nav.Link href="/elections">Elections</Nav.Link>
                                         <Nav.Link href='/elections/history'>History</Nav.Link>
                                     </Nav>
                                     <Navbar expand="lg">

@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { EditElection, Election, ElectionStatus, ElectionsStatus } from "../type.ts";
 import CacheFetch from "./useCacheFetch.ts";
-import { useQuery } from "@tanstack/react-query";
 import { convertBallots } from "../utils/utils.ts";
 import IRVElections from "../algo/IRV-Elections.ts";
 import CPLElections from "../algo/CPL-Elections.ts";

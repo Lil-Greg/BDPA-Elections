@@ -143,12 +143,12 @@ export default function RegisterPage() {
                     <div className="col-md-6">
                         <label htmlFor="typeState" className="form-label">Type</label>
                         <select id="typeState" className="form-select" ref={typeRef} defaultValue="voter">
-                            {user === null && (
-                                <>
-                                    <option value="voter">Voter</option>
-                                    <option value="reporter">Reporter</option>
-                                </>
-                            )}
+                            <option value="voter">Voter</option>
+                            <option value="reporter">Reporter</option>
+                            {user && user.type !== "moderator"
+                                && user.type !== "reporter"
+                                && user.type !== "voter" && (<option value="moderator">Moderator</option>)}
+                            {user && user.type === "super" && (<option value="administrator">Administrator</option>)}
                         </select>
                     </div>
                     <div className="col-12">

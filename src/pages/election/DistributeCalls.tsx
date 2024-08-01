@@ -20,6 +20,7 @@ export default async function DistributeCalls(election_id: string, user: User) {
     }) || [];
     if (election?.type === 'irv') {
         const data = IRVElections(ballotsConverted);
+        console.log(data);
         winner = data;
     } else if (election?.type === 'cpl') {
         const { CPL } = CPLElections(ballotsConverted, election.options);

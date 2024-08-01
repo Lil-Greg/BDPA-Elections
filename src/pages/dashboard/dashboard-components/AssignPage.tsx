@@ -2,21 +2,29 @@ import { useMutation, useQuery } from "convex/react";
 import { Button, Col, FloatingLabel, Form, InputGroup, Row } from "react-bootstrap";
 import { api } from "../../../../convex/_generated/api";
 import React, { useContext, useRef, useState } from "react";
-import UseElection from "../../../hooks/useElection";
+import { useQuery as useTanStackQuery } from "@tanstack/react-query";
 import UserContext from "../../../context/UserContext";
 import { Election, User } from "../../../type";
 import { useNavigate } from "react-router-dom";
-import useElectionHistory from "../../../hooks/useElectionHistory";
+import getAllElections from "../../../hooks/useElection";
 
 export default function AssignPage() {
     const { user } = useContext(UserContext);
     if (!user) {
         throw Error('Not Logged In');
-    }
-    const savedUserData = useQuery(api.users.getSingleUser, { username: user.username });
+    };
     const everyUser = useQuery(api.users.get);
-    const { elections, isLoading, isErroring } = UseElection();
-    const { electionsH } = useElectionHistory();
+    const { data, isLoading, isError } = useTanStackQuery({
+        queryKey: ["GetAllElections"],
+        queryFn: () => getAllElections(),
+    });
+    const elections = data;
+    const electionsH = elections?.filter(election => {
+        if (user.type === "moderator") {
+            return user.assignedElections?.includes(election.election_id) && Date.now() > election.closesAt;
+        }
+        return Date.now() > election.closesAt;
+    });
     const newElectionAssignment = useMutation(api.users.assignUserElection);
     const newRoleAssignment = useMutation(api.users.changeType);
     const navigate = useNavigate();
@@ -34,6 +42,13 @@ export default function AssignPage() {
 
     const [assignElection, setAssignElection] = useState(false);
     const [assignRole, setAssignRole] = useState(false);
+
+    if (user.type === "moderator") {
+        if (!user.assignedElections || user.assignedElections.length === 0) {
+            setElectionError(2);
+            return;
+        }
+    }
     /*data.elections.filter(electionD => 
         electionD.owned === true &&
         electionD.closesAt > Date.now() &&
@@ -45,7 +60,7 @@ export default function AssignPage() {
             Loading...
         </>
     }
-    if (isErroring) {
+    if (isError) {
         return <>
             Something Went Wrong!
         </>
@@ -75,17 +90,6 @@ export default function AssignPage() {
         if (!electionsH) {
             throw Error("Elections History is Undefined");
         }
-        const filterWithHistory = user?.assignedElections ? electionsH.filter(electionD => {
-            if (user?.type === 'moderator') {
-                if (!user.assignedElections) {
-                    setElectionError(2);
-                    return false;
-                }
-                return user.assignedElections.includes(electionD.election_id) && Date.now() > electionD.closesAt && electionD.owned;
-            }
-            return Date.now() > electionD.closesAt && electionD.owned === true;
-        }) : undefined;
-
         if (!elections) {
             throw Error("There Are No Elections");
         }
@@ -101,7 +105,8 @@ export default function AssignPage() {
             return assignUserIsMod;
         }*/
         if (assignUser?.type === "reporter") {
-            return filterWithHistory;
+            console.log(electionsH);
+            return electionsH;
         }
 
         return filterElecReg;
@@ -147,16 +152,12 @@ export default function AssignPage() {
             });
             console.log(checkUserAssignments);
             if (assignmentRef && electionCheck && electionCheck.length > 0 && assignUser && assignmentIds && checkUserAssignments && checkUserAssignments.length === 0) {
-                savedUserData;
                 await newElectionAssignment({ id: assignUser._id, assignedElection: assignmentIds });
                 navigate('/', { replace: true });
             } else if (electionCheck?.length === 0) {
                 setElectionError(0);
             } else if (checkUserAssignments && checkUserAssignments.length > 0) {
                 setElectionError(1);
-            };
-            if (!user?.assignedElections) {
-                savedUserData;
             };
         };
         if (assignRole === true) {

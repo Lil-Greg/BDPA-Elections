@@ -1,10 +1,12 @@
 import { useState, useContext } from 'react';
-import { Accordion, Pagination } from 'react-bootstrap';
+import { Accordion, Container, Pagination } from 'react-bootstrap';
 import './HistoryPage.css';
 import UserContext from '../../context/UserContext';
 import useElectionHistory from '../../hooks/useElectionHistory';
 import getImageURL from '../../utils/image-util';
 import Options from './options';
+
+/* Display elections which are closed but not deleted */
 
 export default function HistoryPage() {
   const { user } = useContext(UserContext)
@@ -45,8 +47,8 @@ export default function HistoryPage() {
 
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
-  return <>
-    <Pagination className="pagination">
+  return <Container className='mt-2'>
+    <Pagination className="pagination d-flex justify-content-center">
       <Pagination.Prev
         onClick={() => paginate(currentPage - 1)}
         disabled={currentPage === 1}
@@ -65,7 +67,7 @@ export default function HistoryPage() {
         disabled={currentPage === totalPages}
       />
     </Pagination>
-    <Accordion activeKey={activeKey} onSelect={(key) => setActiveKey(key)}>
+    <Accordion className='mb-2' activeKey={activeKey} onSelect={(key) => setActiveKey(key)}>
       {currentElections.map((electionInfo, index) => {
         const evenOrOdd = index % 2 === 0 ? 'even' : 'odd';
         return (
@@ -113,5 +115,24 @@ export default function HistoryPage() {
         );
       })}
     </Accordion>
-  </>
+    <Pagination className="pagination d-flex justify-content-center">
+      <Pagination.Prev
+        onClick={() => paginate(currentPage - 1)}
+        disabled={currentPage === 1}
+      />
+      {Array.from({ length: totalPages }, (_, i) => (
+        <Pagination.Item
+          key={i}
+          active={currentPage === i + 1}
+          onClick={() => paginate(i + 1)}
+        >
+          {i + 1}
+        </Pagination.Item>
+      ))}
+      <Pagination.Next
+        onClick={() => paginate(currentPage + 1)}
+        disabled={currentPage === totalPages}
+      />
+    </Pagination>
+  </Container>
 }

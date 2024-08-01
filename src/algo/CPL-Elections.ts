@@ -2,7 +2,6 @@ export default function CPLElections(ballots: string[][], candidates: string[]){
     const scores: {[key: string]:number} = candidates.reduce((acc, candidate) => (
         {...acc, [candidate]:0}
     ),{});
-
     for(let i = 0; i < candidates.length; i++){
         for(let j = i + 1; j < candidates.length; j++){
             const candidate1 = candidates[i];
