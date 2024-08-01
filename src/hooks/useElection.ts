@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { EditElection, Election, ElectionStatus, ElectionsStatus } from "../type.ts";
 import CacheFetch from "./useCacheFetch.ts";
 import { useQuery } from "@tanstack/react-query";
-import IRVElections from "../algo/IRV-Elections.ts";
 import { convertBallots } from "../utils/utils.ts";
+import IRVElections from "../algo/IRV-Elections.ts";
 import CPLElections from "../algo/CPL-Elections.ts";
 const url: string = import.meta.env.VITE_API_URL;
 const APIKey: string = import.meta.env.VITE_API_KEY;
@@ -14,7 +14,7 @@ const options = {
         'content-type': 'application/json'
     }
 };
-export default async function getAllElections() {
+export default async function getAllElections(notFiltered = false) {
     let AllElections: Election[] = [];
     let hasMoreElections = true;
     let after = '';
@@ -25,9 +25,8 @@ export default async function getAllElections() {
         AllElections = [...AllElections, ...elections];
         after = elections[elections.length - 1].election_id;
     }
-    console.log(AllElections);
     const filteredElections = AllElections.filter(election => election.owned === true);
-    return filteredElections;
+    return notFiltered ? AllElections : filteredElections;
 };
 export function UseSingleElection(id: string) {
     // console.warn("Error With UseSingleElection: ", error);
@@ -42,7 +41,7 @@ export function UseSingleElection(id: string) {
     }, [id]);
     return election;
 };
-export function useEditElection(election_id: string, formValues: EditElection) {
+export async function useEditElection(election_id: string, formValues: EditElection) {
     const optionsEditElection = {
         method: "PATCH",
         headers: {
@@ -51,12 +50,18 @@ export function useEditElection(election_id: string, formValues: EditElection) {
         },
         body: JSON.stringify(formValues)
     };
-    useQuery({
-        queryKey: ["editElection"],
-        queryFn: async () => await fetch(`${url}elections/${election_id}`, optionsEditElection),
-    });
+    return await fetch(`${url}elections/${election_id}`, optionsEditElection);
 };
-
+export async function useDeleteElection(election_id: string): Promise<{ success: boolean }> {
+    const deleteOptions = {
+        method: "DELETE",
+        headers: {
+            "Authorization": APIKey,
+            "content-type": "application/json"
+        }
+    }
+    return await fetch(`${url}elections/${election_id}`, deleteOptions).then(res => res.json());
+}
 export async function getElectionWinner(election: Election) {
     const ballot = await CacheFetch(`${url}elections/${election.election_id}/ballots`, options)
     const convertedBallots = convertBallots(ballot.ballots)
