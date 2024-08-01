@@ -1,6 +1,6 @@
 import React, { useContext, useRef, useState } from "react";
 import UserContext from "../../../context/UserContext";
-import { Button, Col, Container, Form, InputGroup, ProgressBar, Row } from "react-bootstrap";
+import { Accordion, Button, Col, Container, Form, InputGroup, ProgressBar, Row } from "react-bootstrap";
 import { TbPencil, TbPencilOff } from "react-icons/tb";
 import { useMutation, useQuery } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
@@ -9,8 +9,12 @@ import { FaRegEye, FaRegEyeSlash } from "react-icons/fa6";
 
 export default function Profile() {
     const { user, setUser } = useContext(UserContext);
+    if (user === null) {
+        console.warn("User is null");
+        return;
+    }
     const getAllUsers = useQuery(api.users.get);
-    const changeUser = useMutation(api.users.changeUser);
+    const changeUser = useMutation(api.users.changeUserInProfile);
 
     const [noValue, setNoValue] = useState<boolean>(true);
     const [editState, setEditState] = useState<boolean>(false);
@@ -25,6 +29,7 @@ export default function Profile() {
     const [invalidUsername, setInvalidUsername] = useState(false);
     const [progress, setProgress] = useState<number>(0);
     const [sameUsername, setSameUsername] = useState(false);
+    const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
     const handleEditMode = () => {
         setEditState(!editState);
@@ -46,6 +51,7 @@ export default function Profile() {
             }
             if (user === null || user === undefined) {
                 alert("No User");
+                return;
             } else {
                 changeUser({ id: user._id, selectedField: formValues });
                 localStorage.setItem("election-user", JSON.stringify({
@@ -175,20 +181,42 @@ export default function Profile() {
                     </Form>
                 ) : (
                     <>
-                        <Row className="mb-2">
-                            <Col>
-                                <p className="profile-page dashboard-firstName">First Name:&nbsp;{user?.firstName}</p>
+                        <Row className="row mb-2">
+                            <Col className="col-6">
+                                <h4 style={{ textDecoration: "underline" }}>First Name</h4>
+                                <p className="h6 profile-page dashboard-firstName">{user?.firstName}</p>
                             </Col >
-                            <Col>
-                                <p className="profile-page dashboard-lastName">Last Name:&nbsp;{user?.lastName}</p>
+                            <Col className="col-6">
+                                <h4 style={{ textDecoration: "underline" }}>Last Name</h4>
+                                <p className="h6 profile-page dashboard-lastName">{user?.lastName}</p>
                             </Col>
-                        </Row >
-                        <Row>
-                            <Col>
-                                <div className="profile-page dashboard-username">Username:&nbsp;{user?.username}</div>
+                            <Col className="col-6">
+                                <h4 style={{ textDecoration: "underline" }}>Username</h4>
+                                <div className="h6 profile-page dashboard-username">{user?.username}</div>
                             </Col>
-                            <Col>
-                                <p className="profile-page dashboard-email">Email:&nbsp;{user?.email}</p>
+                            <Col className="col-6">
+                                <h4 style={{ textDecoration: "underline" }}>Email</h4>
+                                <p className="h6 profile-page dashboard-email">{user?.email}</p>
+                            </Col>
+                            <Col className="col-12">
+                                <h4 style={{ textDecoration: "underline" }}>Previous Login</h4>
+                                <Accordion>
+                                    {user.pastLogin && user.pastLogin.map((login, index) => <Accordion.Item eventKey={`${index}`} key={index}>
+                                        <p className="h6 profile-page dashboard-email">
+                                            <span>
+                                                {monthNames[new Date(login).getMonth()]}&nbsp;
+                                                {new Date(login).getDate()},&nbsp;
+                                                {new Date(login).getFullYear()},&nbsp;
+                                                {new Date(login).getHours() > 12 ? new Date(login).getHours() - 12 : new Date(login).getHours()}:
+                                                {new Date(login).getMinutes()}&nbsp;
+                                                {new Date(login).getHours() > 12 ? "P.M. " : "A.M. "}
+                                            </span>
+
+                                            -&nbsp;{user.ip ? user?.ip[index] : "IP Undefined"}
+                                        </p>
+                                    </Accordion.Item>
+                                    )}
+                                </Accordion>
                             </Col>
                         </Row>
                     </>

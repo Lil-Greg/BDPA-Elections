@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Election, ElectionStatus, ElectionsStatus, GetBallotsResponse, GetSingleBallotType } from "../type.ts";
+import { EditElection, Election, ElectionStatus, ElectionsStatus } from "../type.ts";
 import CacheFetch from "./useCacheFetch.ts";
 import { useQuery } from "@tanstack/react-query";
 const url:string = import.meta.env.VITE_API_URL;
@@ -11,66 +11,51 @@ const options = {
         'content-type':'application/json'
     }
 };
-async function getAllElections(): Promise<Election[]>{
-    const data: ElectionsStatus = await CacheFetch(url + `elections`, options, 'getAllElections');
-    const elections = data.elections.filter(electionD => 
-        electionD.owned === true &&
-        electionD.closesAt > Date.now() &&
-        electionD.deleted === false
-    );
-    return elections;
-};
-export default function UseElection(){ // useEffect on elections data
-    const {data, isLoading, isError, error} = useQuery({
-        queryKey: ['allElections'],
-        queryFn: getAllElections,
-    });
-    return {elections: data, isLoading, isErroring:isError, electionsError: error};
+export default async function getAllElections(notFiltered = false) {
+    let AllElections: Election[] = [];
+    let hasMoreElections = true;
+    let after = '';
+    while (hasMoreElections) {
+        const data: ElectionsStatus = await CacheFetch(url + `elections?after=${after}`, options);
+        const elections = data.elections;
+        hasMoreElections = elections?.length == 100;
+        AllElections = [...AllElections, ...elections];
+        after = elections[elections.length - 1].election_id;
+    }
+    const filteredElections = AllElections.filter(election => election.owned === true);
+    return notFiltered ? AllElections : filteredElections;
 };
 export function UseSingleElection(id:string){
+    // console.warn("Error With UseSingleElection: ", error);
     const [election, setElection] = useState<Election | undefined>(undefined);
 
-    useEffect(()=>{
+    useEffect(() => {
         async function fetchData(){
-            try{
-                const data:ElectionStatus = await CacheFetch(url + `elections/${id}`, options, id);
-                setElection(data.election);
-            }catch(error){
-                console.warn(error);
-            };
-        };
+            const singleElection:ElectionStatus = await CacheFetch(url + `elections/${id}`, options);
+            setElection(singleElection.election);
+        }
         fetchData();
-    },[id]);
+    }, [id]);
     return election;
 };
-export async function GetBallots(election_id:string):Promise<GetBallotsResponse | undefined>{
-    try{
-        return await fetch(`${url}elections/${election_id}/ballots`, options).then(res => res.json());
-    } catch(error){
-        console.error("Error With GetBallots ",error);
-    };
-};
-export async function GetSingleBallot(election_id:string, user_id:string): Promise<GetSingleBallotType | undefined>{
-    try{
-        const data: GetSingleBallotType = await fetch(`${url}elections/${election_id}/ballots/${user_id}`, options).then(res => res.json());
-        return data;
-    }catch(error){
-        console.warn("", error)
-    };
-};
-export async function MakeVote(election_id:string, voter_id:string, ranking:object){
-    const puttingRankingInObject = {ranking};
-    const optionsMakeVote = {
-        method:"PUT",
+export async function useEditElection(election_id:string, formValues: EditElection){
+    const optionsEditElection = {
+        method: "PATCH",
         headers:{
-            "Authorization": APIKey,
+            "Authorization":APIKey,
             "content-type":"application/json"
         },
-        body:JSON.stringify(puttingRankingInObject)
+        body:JSON.stringify(formValues)
     };
-    try{
-        return await fetch(`${url}elections/${election_id}/ballots/${voter_id}`, optionsMakeVote);
-    }catch(error){
-        console.warn("Error with making vote", error);
-    };
+    return await fetch(`${url}elections/${election_id}`, optionsEditElection);
 };
+export async function useDeleteElection(election_id: string): Promise<{success: boolean}>{
+    const deleteOptions = {
+        method: "DELETE",
+        headers: {
+            "Authorization": APIKey,
+            "content-type":"application/json"
+        }
+    }
+    return await fetch(`${url}elections/${election_id}`, deleteOptions).then(res => res.json());
+}

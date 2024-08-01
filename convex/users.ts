@@ -9,6 +9,39 @@ export const get = query({
   },
 });
 
+export const auth = query({
+  args: {
+    username: v.string(),
+    password: v.string()
+  },
+  handler: async (ctx, args) => {
+    return await ctx.db.query("users")
+    .filter(data => data.eq(data.field("username"), args.username) && data.eq(data.field("password"), args.password))
+    .collect();
+  },
+});
+
+export const emailAuth = query({
+  args:{
+    email: v.string()
+  },
+  handler: async (ctx, args) => {
+    return await ctx.db.query("users")
+      .filter(data => data.eq(data.field("email"), args.email))
+      .collect();
+  },
+});
+
+export const changePassword = mutation({
+  args:{
+    id:v.id("users"),
+    password: v.string()
+  },
+  handler: async (ctx, args) => {
+    return await ctx.db.patch(args.id, {password: args.password});
+  },
+})
+
 export const getSingleUser = query({
   args:{
     username:v.string()
@@ -41,6 +74,25 @@ export const assignUserElection = mutation({
   }
 });
 
+export const setParticipatedElection = mutation({
+  args:{
+    id: v.id("users"),
+    electionId: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const beforeChange = await ctx.db.get(args.id);
+    const afterChange = beforeChange?.participatedElections?.filter(pElections => args.electionId === pElections);
+    if(afterChange !== undefined && afterChange.length == 1){
+      const concat = beforeChange?.participatedElections?.concat(...afterChange);
+      return await ctx.db.patch(args.id, {participatedElections: concat});
+    }else{
+      const electionId = [args.electionId];
+      return await ctx.db.patch(args.id, {participatedElections: electionId});
+    }
+    
+  },
+})
+
 export const changeType = mutation({
   args:{
     id: v.id("users"),
@@ -68,7 +120,6 @@ export const createUser = mutation(
     lastName:v.string()
     },
   handler: async (ctx, args) => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const userData = await ctx.db.insert("users", { password: args.password, type: args.type, salt: args.salt, key: args.key, email: args.email, username: args.username, city: args.city, state: args.state, address: args.address, zip:args.zip, firstName: args.firstName, lastName: args.lastName });
     return userData;
   },
@@ -80,7 +131,16 @@ export const setIpAndRecentLogin = mutation({
     ip: v.string()
   },
   handler: async (ctx, args) => {
-    return ctx.db.patch(args.id, {ip: args.ip, pastLogin: Date.now()});
+    const beforeChange = await ctx.db.get(args.id);
+    if(!beforeChange){
+      console.warn("Cannot Set Ip, get is undefined");
+      return;
+    }
+    beforeChange.ip?.push(args.ip);
+    beforeChange.pastLogin?.push(Date.now());
+    // Use Slice to remove the last
+    return await ctx.db.patch(args.id, {ip: beforeChange.ip ? beforeChange.ip?.slice(-5, beforeChange.ip.length) : [args.ip], 
+      pastLogin: beforeChange.pastLogin ? beforeChange.pastLogin.slice(-5, beforeChange.pastLogin.length) : [Date.now()]});
   }
 });
 //  PATCH (UPDATE) METHOD

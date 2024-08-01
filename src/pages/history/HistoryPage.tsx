@@ -1,15 +1,17 @@
 import { useState, useContext } from 'react';
-import { Accordion, Pagination } from 'react-bootstrap';
+import { Accordion, Container, Pagination } from 'react-bootstrap';
 import './HistoryPage.css';
 import UserContext from '../../context/UserContext';
 import useElectionHistory from '../../hooks/useElectionHistory';
 import getImageURL from '../../utils/image-util';
 
+/* Display elections which are closed but not deleted */
+
 export default function HistoryPage() {
   const { user } = useContext(UserContext)
   const { electionsH, isLoading, isErroring } = useElectionHistory();
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const itemsPerPage = 5; // Number of elections per page
+  const itemsPerPage = 5;
 
   const monthNames = [
     'January', 'February', 'March', 'April', 'May', 'June',
@@ -26,18 +28,12 @@ export default function HistoryPage() {
         <div className="errorMessage">
           <img src={getImageURL('errorMagnifier.svg')} alt="Error Magnifier" />
           <h1>Something went wrong!</h1>
-          <hr />
-          {/* <code>
-                        Error Information (Broad): {electionsError?.stack}
-                        <p>{electionsError?.name}</p>
-                        {electionsError?.message}
-                    </code> */}
         </div>
       </div>
     </>
   }
   if (!electionsH) {
-    throw new Error
+    throw new Error;
   }
 
   // Calculate which elections to display based on pagination
@@ -49,8 +45,8 @@ export default function HistoryPage() {
 
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
-  return <>
-    <Pagination className="pagination">
+  return <Container className='mt-2'>
+    <Pagination className="pagination d-flex justify-content-center">
       <Pagination.Prev
         onClick={() => paginate(currentPage - 1)}
         disabled={currentPage === 1}
@@ -69,7 +65,7 @@ export default function HistoryPage() {
         disabled={currentPage === totalPages}
       />
     </Pagination>
-    <Accordion>
+    <Accordion className='mb-2'>
       {currentElections.map((electionInfo, index) => {
         const evenOrOdd = index % 2 === 0 ? 'even' : 'odd';
         return (
@@ -116,5 +112,24 @@ export default function HistoryPage() {
         );
       })}
     </Accordion>
-  </>
+    <Pagination className="pagination d-flex justify-content-center">
+      <Pagination.Prev
+        onClick={() => paginate(currentPage - 1)}
+        disabled={currentPage === 1}
+      />
+      {Array.from({ length: totalPages }, (_, i) => (
+        <Pagination.Item
+          key={i}
+          active={currentPage === i + 1}
+          onClick={() => paginate(i + 1)}
+        >
+          {i + 1}
+        </Pagination.Item>
+      ))}
+      <Pagination.Next
+        onClick={() => paginate(currentPage + 1)}
+        disabled={currentPage === totalPages}
+      />
+    </Pagination>
+  </Container>
 }

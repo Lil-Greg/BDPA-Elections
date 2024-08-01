@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { Election, ElectionsStatus } from "../type";
 import UserContext from "../context/UserContext";
+import CacheFetch from "./useCacheFetch";
 const url = import.meta.env.VITE_API_URL;
 const APIKey = import.meta.env.VITE_API_KEY;
 
@@ -23,8 +24,7 @@ export default function useElectionHistory(){
         async function fetchData(){
             try{
                 setIsLoading(true);
-                const res = await fetch(`${url}elections`, options);
-                const data = await res.json() as ElectionsStatus;
+                const data: ElectionsStatus = await CacheFetch(`${url}elections`, options);
                 const filteredData = data.elections.filter(election => {
                     if(user?.type === 'administrator' || user?.type === 'super'){
                         return setMilliseconds > election.closesAt && election.deleted === false || election.deleted === true;

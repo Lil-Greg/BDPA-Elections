@@ -1,10 +1,10 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import './index.css'
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { RouterProvider, createBrowserRouter } from 'react-router-dom'
-import Top from './components/Top.tsx'
-import ElectionPage from './pages/election/ElectionPage.tsx'
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import Top from './components/Top.tsx';
+import ElectionPage from './pages/election/ElectionPage.tsx';
 import UserContextProvider from './context/UserContextProvider.tsx';
 import DashboardPage from './pages/dashboard/DashboardPage.tsx';
 import AuthPage from './pages/auth/AuthPage.tsx';
@@ -32,12 +32,12 @@ const router = createBrowserRouter([
     element: <ProtectedRoute allowedUserTypes={['administrator', 'super']}><CreateElectionPage /></ProtectedRoute>
   }, {
     path: '/elections',
-    element: <ProtectedRoute allowedUserTypes={['voter', 'administrator', 'super', "moderator"]}><MultiElectionsPage /></ProtectedRoute>,
+    element: <ProtectedRoute allowedUserTypes={['voter', "reporter", 'administrator', 'super', "moderator"]}><MultiElectionsPage /></ProtectedRoute>,
   }, {
     path: '/elections/:electionId',
     element: <ProtectedRoute allowedUserTypes={['voter', 'administrator', 'super']}><ElectionPage /></ProtectedRoute>
   }, {
-    path: '/elections/:electionId/:userId',
+    path: '/elections/:electionId/vote',
     element: <ProtectedRoute allowedUserTypes={['voter']}><VotingPage /></ProtectedRoute>
   }, {
     path: '/login',

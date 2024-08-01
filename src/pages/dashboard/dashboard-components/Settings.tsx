@@ -20,7 +20,9 @@ export default function Settings() {
         setLogOutShow(true);
     }
     const handleLogOut = () => {
-        localStorage.removeItem('election-user');
+        localStorage.clear();
+        sessionStorage.clear();
+        navigate('/login', { replace: true });
         window.location.reload();
     }
     const handleDeleteClick = () => {
@@ -29,8 +31,10 @@ export default function Settings() {
     const handleDeleteAccount = () => {
         if (user && user._id !== null || user && user._id !== undefined) {
             deleteAccount({ id: user._id });
-            localStorage.removeItem('election-user');
-            navigate('/login');
+            localStorage.clear();
+            sessionStorage.clear();
+            navigate('/login', { replace: true });
+            window.location.reload();
         }
     }
     return <>
