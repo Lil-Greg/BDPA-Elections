@@ -45,7 +45,7 @@ export default function AuthPage() {
             // adding the captcha
             if (captcha === correctCaptcha) {
                 setInvalidCaptcha(false);
-                setIpAndLogin({ id: authUser[0]._id, ip: userIp });
+                setTimeout(() => setIpAndLogin({ id: authUser[0]._id, ip: userIp }), 500);
                 if (username && password) {
                     setInvalidUser(false);
                     setUser && setUser(authUser[0]); // Set Types

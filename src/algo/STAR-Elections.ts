@@ -49,7 +49,5 @@ function determineWinner(voters: Voter[]): string {
 
 // Determine and log the winner
 const winner = determineWinner(voters);
-voters.map((voter, index) => console.log(`Voter Data, ${index}: `,voter));
-console.log(`The winner is: ${winner}`);
 return winner;
 }

@@ -7,6 +7,7 @@ import DistributeCalls from './DistributeCalls';
 import { useQuery as useTanstackQuery } from '@tanstack/react-query';
 import { useQuery } from 'convex/react';
 import { api } from '../../../convex/_generated/api';
+import getImageURL from '../../utils/image-util';
 
 /* Display Election information and allows Users to Vote */
 
@@ -35,13 +36,21 @@ export default function ElectionPage() {
         </>
     };
     if (isError) {
+        console.log("Error in Election Page", error);
         return <>
-            Something Went Wrong!
-            <br />
-            {JSON.stringify(error)}
+            <div className="errorCard">
+                <div className="errorMessage">
+                    <img src={getImageURL('errorMagnifier.svg')} alt="Error Magnifier" />
+                    <h1>Something went wrong!</h1>
+                    <p>Error: {error.message}</p>
+                    <hr style={{ color: "#ff0019" }} />
+                    <p>{error.message}</p>
+                </div>
+            </div>
         </>
     };
     if (!data) {
+        console.log("Data from UseQuery in Single Election", data);
         throw Error("Single Election Use Query Data Errored");
     };
     const { election, winner, userVote, ballotsResponse, ballots } = data;

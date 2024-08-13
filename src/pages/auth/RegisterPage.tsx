@@ -94,14 +94,13 @@ export default function RegisterPage() {
                 <form className="row g-3" onSubmit={handleSubmit}>
                     <div className="col-md-6">
                         <label htmlFor="inputEmail4" className="form-label" >Email</label>
-                        <input type="email" className="form-control" id="inputEmail4" ref={emailRef} required />
                         <Form.Control
                             type="text"
                             autoComplete="off"
                             className="form-control"
                             onChange={handleUsernameChange}
-                            id="inputUsername"
-                            ref={usernameRef}
+                            id="inputEmail4"
+                            ref={emailRef}
                             isInvalid={invalidUsername === true ? invalidUsername : sameUsername}
                             required
                         />

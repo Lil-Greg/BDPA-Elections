@@ -12,6 +12,13 @@ h5{
 .history-even{
     background-color: #A9A9A9;
 }
+.electionBox{
+    background-color: rgb(138, 179, 255);
+    border-radius: 10px;
+    margin: 12px;
+    padding: 10px;
+}
+/* ---- ERROR STYLING ---- */
 .errorCard {
     display: flex;
     flex-direction: column;
@@ -38,10 +45,4 @@ h5{
     padding: 20px;
     background-color: #fffefe;
     border-radius: 15px;
-}
-.electionBox{
-    background-color: rgb(138, 179, 255);
-    border-radius: 10px;
-    margin: 12px;
-    padding: 10px;
 }

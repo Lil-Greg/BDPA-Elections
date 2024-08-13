@@ -29,12 +29,14 @@ export default async function DistributeCalls(election_id: string, user: User) {
         winner = CPL;
     }
     console.log("Star Winner", StarElections(ballots.ballots));
-    console.log("FPP Winner", FptpElection(ballots.ballots))
+    console.log("FPP Winner", FptpElection(ballots.ballots));
     return { election, winner, userVote, ballotsResponse: ballots, ballots: ballotsConverted };
 }
 async function GetElectionData(election_id: string, user: User) {
-    const election: ElectionStatus = await CacheFetch(`${url}elections/${election_id}`, options);
+    const election: ElectionStatus = await CacheFetch(`${url}elections/${election_id}`, options); // Add Timeout to regular fetch
+    console.log("First Call", election);
     const ballots: GetBallotsResponse = await CacheFetch(`${url}elections/${election_id}/ballots`, options);
     const userVote: GetSingleBallotType = await CacheFetch(`${url}elections/${election_id}/ballots/${user.username}`, options);
+    console.log("Last Call", election);
     return { election: election.election, ballots, userVote };
-}
+};

@@ -101,17 +101,14 @@ export interface OptionRankings {
     rank3Votes: number
 };
 
-export interface Ballots {
+export type Ballots = {
     voter_id: string,
-    ranking: { rank: number }
+    ranking: { "rank": number }
 };
 
 export interface GetSingleBallotType {
     success: boolean,
-    ballot: {
-        voter_id: string,
-        ranking: { rank: number }
-    }
+    ballot: Ballots
 };
 
 export interface GetBallotsResponse {
